@@ -1,12 +1,8 @@
 <?php
-    
-    $arrayRutas = explode("/",$_SERVER['REQUES_URI']);
+    require_once(__DIR__.'/config.php');
+    require_once(__DIR__.'/router.php');
 
-    echo $_SERVER['REQUES_URI'];
+    $router = new Router();
+    $router->run();
 
-    $json=array(
-        "detalle" => "no encontrado"
-    );
-
-    echo json_encode($json,true);
 ?>
