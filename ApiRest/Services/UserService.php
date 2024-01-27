@@ -3,7 +3,7 @@
     class UserService{
         public static function getAll(){
             $db = new Connection();
-            $query = "Select * From users where status = 1";
+            $query = "Select * From users where status = 1";            
             $resultado = $db->query($query);
             $datos = [];
             if($resultado->num_rows==0){

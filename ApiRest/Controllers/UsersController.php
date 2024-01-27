@@ -1,14 +1,19 @@
 <?php
-    class usersController{
+
+    require_once(__DIR__."/services/UserService.php");    
+
+    class usersController{        
+
         public function home(){
+            $userService = new UserService();
             echo 'User Controller Home';
         }
 
-        public function getAllUsers(){
+        public function getAllUsers(){            
             echo 'GetAllUsers';
         }
 
-        public function getUserById(){
+        public function getUserById(){            
             echo 'getUserById';
         }
         public function addNewUser(){
