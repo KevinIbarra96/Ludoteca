@@ -2,6 +2,7 @@
 
 
   define('DB_SERVER', 'localhost');
+  //define('DB_SERVER', '127.0.0.1');
 
   define('DB_SERVER_USERNAME', 'root');
 
@@ -10,12 +11,4 @@
   define('DB_DATABASE', 'ludotecadb');
   
   define('DB_PORT', '3307');
-  
-  //define('DB_SERVER_USERNAME', 'admingasctrl');
-
-  //define('DB_SERVER_PASSWORD', 'T3kn3praXis2020');
-
-
-  
-
 ?>
