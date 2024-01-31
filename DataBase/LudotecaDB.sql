@@ -36,6 +36,19 @@ CREATE TABLE IF NOT EXISTS `hijos` (
 
 -- Volcando datos para la tabla ludotecadb.hijos: ~0 rows (aproximadamente)
 
+-- Volcando estructura para tabla ludotecadb.menu
+CREATE TABLE IF NOT EXISTS `menu` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `MenuName` varchar(45) DEFAULT NULL,
+  `Rol` int DEFAULT NULL,
+  `Path` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_Menu_Rol_idx` (`Rol`),
+  CONSTRAINT `fk_Menu_Rol` FOREIGN KEY (`Rol`) REFERENCES `rol` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla ludotecadb.menu: ~0 rows (aproximadamente)
+
 -- Volcando estructura para tabla ludotecadb.ofertas
 CREATE TABLE IF NOT EXISTS `ofertas` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -105,13 +118,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   KEY `fk_User_Rol_idx` (`idRol`),
   CONSTRAINT `fk_User_Rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla ludotecadb.users: ~2 rows (aproximadamente)
 INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 	(1, 'Kevin Ibarra', 'Test1', 1, 1),
 	(2, 'Gerardo Valente', 'Test', 1, 1),
-	(3, 'Perla Anaya', 'Prueba', 1, 1);
+	(3, 'Perla Anaya', 'Prueba', 1, 1),
+	(4, 'Alejandrina Vazquez', 'Prueba', 1, 1);
 
 -- Volcando estructura para tabla ludotecadb.visitas
 CREATE TABLE IF NOT EXISTS `visitas` (

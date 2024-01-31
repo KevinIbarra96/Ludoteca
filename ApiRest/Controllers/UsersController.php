@@ -23,16 +23,16 @@
                 $database = new Connection();
                 $userSvc = new UserService($database->getConnection());
                 $Response->Rbody = $userSvc->getAll();
-                $database->closeConection();
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "All User listed";
-                
+                                
             }catch(Exception $ex){
                 $Response->Rcode = 402;
                 $Response->Rmessage = $ex->getMessage();
                 $Response->RerrorCode = $ex->getCode();
             }finally{
+                $database->closeConection();
                 echo json_encode($Response);
             }
             /*echo '<prev>';
@@ -79,7 +79,7 @@
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Updated";
+                $Response->Rmessage = "User created";
 
                 
             }catch(Exception $ex){
@@ -108,7 +108,7 @@
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User inserted";
+                $Response->Rmessage = "User Updated";
 
                 
             }catch(Exception $ex){

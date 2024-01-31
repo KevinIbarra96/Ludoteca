@@ -59,6 +59,6 @@
                 $stm->bindValue(":{$column}", $value);
             }
             $stm->execute();
-        }   
+        }
     }
 ?>
