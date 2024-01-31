@@ -26,7 +26,7 @@
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "All User listed correctly";
+                $Response->Rmessage = "All User listed";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -62,13 +62,82 @@
             }
         }
         function addNewUser(){
-            echo 'addNewUser';
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'UserName' =>$BodyRequest['UserName'],
+                    'Password' =>$BodyRequest['Password'],
+                    'idRol' =>$BodyRequest['idRol']
+                ];
+
+                $database = new Connection();
+                $userSvc = new UserService($database->getConnection());                
+                $userSvc->new($dataBody);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "User Updated";
+
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
-        function edditUser(){
-            echo 'edditUser';
+        function editUser(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'UserName' =>$BodyRequest['UserName'],
+                    'Password' =>$BodyRequest['Password'],
+                    'idRol' =>$BodyRequest['idRol']
+                ];
+
+                $database = new Connection();
+                $userSvc = new UserService($database->getConnection());                
+                $userSvc->update($BodyRequest['id'],$dataBody);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "User inserted";
+
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
         function deleteUser(){
-            echo 'deleteUser';
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $userSvc = new UserService($database->getConnection());
+                $Response->Rbody = $userSvc->delete($BodyRequest['id']);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "User Deleted";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
     }
 ?>

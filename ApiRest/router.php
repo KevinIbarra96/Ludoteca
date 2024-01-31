@@ -16,7 +16,7 @@
             $this->method = !empty($url[2]) ? $url[2] : 'home';
 
             $this->controller = $this->controller .'Controller';
-            echo __DIR__.'/Controllers/'.$this->controller.'.php';
+            //echo __DIR__.'/Controllers/'.$this->controller.'.php';
 
             require_once(__DIR__.'/Controllers/'.$this->controller.'.php');
 
