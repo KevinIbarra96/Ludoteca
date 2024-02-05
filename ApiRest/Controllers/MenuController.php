@@ -21,7 +21,7 @@
 
             try{            
                 $database = new Connection();
-                $MenuSvc = new MenuService($database->getConnection());
+                $MenuSvc = new MenuService();
                 $Response->Rbody = $MenuSvc->getAll();
 
                 $Response->Rcode = 200;
@@ -46,7 +46,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $MenuSvc = new MenuService($database->getConnection());
+                $MenuSvc = new MenuService();
                 $Response->Rbody = $MenuSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -74,7 +74,7 @@
                 ];
 
                 $database = new Connection();
-                $MenuSvc = new MenuService($database->getConnection());                
+                $MenuSvc = new MenuService();                
                 $MenuSvc->new($dataBody);
                 $database->closeConection();
 
@@ -103,7 +103,7 @@
                 ];
 
                 $database = new Connection();
-                $MenuSvc = new MenuService($database->getConnection());                
+                $MenuSvc = new MenuService();                
                 $MenuSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -124,7 +124,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $MenuSvc = new MenuService($database->getConnection());
+                $MenuSvc = new MenuService();
                 $Response->Rbody = $MenuSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 

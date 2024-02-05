@@ -22,7 +22,7 @@
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
         public function delete($idget){
-            $stm = $this->DbConection->prepare("update users set status = 0 where id = $idget");
+            $stm = $this->DbConection->prepare("update {$this->columns} set status = 0 where id = $idget");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }

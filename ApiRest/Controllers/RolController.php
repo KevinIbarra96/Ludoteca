@@ -21,7 +21,7 @@
 
             try{            
                 $database = new Connection();
-                $RolSvc = new RolService($database->getConnection());
+                $RolSvc = new RolService();
                 $Response->Rbody = $RolSvc->getAll();
 
                 $Response->Rcode = 200;
@@ -46,7 +46,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $RolSvc = new RolService($database->getConnection());
+                $RolSvc = new RolService();
                 $Response->Rbody = $RolSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -73,7 +73,7 @@
                 ];
 
                 $database = new Connection();
-                $RolSvc = new RolService($database->getConnection());
+                $RolSvc = new RolService();
                 $RolSvc->new($dataBody);
                 $database->closeConection();
 
@@ -101,7 +101,7 @@
                 ];
 
                 $database = new Connection();
-                $RolSvc = new RolService($database->getConnection());
+                $RolSvc = new RolService();
                 $RolSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -122,7 +122,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $RolSvc = new RolService($database->getConnection());
+                $RolSvc = new RolService();
                 $Response->Rbody = $RolSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 

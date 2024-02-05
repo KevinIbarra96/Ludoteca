@@ -21,7 +21,7 @@
 
             try{            
                 $database = new Connection();
-                $OfertasSvc = new OfertasService($database->getConnection());
+                $OfertasSvc = new OfertasService();
                 $Response->Rbody = $OfertasSvc->getAll();
 
                 $Response->Rcode = 200;
@@ -46,7 +46,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $OfertasSvc = new OfertasService($database->getConnection());
+                $OfertasSvc = new OfertasService();
                 $Response->Rbody = $OfertasSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -75,7 +75,7 @@
                 ];
 
                 $database = new Connection();
-                $OfertasSvc = new OfertasService($database->getConnection());                
+                $OfertasSvc = new OfertasService();
                 $OfertasSvc->new($dataBody);
                 $database->closeConection();
 
@@ -105,7 +105,7 @@
                 ];
 
                 $database = new Connection();
-                $OfertasSvc = new OfertasService($database->getConnection());                
+                $OfertasSvc = new OfertasService();
                 $OfertasSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -126,7 +126,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $OfertasSvc = new OfertasService($database->getConnection());
+                $OfertasSvc = new OfertasService();
                 $Response->Rbody = $OfertasSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
