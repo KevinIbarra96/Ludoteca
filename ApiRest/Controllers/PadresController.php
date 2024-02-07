@@ -1,10 +1,13 @@
 <?php
 
 $pt = explode('\\',__DIR__);
-$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+//$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+
+$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
 require_once($ProjectPath.'/Database/conexion.php');
-require_once($ProjectPath.'/Services/UserService.php');
+require_once($ProjectPath.'/Services/PadreService.php');
 require_once($ProjectPath.'/Models/ResponseModel.php');
 
 class PadresController {
@@ -17,8 +20,8 @@ class PadresController {
         $Response = new ResponseModel();
         try{
             $database = new Connection();
-            $userSvc = new UserService($database->getConnection());
-            $Response->Rbody = $userSvc->getAll();
+            $padreSvc = new PadreService();
+            $Response->Rbody = $padreSvc->getAll();
             $database->closeConection();
 
             $Response->Rcode = 200;
@@ -34,18 +37,18 @@ class PadresController {
 
     }
     
-    function getPadresById(){
+    function getPadreById(){
         $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $userSvc = new UserService($database->getConnection());
-                $Response->Rbody = $userSvc->getById($BodyRequest['id']);
+                $padreSvc = new PadreService();
+                $Response->Rbody = $padreSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Founded";
+                $Response->Rmessage = "Padres Founded";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -56,21 +59,84 @@ class PadresController {
             }
 
     }
-    function addNewPadres(){
+    function addNewPadre(){
         $Response = new ResponseModel();
             
         try{
-            
+            $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+            $dataBody = [
+                'PadreName' => $BodyRequest["PadreName"],
+                'Address' => $BodyRequest["Address"],
+                'Telefono' => $BodyRequest["Telefono"]
+
+            ];
+
+            $database = new Connection();
+            $padreSvc = new PadreService();                
+            $padreSvc->new($dataBody);
+            $database->closeConection();
+
+            $Response->Rcode = 200;
+            $Response->Rmessage = "Padre Inserted";
+        }catch(Exception $ex){
+            $Response->Rcode = 402;
+            $Response->Rmessage = $ex->getMessage();
+            $Response->RerrorCode = $ex->getCode();
+        } finally{
+            echo json_encode($Response);
         }
-        echo 'addNewUser';
     }
-    function edditPadres(){
-        echo 'edditUser';
+     
+    function editPadre(){
+        $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'PadreName' => $BodyRequest['PadreName'],
+                    'Address' => $BodyRequest['Address'],
+                    'Telefono' => strval($BodyRequest['Telefono']) 
+                ];
+
+                $database = new Connection();
+                $padreSvc = new PadreService();                
+                $padreSvc->update($BodyRequest['id'],$dataBody);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Padres updated";
+
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
     }
-    function deletePadres(){
-        echo 'deleteUser';
+    function deletePadre(){
+        $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $padreSvc = new PadreService();
+                $Response->Rbody = $padreSvc->delete($BodyRequest['id']);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Padre Deleted";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
     }
 }
-
 
 ?>
