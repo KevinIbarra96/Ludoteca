@@ -1,12 +1,14 @@
 <?php
-     $pt = explode('\\',__DIR__);
-     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    $pt = explode('\\',__DIR__);
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/ProductoService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
 
-    class productosController{
+    class ProductosController{
 
         function home(){
             echo 'Productos Controller Home';
@@ -18,7 +20,7 @@
 
             try{            
                 $database = new Connection();
-                $productoSvc = new ProductoService($database->getConnection());
+                $productoSvc = new ProductoService();
                 $Response->Rbody = $productoSvc->getAll();
                 $database->closeConection();
 
@@ -41,7 +43,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $productoSvc = new ProductoService($database->getConnection());
+                $productoSvc = new ProductoService();
                 $Response->Rbody = $productoSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -69,7 +71,7 @@
                 ];
 
                 $database = new Connection();
-                $productoSvc = new ProductoService($database->getConnection());                
+                $productoSvc = new ProductoService();                
                 $productoSvc->new($dataBody);
                 $database->closeConection();
 
@@ -98,7 +100,7 @@
                 ];
 
                 $database = new Connection();
-                $productoSvc = new ProductoService($database->getConnection());                
+                $productoSvc = new ProductoService();                
                 $productoSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -119,7 +121,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $productoSvc = new ProductoService($database->getConnection());
+                $productoSvc = new ProductoService();
                 $Response->Rbody = $productoSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 

@@ -1,12 +1,14 @@
 <?php
      $pt = explode('\\',__DIR__);
-     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/VisitaService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
 
-    class visitasController{
+    class VisitasController{
 
         function home(){
             echo 'Visitas Controller Home';
@@ -18,7 +20,7 @@
 
             try{            
                 $database = new Connection();
-                $visitaSvc = new VisitaService($database->getConnection());
+                $visitaSvc = new VisitaService();
                 $Response->Rbody = $visitaSvc->getAll();
                 $database->closeConection();
 
@@ -41,7 +43,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $visitaSvc = new VisitaService($database->getConnection());
+                $visitaSvc = new VisitaService();
                 $Response->Rbody = $visitaSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -67,13 +69,13 @@
                     'Servicio' =>$BodyRequest['Servicio'],
                     'Productos' =>$BodyRequest['Productos'],
                     'HoraEntrada' => $BodyRequest['HoraEntrada'],
-                    'HoraSalida' => $BodyRequest['HoraSalidad'],
+                    'HoraSalida' => $BodyRequest['HoraSalida'],
                     'Oferta' => $BodyRequest['Oferta']
 
                 ];
 
                 $database = new Connection();
-                $visitaSvc = new VisitaService($database->getConnection());                
+                $visitaSvc = new VisitaService();                
                 $visitaSvc->new($dataBody);
                 $database->closeConection();
 
@@ -100,12 +102,12 @@
                     'Servicio' =>$BodyRequest['Servicio'],
                     'Productos' =>$BodyRequest['Productos'],
                     'HoraEntrada' => $BodyRequest['HoraEntrada'],
-                    'HoraSalida' => $BodyRequest['HoraSalidad'],
+                    'HoraSalida' => $BodyRequest['HoraSalida'],
                     'Oferta' => $BodyRequest['Oferta']
                 ];
 
                 $database = new Connection();
-                $visitaSvc = new VisitaService($database->getConnection());                
+                $visitaSvc = new VisitaService();                
                 $visitaSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -126,7 +128,7 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $visitaSvc = new VisitaService($database->getConnection());
+                $visitaSvc = new VisitaService();
                 $Response->Rbody = $visitaSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
