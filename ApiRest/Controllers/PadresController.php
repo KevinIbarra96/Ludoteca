@@ -1,13 +1,16 @@
 <?php
 
 $pt = explode('\\',__DIR__);
-$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+//$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+
+$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
 require_once($ProjectPath.'/Database/conexion.php');
 require_once($ProjectPath.'/Services/PadreService.php');
 require_once($ProjectPath.'/Models/ResponseModel.php');
 
-class padresController {
+class PadresController {
 
     function home() {
         echo 'Padres controller home';
@@ -17,7 +20,7 @@ class padresController {
         $Response = new ResponseModel();
         try{
             $database = new Connection();
-            $padreSvc = new PadreService($database->getConnection());
+            $padreSvc = new PadreService();
             $Response->Rbody = $padreSvc->getAll();
             $database->closeConection();
 
@@ -40,7 +43,7 @@ class padresController {
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $padreSvc = new PadreService($database->getConnection());
+                $padreSvc = new PadreService();
                 $Response->Rbody = $padreSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
@@ -63,14 +66,14 @@ class padresController {
             $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
             $dataBody = [
-                'PadreName' => $BodyRequest["PadreNombre"],
+                'PadreName' => $BodyRequest["PadreName"],
                 'Address' => $BodyRequest["Address"],
                 'Telefono' => $BodyRequest["Telefono"]
 
             ];
 
             $database = new Connection();
-            $padreSvc = new PadreService($database->getConnection());                
+            $padreSvc = new PadreService();                
             $padreSvc->new($dataBody);
             $database->closeConection();
 
@@ -83,6 +86,7 @@ class padresController {
         } finally{
             echo json_encode($Response);
         }
+    }
      
     function editPadre(){
         $Response = new ResponseModel();
@@ -91,13 +95,13 @@ class padresController {
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'PadreName' => $BodyRequest["PadreNombre"],
-                'Address' => $BodyRequest["Address"],
-                'Telefono' => $BodyRequest["Telefono"]
+                    'PadreName' => $BodyRequest['PadreName'],
+                    'Address' => $BodyRequest['Address'],
+                    'Telefono' => strval($BodyRequest['Telefono']) 
                 ];
 
                 $database = new Connection();
-                $padreSvc = new PadreService($database->getConnection());                
+                $padreSvc = new PadreService();                
                 $padreSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
@@ -118,7 +122,7 @@ class padresController {
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $padreSvc = new PadreService($database->getConnection());
+                $padreSvc = new PadreService();
                 $Response->Rbody = $padreSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
@@ -134,5 +138,5 @@ class padresController {
             }
     }
 }
-}
+
 ?>
