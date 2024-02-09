@@ -79,7 +79,33 @@ namespace Data
             }
 
             return usersResponse;
-        }        
+        }
+
+        public static async Task<List<EN_User>> deleteUser(int _id)
+        {
+
+            string _endPoint = _apiPath + "/editUser";
+            usersResponse = null;
+
+            var requestBody = new { id = _id };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
+                usersResponse = userRest.Rbody;
+            }
+
+            return usersResponse;
+        }
 
     }
 }
