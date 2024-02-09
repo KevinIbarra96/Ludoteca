@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entidad;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,133 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class DB_Hijo
+    public class DB_Hijo : ApiRest_Properties
     {
+        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Hijo"; //Adding ControllerName to Path
+        private static List<EN_Hijo> HijosResponse = null;
+
+        public static async Task<List<EN_Hijo>> getAllHijos()
+        {
+            HijosResponse = null;
+            string _enPoint = _apiPath + "/getAllHijos"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRes = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(content);
+
+                HijosResponse = HijoRes.Rbody;
+
+            }
+            return HijosResponse;
+        }
+
+        public static async Task<List<EN_Hijo>> getHijoById(int _id)
+        {
+
+            string _endPoint = _apiPath + "/getHijoById";
+            HijosResponse = null;
+
+            var requestBody = new { id = _id };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
+                HijosResponse = HijoRest.Rbody;
+            }
+
+            return HijosResponse;
+        }
+
+        public static async Task<List<EN_Hijo>> addNewHijo(EN_Hijo _Hijo)
+        {
+
+            HijosResponse = null;
+            string endpointpath = _apiPath + "/addNewHijo";
+
+            EN_Hijo RequestBody = new EN_Hijo();
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(endpointpath, content);
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
+                HijosResponse = HijoRest.Rbody;
+            }
+
+            return HijosResponse;
+        }
+
+        public static async Task<List<EN_Hijo>> updateHijo(EN_Hijo _Hijo)
+        {
+
+            HijosResponse = null;
+            string endpointpath = _apiPath + "/editHijo";
+
+            EN_Hijo RequestBody = new EN_Hijo();
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(endpointpath, content);
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
+                HijosResponse = HijoRest.Rbody;
+            }
+
+            return HijosResponse;
+        }
+
+        public static async Task<List<EN_Hijo>> deleteHijo(int _id)
+        {
+
+            string _endPoint = _apiPath + "/deleteHijo";
+            HijosResponse = null;
+
+            var requestBody = new { id = _id };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
+                HijosResponse = HijoRest.Rbody;
+            }
+
+            return HijosResponse;
+        }
+
     }
 }

@@ -25,8 +25,8 @@ namespace Ludoteca
             var userResponse = await RN_Users.RN_GetAllUsers();
             var userRespnseID = await RN_Users.RN_GetUserByID(2);
             var userRespnseAdd = await RN_Users.RN_AddNewUser(eN_User);
+            var userResponseDelete = await RN_Users.RN_DeleteUser(5);
         }
-
         private void OnCounterClicked(object sender, EventArgs e)
         {
             count++;
