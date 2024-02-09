@@ -25,13 +25,13 @@ require_once($ProjectPath.'/Models/ResponseModel.php');
                 $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if (!$userData) {
-                    throw new Exception("Usuario incorrecto");
+                    return "Usuario incorrecto";
                 }
                 if ($userData['status'] == 0) {
-                    throw new Exception("El usuario '{$userName}' está inhabilitado");
+                    return"El usuario '{$userName}' está inhabilitado";
                 }
                 if ($userData['Password'] !== $pass) {
-                    throw new Exception("Contraseña incorrecta");
+                    return"Contraseña incorrecta";
                 }
             // Usuario conectado correctamente
             return "Usuario '{$userData['UserName']}' conectado correctamente";
