@@ -63,7 +63,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Entidad\Entidad.csproj" />
 	  <ProjectReference Include="..\Negocio\Negocio.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="View\InventarioView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\StringFormatTemplate.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\VisitView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

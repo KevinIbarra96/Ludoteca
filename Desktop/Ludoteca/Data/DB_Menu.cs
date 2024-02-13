@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -117,6 +118,31 @@ namespace Data
             MenusResponse = null;
 
             var requestBody = new { id = _id };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Menu> MenuRest = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(result);
+                MenusResponse = MenuRest.Rbody;
+            }
+
+            return MenusResponse;
+        }
+
+        public static async Task< List<EN_Menu> > getMenuByRol(int idRol)
+        {
+            string _endPoint = _apiPath + "/getMenuByRol";
+            MenusResponse = null;
+
+            var requestBody = new { idRol = idRol };
 
             var requesData = JsonConvert.SerializeObject(requestBody);
 

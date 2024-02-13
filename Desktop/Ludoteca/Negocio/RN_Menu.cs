@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    internal class RN_Menu
+    public class RN_Menu
     {
+        public static async Task<List<EN_Menu>> RN_GetMenuByRol(int _idRol)
+        {
+            return await DB_Menu.getMenuByRol(_idRol);
+        }
+
         public static async Task<List<EN_Menu>> RN_GetAllMenus()
         {
             return await DB_Menu.getAllMenu();
