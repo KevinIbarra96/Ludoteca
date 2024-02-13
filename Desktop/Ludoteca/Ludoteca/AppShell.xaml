@@ -3,13 +3,25 @@
     x:Class="Ludoteca.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:Ludoteca.View"
     xmlns:local="clr-namespace:Ludoteca"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="Ludoteca">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
-
+    <ShellContent
+        Title="Visit"
+        ContentTemplate="{DataTemplate views:VisitView}"
+        Route="VisitView" />
+    <ShellContent
+        Title="Inventario"
+        ContentTemplate="{DataTemplate views:InventarioView}"
+        Route="InventarioView" />
+    <ShellContent
+        Title="Template para uso del string format"
+        ContentTemplate="{DataTemplate views:StringFormatTemplate}"
+        Route="StringFormatTemplate" />
 </Shell>
