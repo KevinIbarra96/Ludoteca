@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ludoteca.Login"
+             Title="Login">
+    <VerticalStackLayout  VerticalOptions="CenterAndExpand" >
+        <Label 
+            Text="Login"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Label x:Name="lblUsername"
+            Text="UserName"
+            Margin="20,0"/>
+        <Entry Placeholder="Digite su username"
+            x:Name="txtUsername"
+            Margin="20,0"/>
+        <Label x:Name="lblContraseña"
+            Text="Contraseña"
+            Margin="20,0"/>
+        <Entry  Placeholder="Digite su contraseña"
+            x:Name="txtContraseña"
+            Margin="20,0"
+            IsPassword="True"/>
+
+        <Button Text="Entrar" 
+            x:Name="btnEntrar"
+            CornerRadius="10" 
+            TextColor="White" 
+            FontAttributes="Bold" 
+            BackgroundColor="#2036a9" 
+            HorizontalOptions="Fill"
+            Margin="20"
+            Clicked="OnLoginButtonClicked"/>
+
+        <Button Text="Registrar" 
+            x:Name="btnRegistrar"
+            CornerRadius="10"  
+            TextColor="White" 
+            FontAttributes="Bold" 
+            BackgroundColor="#6a7381" 
+            HorizontalOptions="Fill"
+            Margin="20"/>
+    </VerticalStackLayout>
+</ContentPage>
