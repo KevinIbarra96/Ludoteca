@@ -2,8 +2,8 @@
     class ResponseModel{
         public $Rcode;
         public $Rmessage;
-        public $RerrorCode;
+        public $RerrorCode = 0;
 
-        public $Rbody;
+        public $Rbody = [];
     }
 ?>

@@ -10,6 +10,11 @@
             parent::__construct('menu','MenuName, Rol, Path',$dataBase->getConnection());
         }
 
+        public function getMenuByRol($idRol){
+            $stm = $this->DbConection->prepare("Select id, MenuName,ClassName,Path,MenuOrder from menu where status = 1 and Rol = $idRol order by MenuOrder");
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        }
 
     }
 ?>

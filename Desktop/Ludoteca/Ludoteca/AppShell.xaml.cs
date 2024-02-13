@@ -1,24 +1,34 @@
 ﻿using Entidad;
+using Ludoteca.View;
 using Negocio;
 using Ludoteca.Resources;
+using System;
 
 namespace Ludoteca
 {
     public partial class AppShell : Shell
-    {
+    {        
 
-        List<EN_Menu> menuRes;
         public AppShell()
-        {
-
-            getMenuByRol();
-            
+        {            
             InitializeComponent();
+            loadMenu();                                             
         }
 
-        public async void getMenuByRol()
+        public async void loadMenu()
         {
-            menuRes = await RN_Menu.RN_GetMenuByRol(Session.RolId);
+            List<EN_Menu> menuList = await RN_Menu.RN_GetMenuByRol(Session.RolId);
+
+            foreach (EN_Menu menu in menuList)
+            {
+                ShellContent me = new ShellContent();
+                me.Title = menu.MenuName;
+                me.ContentTemplate = new DataTemplate(Type.GetType(menu.Path)) ;
+                me.Route = menu.ClassName;
+
+                Items.Add(me);
+            }
         }
+
     }
 }

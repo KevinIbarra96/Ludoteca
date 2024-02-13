@@ -8,20 +8,10 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Ludoteca">
 
+    
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
-    <ShellContent
-        Title="Visit"
-        ContentTemplate="{DataTemplate views:VisitView}"
-        Route="VisitView" />
-    <ShellContent
-        Title="Inventario"
-        ContentTemplate="{DataTemplate views:InventarioView}"
-        Route="InventarioView" />
-    <ShellContent
-        Title="Template para uso del string format"
-        ContentTemplate="{DataTemplate views:StringFormatTemplate}"
-        Route="StringFormatTemplate" />
+    
 </Shell>
