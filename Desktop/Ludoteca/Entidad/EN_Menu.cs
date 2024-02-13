@@ -8,8 +8,10 @@ namespace Entidad
 {
     public class EN_Menu
     {
+        public int id {  get; set; }
         public string MenuName { get; set; }
         public string Path { get; set; }
-        public int Rol { get; set; }
+        public string ClassName { get; set; }
+        public int MenuOrder { get; set; }
     }
 }
