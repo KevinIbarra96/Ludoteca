@@ -40,6 +40,27 @@
             echo '</prev>';*/
         }
 
+        function getMenuByRol(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $MenuSvc = new MenuService();
+                $Response->Rbody = $MenuSvc->getMenuByRol($BodyRequest['idRol']);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Menu Founded";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
         function getMenuById(){
             $Response = new ResponseModel();
 
