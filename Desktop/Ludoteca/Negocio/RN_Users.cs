@@ -5,6 +5,11 @@ namespace Negocio
 {
     public class RN_Users
     {
+        public static async Task<string> RN_Login(string UserName,string Password)
+        {
+            
+            return await DB_Users.login(UserName, Password);
+        }
         public static async Task<List<EN_User>> RN_GetAllUsers()
         {
             return await DB_Users.getAllUsers();
