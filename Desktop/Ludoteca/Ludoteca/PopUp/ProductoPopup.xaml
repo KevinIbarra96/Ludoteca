@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="Ludoteca.PopUp.ProductoPopup"
+             Title="ProductoPopup" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
+    
+    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+        <Border WidthRequest="480" HeightRequest="380" BackgroundColor="White" HorizontalOptions="Center" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout Spacing="3" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" Margin="20" >
+
+                <Label x:Name="ProductNamelbl" VerticalOptions="Start" Margin="0,0,0,5" FontSize="25" />
+
+                <Label Text="Identificador del producto" VerticalOptions="Start" />
+                <Entry x:Name="IdProductEntry" IsEnabled="False" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Identificador del producto"  WidthRequest="400"/>
+
+                <Label Text="Nombre del producto" VerticalOptions="Start" />
+                <Entry x:Name="ProductNameEntry" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Placeholder=" Nombre del producto" HeightRequest="5" WidthRequest="400" />
+
+                <Label Text="Precio del producto" VerticalOptions="Start" />
+                <Entry x:Name="PrecioProduct" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Precio del producto" WidthRequest="400" />
+
+                <Entry x:Name="ProductCantidadeEntry" IsVisible="False" />
+
+                <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="200"/>
+
+                    <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200" Clicked="Cancelar_Clicked"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+    </ScrollView>
+    
+</mopups:PopupPage>

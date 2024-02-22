@@ -85,13 +85,20 @@ CREATE TABLE IF NOT EXISTS `padres` (
 CREATE TABLE IF NOT EXISTS `productos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ProductoName` varchar(45) DEFAULT NULL,
-  `Cantidad` varchar(45) DEFAULT NULL,
+  `Cantidad` int DEFAULT '0',
   `Precio` varchar(45) DEFAULT NULL,
   `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla ludotecadb.productos: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.productos: ~6 rows (aproximadamente)
+INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) VALUES
+	(1, 'Calcetas ch', 64, '10', 1),
+	(2, 'Agua 500ml', 20, '12', 1),
+	(3, 'Gomita Gusano pz', 16, '3', 1),
+	(4, 'Slime', 30, '20', 1),
+	(9, 'Spiderman Grandote', 0, '450', 1),
+	(10, 'Spiderman Chiquit', 0, '152', 1);
 
 -- Volcando estructura para tabla ludotecadb.rol
 CREATE TABLE IF NOT EXISTS `rol` (
@@ -99,11 +106,12 @@ CREATE TABLE IF NOT EXISTS `rol` (
   `RolName` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='		';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='		';
 
--- Volcando datos para la tabla ludotecadb.rol: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.rol: ~2 rows (aproximadamente)
 INSERT INTO `rol` (`id`, `RolName`, `status`) VALUES
-	(1, 'Administrador', '1');
+	(1, 'Administrador', '1'),
+	(2, 'Cajera', '1');
 
 -- Volcando estructura para tabla ludotecadb.servicios
 CREATE TABLE IF NOT EXISTS `servicios` (
@@ -128,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `fk_User_Rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla ludotecadb.users: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.users: ~2 rows (aproximadamente)
 INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 	(1, 'Kevin Ibarra', 'Test1', 1, 1),
 	(2, 'Gerardo Valente', 'Test', 1, 1),

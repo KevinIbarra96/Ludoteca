@@ -123,7 +123,7 @@ class PadresController {
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $padreSvc = new PadreService();
-                $Response->Rbody = $padreSvc->delete($BodyRequest['id']);
+                $padreSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

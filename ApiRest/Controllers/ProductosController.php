@@ -1,8 +1,8 @@
 <?php
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/ProductoService.php');
@@ -12,6 +12,28 @@
 
         function home(){
             echo 'Productos Controller Home';
+        }
+
+        function increaseCantidadProduct(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $productoSvc = new ProductoService();
+                $productoSvc->increaseCantidadProduct($BodyRequest['id'],$BodyRequest['Cantidad']);
+
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Cantidad incrementada correctamente";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
 
         function getAllProductos(){
@@ -66,13 +88,12 @@
 
                 $dataBody = [
                     'ProductoName' =>$BodyRequest['ProductoName'],
-                    'Cantidad' =>$BodyRequest['Cantidad'],
                     'Precio' =>$BodyRequest['Precio']
                 ];
 
                 $database = new Connection();
                 $productoSvc = new ProductoService();                
-                $productoSvc->new($dataBody);
+                $Response->Rbody = $productoSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -106,7 +127,6 @@
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "Product Updated";
-
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -122,7 +142,7 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $productoSvc = new ProductoService();
-                $Response->Rbody = $productoSvc->delete($BodyRequest['id']);
+                $productoSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

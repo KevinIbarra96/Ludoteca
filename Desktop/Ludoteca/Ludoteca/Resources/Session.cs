@@ -8,9 +8,9 @@ namespace Ludoteca.Resources
 {
     class Session
     {
-        public static int UserId;
-        public static string UserName;
-        public static string RolName;
+        public static int UserId = 1;
+        public static string UserName = "Administrador";
+        public static string RolName ="Administrador";
         public static int RolId = 1;
     }
 }

@@ -7,7 +7,7 @@ namespace Entidad
     {
         public int Rcode { get; set; }
         public string Rmessage { get; set; }
-        public int RerrorCode { get; set; }
+        public string RerrorCode { get; set; }
         public List<T> Rbody { get; set; }
     }
 }

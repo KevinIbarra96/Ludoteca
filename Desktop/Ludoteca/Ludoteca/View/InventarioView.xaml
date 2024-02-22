@@ -1,12 +1,82 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
              x:Class="Ludoteca.View.InventarioView"
-             Title="InventarioView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="InventarioView" 
+             BackgroundColor="{StaticResource FrameBackground }">
+
+    <ContentPage.BindingContext>
+        <viewModel:InventarioViewModel />
+    </ContentPage.BindingContext>
+
+
+    <StackLayout Margin="10,10,10,20">
+
+        <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
+            <Button Text="Ingresar" ToolTipProperties.Text="Ingresa nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" Clicked="Ingresar_Clicked" HeightRequest="30" WidthRequest="100" />
+            <!-- Barra de búsqueda -->
+            <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White"/>
+        </HorizontalStackLayout>
+        <!-- Encabezados fijos -->
+        <Grid BackgroundColor="DarkGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del Producto" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Cantidad" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="2" FontAttributes="Bold" Text="Precio" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Acciones" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Lista de productos -->
+        <ListView ItemsSource="{Binding Productos}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47">
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid IsVisible="False">
+                            <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+
+            <ListView.ItemTemplate >
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Text="{Binding ProductoName}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="{Binding Cantidad}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <StackLayout Grid.Column="3" Orientation="Horizontal" VerticalOptions="Center">
+                                <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
+                                    <Button Text="Agregar" ToolTipProperties.Text="Ingresar producto al inventario" Clicked="AgregarProducto_Clicked" CommandParameter="{Binding id}" TextColor="DarkSeaGreen" BackgroundColor="White" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                    <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="white" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                 </StackLayout>
+                            </StackLayout>
+
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                            <!-- Agrega líneas de separación adicionales si es necesario -->
+
+                            <!-- Caja de la última columna -->
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" Margin="0,0,0,1" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout >
 </ContentPage>

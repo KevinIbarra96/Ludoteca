@@ -129,7 +129,7 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $visitaSvc = new VisitaService();
-                $Response->Rbody = $visitaSvc->delete($BodyRequest['id']);
+                $visitaSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

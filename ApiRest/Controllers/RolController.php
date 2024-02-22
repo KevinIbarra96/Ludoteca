@@ -123,7 +123,7 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $RolSvc = new RolService();
-                $Response->Rbody = $RolSvc->delete($BodyRequest['id']);
+                $RolSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

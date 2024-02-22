@@ -22,9 +22,8 @@
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
         public function delete($idget){
-            $stm = $this->DbConection->prepare("update {$this->columns} set status = 0 where id = $idget");
+            $stm = $this->DbConection->prepare("update {$this->tableName} set status = 0 where id = $idget");
             $stm->execute();
-            return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
         public function update($idget,$data){
             $query = "update {$this->tableName} set ";
@@ -32,7 +31,7 @@
                 $query .= "{$column} = :{$column},";
             }
             $query = trim($query,',');
-            $query .= "=status = 1 where id = $idget";
+            $query .= " where id = $idget";
             $stm = $this->DbConection->prepare($query);
             foreach($data as $column => $value){
                 $stm->bindValue(":{$column}", $value);
@@ -40,6 +39,13 @@
             $stm->execute();
         }
         public function new($data){
+            //Get new If for item created
+            $query ="Select max(id)+1 as id from {$this->tableName} ";
+            $stm = $this->DbConection->prepare($query);
+            $stm->execute();
+            $newId = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+            //Excecute insert query
             $query ="insert into {$this->tableName} (";
             foreach($data as $column => $value){
                 $query .= "$column,";
@@ -59,6 +65,9 @@
                 $stm->bindValue(":{$column}", $value);
             }
             $stm->execute();
+
+            //id no fail, return new Id;
+            return $newId;
         }
     }
 ?>
