@@ -4,6 +4,7 @@ using Mopups.Services;
 using Negocio;
 
 using Ludoteca.Resources;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.PopUp;
 
@@ -59,6 +60,9 @@ public partial class ProductoPopup
         var producto = new EN_Producto() { id = int.Parse(IdProductEntry.Text), ProductoName = ProductNameEntry.Text, Cantidad = int.Parse(ProductCantidadeEntry.Text), Precio = int.Parse(PrecioProduct.Text) };
         await RN_Producto.RN_UpdateProducto(producto);
 
+        var toast = Toast.Make("Actualizacion del producto correctamente",CommunityToolkit.Maui.Core.ToastDuration.Short,30);
+        await toast.Show();
+
         //Excecute the delegate to load the data on inventory
         _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
         await MopupService.Instance.PopAsync();
@@ -67,7 +71,10 @@ public partial class ProductoPopup
     {
         var producto = new EN_Producto() { ProductoName = ProductNameEntry.Text, Precio = int.Parse(PrecioProduct.Text) };
         EN_Response<EN_Producto> resp = await RN_Producto.RN_AddNewProducto(producto);
-        
+
+        var toast = Toast.Make("Se agregó el producto correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+        await toast.Show();
+
         producto.id = resp.Rbody[0].id;
 
         //Excecute the delegate to load the data on inventory

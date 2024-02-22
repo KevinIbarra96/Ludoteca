@@ -2,6 +2,7 @@ using Entidad;
 using Negocio;
 using Ludoteca.ViewModel;
 using Mopups.Services;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.View;
 
@@ -57,15 +58,18 @@ public partial class InventarioView : ContentPage
         try
         {
             string responseEntry = await DisplayPromptAsync("Producto", "Ingresa la cantidad de producto: ", "Igresar", "Cancelar", "Cantidad", 4, Keyboard.Numeric);
-            if (responseEntry == "" && responseEntry != null) { await DisplayAlert("Error", "Valor no puede ser vacío", "ok"); return; } //Valir que el valor enviado no se vacío
+            if (responseEntry == "" && responseEntry != null) { await DisplayAlert("Error", "Valor no puede ser vacío", "ok"); return; } //Validar que el valor enviado no se vacío
 
             if (responseEntry != null)
             {
                 resp = await RN_Producto.RN_increaseCantidadProducto(idProducto, int.Parse(responseEntry));
 
-                if (resp.RerrorCode == "0")
+                
+                if (resp.RerrorCode == "0") //0 significa que no hubo ningun error, 0 es el valor por defaul que se recibe de la WebAPi
                 {
-                    await DisplayAlert("Mensaje", resp.Rmessage, "ok");
+                    var toast = Toast.Make("Actualizacion del producto correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                    await toast.Show();
+
                     _loadInventarioData(); //Excecute the delegate to load data to the inventory
                 }
                 else
