@@ -14,7 +14,7 @@
     <StackLayout Margin="10,10,10,20">
 
         <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
-            <Button Text="Ingresar" ToolTipProperties.Text="Ingresa nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" Clicked="Ingresar_Clicked" HeightRequest="30" WidthRequest="100" />
+            <Button Text="Agregar" ToolTipProperties.Text="Agrega nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" Clicked="Agregar_Clicked" HeightRequest="30" WidthRequest="100" />
             <!-- Barra de búsqueda -->
             <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White"/>
         </HorizontalStackLayout>
@@ -61,7 +61,7 @@
                             <Label Grid.Column="2" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             <StackLayout Grid.Column="3" Orientation="Horizontal" VerticalOptions="Center">
                                 <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
-                                    <Button Text="Agregar" ToolTipProperties.Text="Ingresar producto al inventario" Clicked="AgregarProducto_Clicked" CommandParameter="{Binding id}" TextColor="DarkSeaGreen" BackgroundColor="White" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                    <Button Text="Ingresar" ToolTipProperties.Text="Ingresar producto al inventario" Clicked="IngresarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="White" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                                     <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="white" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                                  </StackLayout>
                             </StackLayout>

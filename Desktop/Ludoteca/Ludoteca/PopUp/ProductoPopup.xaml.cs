@@ -57,28 +57,48 @@ public partial class ProductoPopup
 
     private async void GuardarActuzalizar_Clicked(object sender, EventArgs e)
     {
-        var producto = new EN_Producto() { id = int.Parse(IdProductEntry.Text), ProductoName = ProductNameEntry.Text, Cantidad = int.Parse(ProductCantidadeEntry.Text), Precio = int.Parse(PrecioProduct.Text) };
-        await RN_Producto.RN_UpdateProducto(producto);
+        try
+        {
+            var producto = new EN_Producto() { id = int.Parse(IdProductEntry.Text), ProductoName = ProductNameEntry.Text, Cantidad = int.Parse(ProductCantidadeEntry.Text), Precio = int.Parse(PrecioProduct.Text) };
+            await RN_Producto.RN_UpdateProducto(producto);
 
-        var toast = Toast.Make("Actualizacion del producto correctamente",CommunityToolkit.Maui.Core.ToastDuration.Short,30);
-        await toast.Show();
+            //Excecute the delegate to load the data on inventory
+            _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
 
-        //Excecute the delegate to load the data on inventory
-        _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
-        await MopupService.Instance.PopAsync();
+            var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();
+        }
+        catch(Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetal: " + ex.Message, "OK");
+        }
+        finally
+        {
+            await MopupService.Instance.PopAsync();
+        }
     }
     private async void GuardarNuevo_Clicked(object sender, EventArgs e)
     {
-        var producto = new EN_Producto() { ProductoName = ProductNameEntry.Text, Precio = int.Parse(PrecioProduct.Text) };
-        EN_Response<EN_Producto> resp = await RN_Producto.RN_AddNewProducto(producto);
+        try
+        {
+            var producto = new EN_Producto() { ProductoName = ProductNameEntry.Text, Precio = int.Parse(PrecioProduct.Text) };
+            EN_Response<EN_Producto> resp = await RN_Producto.RN_AddNewProducto(producto);
 
-        var toast = Toast.Make("Se agregó el producto correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-        await toast.Show();
+            producto.id = resp.Rbody[0].id;
 
-        producto.id = resp.Rbody[0].id;
+            //Excecute the delegate to load the data on inventory
+            _updateInventarioData(GlobalEnum.Action.CREAR_NUEVO, producto);
 
-        //Excecute the delegate to load the data on inventory
-        _updateInventarioData(GlobalEnum.Action.CREAR_NUEVO, producto);
-        await MopupService.Instance.PopAsync();
+            var toast = Toast.Make("Se agregó el " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetal: " + ex.Message, "OK");
+        }
+        finally
+        {
+            await MopupService.Instance.PopAsync();
+        }
     }
 }

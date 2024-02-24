@@ -66,6 +66,7 @@ namespace Ludoteca.ViewModel
             {
                 Encontrado.ProductoName = producto.ProductoName;
                 Encontrado.Precio = producto.Precio;
+                Encontrado.Cantidad = producto.Cantidad;
             }
         }
     }

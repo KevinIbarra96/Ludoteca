@@ -3,6 +3,7 @@ using Negocio;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using CommunityToolkit.Maui.Alerts;
+using Ludoteca.Resources;
 
 namespace Ludoteca.View;
 
@@ -47,33 +48,38 @@ public partial class InventarioView : ContentPage
         }
     }
 
-    private async void AgregarProducto_Clicked(object sender, EventArgs e)
+    private async void IngresarProducto_Clicked(object sender, EventArgs e)
     {
-        int idProducto = 0;
         EN_Response<EN_Producto> resp;
 
-        var button = sender as Button;
-        if (button != null && button.CommandParameter is int id)
-            idProducto = id;
         try
         {
-            string responseEntry = await DisplayPromptAsync("Producto", "Ingresa la cantidad de producto: ", "Igresar", "Cancelar", "Cantidad", 4, Keyboard.Numeric);
-            if (responseEntry == "" && responseEntry != null) { await DisplayAlert("Error", "Valor no puede ser vacío", "ok"); return; } //Validar que el valor enviado no se vacío
-
-            if (responseEntry != null)
+            var button = sender as Button;
+            if (button != null && button.CommandParameter is EN_Producto producto)
             {
-                resp = await RN_Producto.RN_increaseCantidadProducto(idProducto, int.Parse(responseEntry));
 
-                
-                if (resp.RerrorCode == "0") //0 significa que no hubo ningun error, 0 es el valor por defaul que se recibe de la WebAPi
+                string responseEntry = await DisplayPromptAsync("Producto", "Ingresa la cantidad de producto: ", "Igresar", "Cancelar", "Cantidad", 4, Keyboard.Numeric);
+                if (responseEntry == "" && responseEntry != null) { await DisplayAlert("Error", "Valor no puede ser vacío", "ok"); return; } //Validar que el valor enviado no se vacío
+
+                if (responseEntry != null)
                 {
-                    var toast = Toast.Make("Actualizacion del producto correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                    await toast.Show();
+                    resp = await RN_Producto.RN_increaseCantidadProducto(producto.id, int.Parse(responseEntry));
 
-                    _loadInventarioData(); //Excecute the delegate to load data to the inventory
+
+                    if (resp.RerrorCode == "0") //0 significa que no hubo ningun error, 0 es el valor por defaul que se recibe de la WebAPi
+                    {
+                        
+                        //Increase Cantidad property with Entry Value
+                        producto.Cantidad += int.Parse(responseEntry);
+
+                        /*var toast = Toast.Make("Se agregaron " + responseEntry + " " + producto.ProductoName, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                        await toast.Show();*/
+
+                        _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
+                    }
+                    else
+                        await DisplayAlert("Mensaje", resp.Rmessage, "ok");
                 }
-                else
-                    await DisplayAlert("Mensaje", resp.Rmessage, "ok");
             }
         }
         catch (Exception ex)
@@ -88,12 +94,8 @@ public partial class InventarioView : ContentPage
         await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto) btn.CommandParameter,_updateInventarioData ));
     }
 
-    private async void Ingresar_Clicked(object sender, EventArgs e)
+    private async void Agregar_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PushAsync(new PopUp.ProductoPopup(_updateInventarioData));
-
-        
-        EN_Producto pro = new EN_Producto() { id = 21 , ProductoName="Prueba",Cantidad = 12,Precio = 12 };
-
     }
 }
