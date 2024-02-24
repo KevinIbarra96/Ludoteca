@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    internal class RN_Producto
+    public class RN_Producto
     {
+        public static async Task<EN_Response<EN_Producto>> RN_increaseCantidadProducto(int id,int Cantidad)
+        {
+            return await DB_Producto.increaseCantidadProducto(id, Cantidad);
+        }
         public static async Task<List<EN_Producto>> RN_GetAllProductos()
         {
             return await DB_Producto.getAllProductos();
@@ -26,7 +30,7 @@ namespace Negocio
         {
             return await DB_Producto.updateProducto(eN_Producto);
         }
-        public static async Task<List<EN_Producto>> RN_AddNewProducto(EN_Producto eN_Producto)
+        public static async Task<EN_Response<EN_Producto>> RN_AddNewProducto(EN_Producto eN_Producto)
         {
             return await DB_Producto.addNewProducto(eN_Producto);
         }

@@ -10,8 +10,34 @@ namespace Data
 {
     public class DB_Producto : ApiRest_Properties
     {
-        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Producto"; //Adding ControllerName to Path
+        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Productos"; //Adding ControllerName to Path
         private static List<EN_Producto> ProductosResponse = null;
+
+        public static async Task<EN_Response<EN_Producto>> increaseCantidadProducto(int id,int cantidad)
+        {
+
+            ProductosResponse = null;
+            EN_Response<EN_Producto> ProductRest = new EN_Response<EN_Producto>();
+            string endpointpath = _apiPath + "/increaseCantidadProduct";
+
+            var RequestBody = new { id=id , Cantidad = cantidad };
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(endpointpath, content);
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                ProductRest = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(result);
+            }
+
+            return ProductRest;
+        }
 
         public static async Task<List<EN_Producto>> getAllProductos()
         {
@@ -58,13 +84,13 @@ namespace Data
             return ProductosResponse;
         }
 
-        public static async Task<List<EN_Producto>> addNewProducto(EN_Producto _Producto)
+        public static async Task<EN_Response<EN_Producto>> addNewProducto(EN_Producto _Producto)
         {
+            EN_Response<EN_Producto> Response = null;
 
-            ProductosResponse = null;
             string endpointpath = _apiPath + "/addNewProducto";
 
-            EN_Producto RequestBody = new EN_Producto();
+            EN_Producto RequestBody = _Producto;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -77,11 +103,10 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Producto> ProductoRest = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(result);
-                ProductosResponse = ProductoRest.Rbody;
+                Response = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(result);
             }
 
-            return ProductosResponse;
+            return Response;
         }
 
         public static async Task<List<EN_Producto>> updateProducto(EN_Producto _Producto)
@@ -90,9 +115,7 @@ namespace Data
             ProductosResponse = null;
             string endpointpath = _apiPath + "/editProducto";
 
-            EN_Producto RequestBody = new EN_Producto();
-
-            var requestData = JsonConvert.SerializeObject(RequestBody);
+            var requestData = JsonConvert.SerializeObject(_Producto);
 
             HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
 

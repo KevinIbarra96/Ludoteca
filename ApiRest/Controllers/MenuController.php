@@ -96,7 +96,7 @@
 
                 $database = new Connection();
                 $MenuSvc = new MenuService();                
-                $MenuSvc->new($dataBody);
+                $Response->Rbody = $MenuSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -146,7 +146,7 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $MenuSvc = new MenuService();
-                $Response->Rbody = $MenuSvc->delete($BodyRequest['id']);
+                $MenuSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -161,4 +161,3 @@
             }
         }
     }
-?>

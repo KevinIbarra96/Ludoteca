@@ -127,7 +127,7 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $OfertasSvc = new OfertasService();
-                $Response->Rbody = $OfertasSvc->delete($BodyRequest['id']);
+                $OfertasSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

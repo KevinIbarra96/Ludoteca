@@ -130,7 +130,7 @@ $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $userSvc = new UserService();
-                $Response->Rbody = $userSvc->delete($BodyRequest['id']);
+                $userSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
