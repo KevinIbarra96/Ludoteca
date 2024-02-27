@@ -1,4 +1,5 @@
 using Entidad;
+using Ludoteca.Resources;
 using Negocio;
 
 namespace Ludoteca;
@@ -18,21 +19,42 @@ public partial class Login : ContentPage
 		string username = txtUsername.Text;
 		string password = txtContraseña.Text;
 
-		
-        
-		if (validacionLogin != null)
-			await DisplayAlert("Mensaje", await RN_Users.RN_Login(username, password), "OK");
-        else
-            await DisplayAlert("Alerta", validacionLogin(username,password), "OK");
-		await Navigation.PushAsync(new MainPage());
-	}
+		if(string.IsNullOrEmpty(validacionLogin(username, password)))
+		{
+            string result = await RN_Users.RN_Login(username, password);
+			if(!string.IsNullOrEmpty(result))
+			{
+                await DisplayAlert("Mensaje", result, "OK");
+                string successMessage = $"Usuario '{username}' conectado correctamente";
+				if(successMessage == result)
+				{
+                    //Geenra un id de sesion unico
+                    string sessionId = Guid.NewGuid().ToString();
+					Session.SetSessionId(sessionId);
+                    
+
+                    //navegacion
+                    await Navigation.PushAsync(new MainPage());
+                }             
+            }          
+        } else
+		{
+            await DisplayAlert("Alerta", validacionLogin(username, password), "OK");
+
+        }
+
+
+
+
+
+    }
     public string validacionLogin(string username, string password)
     {
-        if (username == null & password == null && username == "" && password == "")
-			return "Los campos no pueden ser vacíos";
-		
-		return null;		
-	
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            return "Los campos no pueden ser vacíos";
+
+        return null;
+
     }
 	
 }
