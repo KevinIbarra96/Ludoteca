@@ -3,42 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ludoteca.Login"
              Title="Login">
-    <VerticalStackLayout  VerticalOptions="CenterAndExpand" >
-        <Label 
-            Text="Login"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label x:Name="lblUsername"
-            Text="UserName"
-            Margin="20,0"/>
-        <Entry Placeholder="Digite su username"
-            x:Name="txtUsername"
-            Margin="20,0"/>
-        <Label x:Name="lblContraseña"
-            Text="Contraseña"
-            Margin="20,0"/>
-        <Entry  Placeholder="Digite su contraseña"
-            x:Name="txtContraseña"
-            Margin="20,0"
-            IsPassword="True"/>
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <!-- Imagen de fondo -->
+        <Image Source="fondo1.jpeg" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
 
-        <Button Text="Entrar" 
-            x:Name="btnEntrar"
-            CornerRadius="10" 
-            TextColor="White" 
-            FontAttributes="Bold" 
-            BackgroundColor="#2036a9" 
-            HorizontalOptions="Fill"
-            Margin="20"
-            Clicked="OnLoginButtonClicked"/>
 
-        <Button Text="Registrar" 
-            x:Name="btnRegistrar"
-            CornerRadius="10"  
-            TextColor="White" 
-            FontAttributes="Bold" 
-            BackgroundColor="#6a7381" 
-            HorizontalOptions="Fill"
-            Margin="20"/>
-    </VerticalStackLayout>
+        <Frame Grid.Row="0" BackgroundColor="#502F5D9B" CornerRadius="10" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" Margin="20">
+           
+            <StackLayout>
+                
+
+                <Label Text="Login" FontSize="Large" HorizontalOptions="Center"  TextColor="White"/>
+
+                <!-- Elementos de entrada -->
+                <Label x:Name="lblUsername" Text="Nombre de usuario" TextColor="White"/>
+                <Entry Placeholder="Digite su nombre de usuario" x:Name="txtUsername" TextColor="White"/>
+                <Label x:Name="lblContraseña" Text="Contraseña" TextColor="White"/>
+                <Entry Placeholder="Digite su contraseña" x:Name="txtContraseña" IsPassword="True" TextColor="White"/>
+                <Button Text="Entrar" x:Name="btnEntrar" CornerRadius="10" TextColor="Blue" FontAttributes="Bold" BackgroundColor="White" HorizontalOptions="Fill" Clicked="OnLoginButtonClicked" Margin="0,10,0,0"/>
+            </StackLayout>
+        </Frame>
+    </Grid>
 </ContentPage>

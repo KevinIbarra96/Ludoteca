@@ -10,6 +10,28 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Users"; //Adding ControllerName to Path
         private static List<EN_User> usersResponse = null;
 
+        public static async Task<string> login(string _UserName, string _Password)
+        {
+            EN_Response<EN_User> usersResponse = new EN_Response<EN_User>();
+            string _endPoint = _apiPath + "/login";
+
+            var requestBody = new { UserName = _UserName, Password = _Password };
+            var requestData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
+                usersResponse = userRest;
+            }
+
+            //return usersResponse.Rmessage;
+            return usersResponse.Rmessage;
+        }
+
         public static async Task<List<EN_User>> getAllUsers()
         {
             usersResponse = null;
@@ -41,8 +63,8 @@ namespace Data
 
             HttpContent content = 
                 new StringContent(requesData,System.Text.Encoding.UTF8, "application/json");
-            
             var httpResponse = await cliente.PostAsync(_endPoint, content);
+            
 
             if(httpResponse.IsSuccessStatusCode)
             {
@@ -132,6 +154,7 @@ namespace Data
 
             return usersResponse;
         }
+
 
     }
 }
