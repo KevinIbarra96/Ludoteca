@@ -30,7 +30,7 @@ namespace Ludoteca
         {
             if (Session.IsSessionActive())
             {
-                MainPage = new NavigationPage(new MainPage());
+                MainPage = new NavigationPage(new AppShell());
             }
             else
             {

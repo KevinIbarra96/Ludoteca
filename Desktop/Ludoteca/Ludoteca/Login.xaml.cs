@@ -34,7 +34,7 @@ public partial class Login : ContentPage
                     
 
                     //navegacion
-                    await Navigation.PushAsync(new MainPage());
+                    await Navigation.PushAsync(new AppShell());
                 }             
             }          
         } else
