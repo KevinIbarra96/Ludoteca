@@ -10,7 +10,6 @@ namespace Ludoteca.PopUp;
 
 public partial class ProductoPopup
 {
-    EN_Producto prod;
 
     UpdateInventarioData _updateInventarioData;
 
@@ -19,13 +18,12 @@ public partial class ProductoPopup
     {
         InitializeComponent();
 
-        //LLenar los valores de la lista 
-        this.prod = _procuto;
-        ProductNamelbl.Text = prod.ProductoName;
-        IdProductEntry.Text = prod.id.ToString();
-        ProductNameEntry.Text = prod.ProductoName;
-        PrecioProduct.Text = prod.Precio.ToString();
-        ProductCantidadeEntry.Text = prod.Cantidad.ToString();
+        //LLenar los valores de la lista
+        ProductNamelbl.Text = _procuto.ProductoName;
+        IdProductEntry.Text = _procuto.id.ToString();
+        ProductNameEntry.Text = _procuto.ProductoName;
+        PrecioProduct.Text = _procuto.Precio.ToString();
+        ProductCantidadeEntry.Text = _procuto.Cantidad.ToString();
 
         BtnGuardar.Clicked += GuardarActuzalizar_Clicked;//Agregar el eevnto al boton
 
@@ -51,8 +49,6 @@ public partial class ProductoPopup
     private void Cancelar_Clicked(object sender, EventArgs e)
     {
         MopupService.Instance.PopAsync();
-        //Navigation.PopModalAsync();
-        this.prod = null;
     }
 
     private async void GuardarActuzalizar_Clicked(object sender, EventArgs e)
@@ -70,7 +66,7 @@ public partial class ProductoPopup
         }
         catch(Exception ex)
         {
-            await DisplayAlert("Error", "Ah ocurrido un error\nDetal: " + ex.Message, "OK");
+            await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "OK");
         }
         finally
         {
@@ -94,7 +90,7 @@ public partial class ProductoPopup
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", "Ah ocurrido un error\nDetal: " + ex.Message, "OK");
+            await DisplayAlert("Error", "Ah ocurrido un error al agregar un nuevo producto\nDetalle: " + ex.Message, "OK");
         }
         finally
         {

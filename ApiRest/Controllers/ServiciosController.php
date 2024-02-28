@@ -1,7 +1,10 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+        $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+
+        //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -13,6 +16,27 @@
 
         function home(){
             echo 'Servicios Controller Home';
+        }
+
+        function setNewPrecio(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $databse = new Connection();
+                $ServiciosSvc = new ServiciosService();
+                $ServiciosSvc->setNewPrecio($BodyRequest['id'],$BodyRequest['Precio']);
+                
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Se actualizó el precio correctamente";                        
+
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $databse->closeConection();
+                echo json_encode($Response);
+            }
         }
 
         function getAllServicios(){
@@ -70,12 +94,13 @@
                 $dataBody = [
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'Descripcion' =>$BodyRequest['Descripcion'],
+                    'Precio' =>$BodyRequest['Precio']
                 ];
 
                 $database = new Connection();
                 $ServiciosSvc = new ServiciosService();
-                $ServiciosSvc->new($dataBody);
+                $Response->Rbody = $ServiciosSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -99,7 +124,8 @@
                 $dataBody = [
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'Descripcion' =>$BodyRequest['Descripcion'],
+                    'Precio' =>$BodyRequest['Precio']
                 ];
 
                 $database = new Connection();
