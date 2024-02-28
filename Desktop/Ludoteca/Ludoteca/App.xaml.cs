@@ -28,9 +28,9 @@ namespace Ludoteca
         }
         private async Task CheckSessionAndNavigate()
         {
-            if (Session.IsSessionActive())
+            if (true)
             {
-                MainPage = new NavigationPage(new AppShell());
+                MainPage = new AppShell();
             }
             else
             {
