@@ -20,10 +20,10 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
                 $productoSvc = new ProductoService();
-                $productoSvc->increaseCantidadProduct($BodyRequest['id'],$BodyRequest['Cantidad']);
 
                 $database->closeConection();
 
+                
                 $Response->Rcode = 200;
                 $Response->Rmessage = "Cantidad incrementada correctamente";
                 

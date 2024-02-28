@@ -109,7 +109,7 @@ namespace Data
             return Response;
         }
 
-        public static async Task<List<EN_Producto>> updateProducto(EN_Producto _Producto)
+        public static async Task updateProducto(EN_Producto _Producto)
         {
 
             ProductosResponse = null;
@@ -129,8 +129,6 @@ namespace Data
                 EN_Response<EN_Producto> ProductoRest = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(result);
                 ProductosResponse = ProductoRest.Rbody;
             }
-
-            return ProductosResponse;
         }
 
         public static async Task<List<EN_Producto>> deleteProducto(int _id)

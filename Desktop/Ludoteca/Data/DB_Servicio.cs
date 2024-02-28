@@ -10,8 +10,34 @@ namespace Data
 {
     public class DB_Servicio : ApiRest_Properties
     {
-        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Servicio"; //Adding ControllerName to Path
+        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Servicios"; //Adding ControllerName to Path
         private static List<EN_Servicio> ServiciosResponse = null;
+
+        public static async Task<EN_Response<EN_Servicio>> setNewPrecio(int id,int Precio)
+        {
+            
+            EN_Response<EN_Servicio> servicioResponse = new EN_Response<EN_Servicio>();
+            string endpointpath = _apiPath + "/setNewPrecio";
+
+            var RequestBody = new { id = id, Precio = Precio };
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(endpointpath, content);
+
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                servicioResponse = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(result);
+            }
+
+
+            return servicioResponse;
+        }
 
         public static async Task<List<EN_Servicio>> getAllServicios()
         {
@@ -58,13 +84,13 @@ namespace Data
             return ServiciosResponse;
         }
 
-        public static async Task<List<EN_Servicio>> addNewServicios(EN_Servicio _Servicio)
+        public static async Task<EN_Response<EN_Servicio>> addNewServicios(EN_Servicio _Servicio)
         {
-
-            ServiciosResponse = null;
+            EN_Response<EN_Servicio> ServicioResponse = null;
+            
             string endpointpath = _apiPath + "/addNewServicios";
 
-            EN_Servicio RequestBody = new EN_Servicio();
+            EN_Servicio RequestBody = _Servicio;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -77,20 +103,17 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Servicio> ServicioRest = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(result);
-                ServiciosResponse = ServicioRest.Rbody;
+                ServicioResponse = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(result);
             }
 
-            return ServiciosResponse;
+            return ServicioResponse;
         }
 
-        public static async Task<List<EN_Servicio>> updateServicio(EN_Servicio _Servicio)
+        public static async Task updateServicio(EN_Servicio _Servicio)
         {
-
-            ServiciosResponse = null;
             string endpointpath = _apiPath + "/editServicios";
 
-            EN_Servicio RequestBody = new EN_Servicio();
+            EN_Servicio RequestBody = _Servicio;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -104,10 +127,7 @@ namespace Data
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
                 EN_Response<EN_Servicio> ServicioRest = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(result);
-                ServiciosResponse = ServicioRest.Rbody;
             }
-
-            return ServiciosResponse;
         }
 
         public static async Task<List<EN_Servicio>> deleteServicios(int _id)

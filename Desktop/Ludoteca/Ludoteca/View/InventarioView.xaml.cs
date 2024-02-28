@@ -72,10 +72,10 @@ public partial class InventarioView : ContentPage
                         //Increase Cantidad property with Entry Value
                         producto.Cantidad += int.Parse(responseEntry);
 
-                        /*var toast = Toast.Make("Se agregaron " + responseEntry + " " + producto.ProductoName, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                        await toast.Show();*/
-
                         _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
+
+                        var toast = Toast.Make("Se agregaron " + responseEntry + " " + producto.ProductoName, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                        await toast.Show();
                     }
                     else
                         await DisplayAlert("Mensaje", resp.Rmessage, "ok");
