@@ -1,6 +1,8 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
 using Ludoteca.Resources;
 using Negocio;
+using Newtonsoft.Json;
 
 namespace Ludoteca;
 
@@ -16,37 +18,60 @@ public partial class Login : ContentPage
 	
 	public async void OnLoginButtonClicked(object sender, EventArgs e)
 	{
-		string username = txtUsername.Text;
-		string password = txtContraseña.Text;
+        string username = txtUsername.Text;
+        string password = txtContraseña.Text;
 
-		if(string.IsNullOrEmpty(validacionLogin(username, password)))
-		{
-            string result = await RN_Users.RN_Login(username, password);
-			if(!string.IsNullOrEmpty(result))
-			{
-                await DisplayAlert("Mensaje", result, "OK");
-                string successMessage = $"Usuario '{username}' conectado correctamente";
-				if(successMessage == result)
-				{
-                    //Geenra un id de sesion unico
-                    string sessionId = Guid.NewGuid().ToString();
-					Session.SetSessionId(sessionId);
+        if (string.IsNullOrEmpty(validacionLogin(username, password)))
+        {
+            try
+            {
+                // Realizar la solicitud de inicio de sesión a la API
+                var response = await RN_Users.RN_Login(username, password);
+                
+
+                // Verificar si la solicitud fue exitosa
+                if (response.Rcode == 200)
+                {
+                    // Obtener los datos del usuario de la respuesta
+                    var userData = response.Rbody.FirstOrDefault();
+                    if (userData != null)
+                    {
+                        // Llenar la clase Session con los datos del usuario
+                        Session.SessionId = Guid.NewGuid().ToString();
+                        Session.UserId = userData.id;
+                        Session.UserName = userData.UserName;
+                        Session.RolName = userData.RolName;
+                        Session.RolId = userData.idRol;
+                        // Guardar la sesión en un archivo XML
+                        Session.SaveSession();
+
+                        // Mostrar un mensaje de éxito
+                        string successMessage = $"Usuario {username} conectado correctamente";
+                        var toastMessage = Toast.Make(successMessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
+                        await toastMessage.Show();
+
+                        // Redirigir a la página principal de la aplicación
+                        App.Current.MainPage = new AppShell();
+                    }
                     
-
-                    //navegacion
-                    await Navigation.PushAsync(new AppShell());
-                }             
-            }          
-        } else
-		{
-            await DisplayAlert("Alerta", validacionLogin(username, password), "OK");
-
+                }
+                else
+                {
+                    // Mostrar un mensaje de error si la solicitud no fue exitosa
+                    await DisplayAlert("Error", response.Rmessage, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Mostrar un mensaje de error si ocurre una excepción durante el inicio de sesión
+                await DisplayAlert("Error", "Ha ocurrido un error en el proceso del login\nDetalle: " + ex.Message, "Ok");
+            }
         }
-
-
-
-
-
+        else
+        {
+            // Mostrar un mensaje si los datos de inicio de sesión no son válidos
+            await DisplayAlert("Alerta", validacionLogin(username, password), "OK");
+        }
     }
     public string validacionLogin(string username, string password)
     {

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 
+
 namespace Data
 {
     public class DB_Users : ApiRest_Properties
@@ -10,7 +11,7 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Users"; //Adding ControllerName to Path
         private static List<EN_User> usersResponse = null;
 
-        public static async Task<string> login(string _UserName, string _Password)
+        public static async Task<EN_Response<EN_User>> login(string _UserName, string _Password)
         {
             EN_Response<EN_User> usersResponse = new EN_Response<EN_User>();
             string _endPoint = _apiPath + "/login";
@@ -26,10 +27,13 @@ namespace Data
 
                 EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
                 usersResponse = userRest;
+                
+
+                
             }
 
             //return usersResponse.Rmessage;
-            return usersResponse.Rmessage;
+            return usersResponse;
         }
 
         public static async Task<List<EN_User>> getAllUsers()
