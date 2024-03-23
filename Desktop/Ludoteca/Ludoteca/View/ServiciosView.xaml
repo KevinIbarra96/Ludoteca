@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
              x:Class="Ludoteca.View.ServiciosView"
-             Title="ServiciosView"
+             Title="Servicios"
             BackgroundColor="{StaticResource FrameBackground }">
 
     <ContentPage.BindingContext>
@@ -65,8 +65,8 @@
                             <Label Grid.Column="3" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             <StackLayout Grid.Column="4" Orientation="Horizontal" VerticalOptions="Center">
                                 <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
-                                    <Button Text="Precio" ToolTipProperties.Text="Actualizar precio" Clicked="ActualizarPrecio_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="White" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
-                                    <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="white" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                    <Button Text="Precio" ToolTipProperties.Text="Actualizar precio" Clicked="ActualizarPrecio_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                    <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                                 </StackLayout>
                             </StackLayout>
 

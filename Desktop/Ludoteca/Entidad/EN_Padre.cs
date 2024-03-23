@@ -11,7 +11,6 @@ namespace Entidad
         public int id {  get; set; }
         public string PadreName { get; set; }
         public string Address { get; set; }
-        public int Telefono {  get; set; }
-        public int status {  get; set; }
+        public string Telefono {  get; set; }
     }
 }

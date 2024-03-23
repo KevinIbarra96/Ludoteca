@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    internal class RN_Padre
+    public class RN_Padre
     {
+        public static async Task<EN_Padre> getPadreByPhone(string _phone)
+        {
+            return await DB_Padre.getPadreByPhone(_phone);
+        }
+
         public static async Task<List<EN_Padre>> RN_GetAllPadres()
         {
             return await DB_Padre.getAllPadres();
