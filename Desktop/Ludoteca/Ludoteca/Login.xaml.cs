@@ -27,23 +27,19 @@ public partial class Login : ContentPage
             {
                 // Realizar la solicitud de inicio de sesión a la API
                 var response = await RN_Users.RN_Login(username, password);
-                
 
+                
                 // Verificar si la solicitud fue exitosa
-                if (response.Rcode == 200)
+                if (response.RerrorCode == GlobalEnum.ErrorCode.SUCCESS.GetHashCode().ToString())//Significa que no hubo error en la peticion
                 {
                     // Obtener los datos del usuario de la respuesta
+                   
                     var userData = response.Rbody.FirstOrDefault();
                     if (userData != null)
                     {
-                        // Llenar la clase Session con los datos del usuario
-                        Session.SessionId = Guid.NewGuid().ToString();
-                        Session.UserId = userData.id;
-                        Session.UserName = userData.UserName;
-                        Session.RolName = userData.RolName;
-                        Session.RolId = userData.idRol;
+                        AccionesSession.LLenarValoresSession(userData);
                         // Guardar la sesión en un archivo XML
-                        Session.SaveSession();
+                        AccionesSession.SaveSession();
 
                         // Mostrar un mensaje de éxito
                         string successMessage = $"Usuario {username} conectado correctamente";
@@ -53,12 +49,14 @@ public partial class Login : ContentPage
                         // Redirigir a la página principal de la aplicación
                         App.Current.MainPage = new AppShell();
                     }
+
                     
                 }
                 else
                 {
                     // Mostrar un mensaje de error si la solicitud no fue exitosa
                     await DisplayAlert("Error", response.Rmessage, "OK");
+                    
                 }
             }
             catch (Exception ex)

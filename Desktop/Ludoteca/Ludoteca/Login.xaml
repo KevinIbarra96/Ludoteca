@@ -9,7 +9,7 @@
 
 
 
-        <Frame Grid.Row="0" BackgroundColor="#452F5D9B" CornerRadius="10" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" Margin="20" HeightRequest="300" >
+        <Frame Grid.Row="0" BackgroundColor="#902F5D9B" CornerRadius="10" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" Margin="20" HeightRequest="300" >
 
             <StackLayout >
                 
@@ -17,7 +17,7 @@
                 <Label Text="Login" FontSize="Large" HorizontalOptions="Center"  TextColor="White"/>
 
                 <!-- Elementos de entrada -->
-                <Label x:Name="lblUsername" Text="Nombre de usuario" TextColor="White"/>
+                <Label x:Name="lblUsername" Text="Nombre de usuario" TextColor="White" />
                 <Entry Placeholder="Nombre de usuario" x:Name="txtUsername" TextColor="White" WidthRequest="200"/>
                 <Label x:Name="lblContraseña" Text="Contraseña" TextColor="White"/>
                 <Entry Placeholder="Contraseña" x:Name="txtContraseña" IsPassword="True" TextColor="White" VerticalOptions="StartAndExpand" WidthRequest="200"/>

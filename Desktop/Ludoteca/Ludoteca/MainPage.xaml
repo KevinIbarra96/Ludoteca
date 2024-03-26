@@ -4,5 +4,17 @@
              x:Class="Ludoteca.MainPage"
              BackgroundColor="{StaticResource FrameBackground}">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <!-- Aquí puedes colocar el contenido principal de tu página en el Grid.Row="0" -->
+
+        <StackLayout Grid.Row="1" Orientation="Horizontal" HorizontalOptions="Start">
+            <Button Text="Cerrar Session" Clicked="OnCerrarSesionClicked"
+                    BackgroundColor="Gray" TextColor="Blue"/>
+        </StackLayout>
+    </Grid>
 </ContentPage>
