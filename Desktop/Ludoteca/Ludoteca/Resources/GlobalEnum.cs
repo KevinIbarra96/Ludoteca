@@ -13,5 +13,12 @@ namespace Ludoteca.Resources
             CREAR_NUEVO,
             ACTUALIZAR
         }
+
+        public enum ErrorCode
+        {
+            SUCCESS = 0,
+            NOT_FOUND = 402
+        }
+
     }
 }
