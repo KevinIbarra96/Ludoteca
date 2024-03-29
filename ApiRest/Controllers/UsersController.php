@@ -17,6 +17,28 @@ $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
         function home(){
             echo 'User Controller Home';
         }
+        
+        function Login(){
+            $Response = new ResponseModel();
+            
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $userName = $BodyRequest['UserName'];
+                $password = $BodyRequest['Password'];
+                //creamos instancia del servicio de user
+                $userSvc = new UserService();
+                $Response = $userSvc->LoginService($userName, $password);
+                
+                $Response->Rcode = 200;
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }            
+        }
 
         function getAllUsers(){
 
@@ -145,31 +167,5 @@ $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
             }
         }
 
-        function Login(){
-            $Response = new ResponseModel();
-            
-
-            try{
-                $BodyRequest = json_decode(file_get_contents('php://input'),true);
-                $userName = $BodyRequest['UserName'];
-                $password = $BodyRequest['Password'];
-                //creamos instancia del servicio de user
-                $userSvc = new UserService();
-                $message = $userSvc->LoginService($userName, $password);
-                
-                $Response->Rcode = 200;
-                $Response->Rmessage = $message;
-            }catch(Exception $ex){
-                $Response->Rcode = 402;
-                $Response->Rmessage = $ex->getMessage();
-                $Response->RerrorCode = $ex->getCode();
-            }finally{
-                echo json_encode($Response);
-            }
-            
-            
-
-            
-        }
     }
 ?>
