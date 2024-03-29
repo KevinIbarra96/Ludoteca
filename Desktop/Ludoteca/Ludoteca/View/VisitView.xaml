@@ -1,12 +1,184 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
              x:Class="Ludoteca.View.VisitView"
-             Title="VisitView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI! You are on VisitView"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Visitas" BackgroundColor="{StaticResource FrameBackground}">
+
+    <ContentPage.BindingContext>
+        <viewModel:VisitViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Fila para el Frame superior -->
+            <RowDefinition Height="*" />
+            <!-- Fila para el Frame del medio -->
+            <RowDefinition Height="Auto" />
+            <!-- Fila para el Frame inferior -->
+        </Grid.RowDefinitions>
+
+        <Frame Grid.Row="0" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
+            <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
+                <Button Text="Nueva visita" BackgroundColor="{StaticResource CasitaPrimaryGreen}" Clicked="NuevaVisita_Clicked" TextColor="White" Margin="0,0,10,0"></Button>
+                <SearchBar Placeholder="Buscar" x:Name="searchBar" WidthRequest="200" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <StackLayout Grid.Row="1">
+            <Grid IsVisible="True" BackgroundColor="{StaticResource FrameBackground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" FontAttributes="Bold" Text="Gafete" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="1" FontAttributes="Bold" Text="Hijos" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="2" FontAttributes="Bold" Text="Padres" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="3" FontAttributes="Bold" Text="Servicio" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="4" FontAttributes="Bold" Text="Productos" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="5" FontAttributes="Bold" Text="Oferta" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="6" FontAttributes="Bold" Text="Fecha y Hora de entrada" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="7" FontAttributes="Bold" Text="Tiempo Transcurrido" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="8" FontAttributes="Bold" Text="Total" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="9" FontAttributes="Bold" Text="Acciones" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Grid>
+
+            <ListView ItemsSource="{Binding Visitas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10" >
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid IsVisible="False">
+                                <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border  Grid.Column="0" >
+                                    <Label  HorizontalOptions="Center" VerticalOptions="Center"
+                                       Text="{Binding id}"
+                                       FontAttributes="Bold" />
+                                </Border>
+
+                                <Border  Grid.Column="1" >
+                                    <CollectionView ItemsSource="{Binding Hijos}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding NombreHijo, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="2" >
+                                    <CollectionView ItemsSource="{Binding Padres}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding PadreName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="3" >
+                                    <CollectionView ItemsSource="{Binding Servicios}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding ServicioName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="4" >
+                                    <CollectionView ItemsSource="{Binding Productos}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding ProductoName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="5" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                           Text="{Binding OfertaName}"
+                                    FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="6" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                           Text="{Binding HoraEntrada}"
+                                    FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="7" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                           Text="{Binding TiempoTranscurrido}"
+                                    FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="8" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                           Text="{Binding Total,StringFormat='{0} $' }"
+                                    FontAttributes="Italic"/>
+                                </Border>
+                                <Border Grid.Column="9">
+                                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
+                                        <!-- StackLayout para los dos primeros botones en la misma línea -->
+                                        <Label Text="Ag Producto" ToolTipProperties.Text="Ingresar producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="AddProducto_Clicked" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Text="Ag Servicio" ToolTipProperties.Text="Ingresar Servicio" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="AddServicio_Clicked" CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <!-- Botón tercero debajo de los dos primeros botones -->
+                                        <Label Text="Cobrar" ToolTipProperties.Text="Editar Producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="Cobrar_Clicked" CommandParameter="{Binding .}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
+                                </Border>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </StackLayout>
+
+    </Grid>
 </ContentPage>

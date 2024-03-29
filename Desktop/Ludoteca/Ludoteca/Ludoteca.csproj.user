@@ -11,7 +11,16 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <MauiXaml Update="PopUp\NuevaVisitaPopUp.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\ProductoList.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="PopUp\ProductoPopup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\ServicioList.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="PopUp\ServicioPopup.xaml">

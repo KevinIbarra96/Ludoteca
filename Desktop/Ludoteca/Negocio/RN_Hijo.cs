@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    internal class RN_Hijo
+    public class RN_Hijo
     {
+        public static async Task<List<EN_Hijo>> getHijosByPadresId(int _padreId)
+        {
+            return await DB_Hijo.getHijoByPadreId(_padreId);
+        }
         public static async Task<List<EN_Hijo>> RN_GetAllHijos()
         {
             return await DB_Hijo.getAllHijos();

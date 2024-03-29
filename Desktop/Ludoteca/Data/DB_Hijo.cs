@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,33 @@ namespace Data
 {
     public class DB_Hijo : ApiRest_Properties
     {
-        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Hijo"; //Adding ControllerName to Path
+        private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Hijos"; //Adding ControllerName to Path
         private static List<EN_Hijo> HijosResponse = null;
+
+        public static async Task<List<EN_Hijo>> getHijoByPadreId(int _padreId)
+        {
+            string _endPoint = _apiPath + "/getHijoByPadreId";
+            HijosResponse = null;
+
+            var requestBody = new { padreid = _padreId };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
+                HijosResponse = HijoRest.Rbody;
+            }
+
+            return HijosResponse;
+        }
 
         public static async Task<List<EN_Hijo>> getAllHijos()
         {
