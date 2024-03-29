@@ -1,4 +1,4 @@
-﻿using Entidad;
+using Entidad;
 using Ludoteca.Resources;
 
 namespace Ludoteca
@@ -18,7 +18,7 @@ namespace Ludoteca
         {
             try
             {
-                await CheckSessionAndNavigate();
+                 VerificarSession();
             }
             catch (Exception ex)
             {
@@ -26,17 +26,15 @@ namespace Ludoteca
                 Console.WriteLine($"Error al verificar sesión y navegar: {ex.Message}");
             }
         }
-        private async Task CheckSessionAndNavigate()
+       
+        private void  VerificarSession()
         {
-            if (true)
-            {
-                MainPage = new AppShell();
-            }
-            else
-            {
-                MainPage = new Login();
-            }
-
+            AccionesSession.VerificarSession();
         }
+
+        
+
+      
     }
 }
+
