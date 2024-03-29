@@ -46,18 +46,10 @@ namespace Ludoteca.ViewModel
             DateTime now = DateTime.Now;
             TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-            if (visita.TiempoTranscurrido <= 0)
-            {
-                // Detén el temporizador si es necesario
-                visita.Timer.Dispose();
-                Console.WriteLine($"¡Tiempo terminado para el elemento {visita.id}!");
-            }
-            else
-            {
-                // Realiza otras acciones según sea necesario
-                visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-                Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
-            }
+            // Realiza otras acciones según sea necesario
+            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+            Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+
         }
 
         private void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita)

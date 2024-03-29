@@ -11,7 +11,7 @@ namespace Entidad
     {
         public int id { get; set; }
         public DateTime HoraEntrada { get; set; }
-        public DateTime HoraSalida  {  get; set; }
+        public DateTime? HoraSalida  {  get; set; }
         public int Oferta {  get; set; }
         public string OfertaName {  get; set; }
         public List<EN_Hijo>? Hijos { get; set; }

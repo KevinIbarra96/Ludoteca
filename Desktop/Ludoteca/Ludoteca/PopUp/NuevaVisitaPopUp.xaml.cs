@@ -4,6 +4,8 @@ using Entidad;
 using Negocio;
 using Ludoteca.ViewModel;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Alerts;
+using Mopups.Services;
 
 public partial class NuevaVisitaPopUp
 {
@@ -61,17 +63,22 @@ public partial class NuevaVisitaPopUp
         lisPadre.Add(padre);
         try
         {
-
             EN_Visita nuevaVisita = new EN_Visita();
             nuevaVisita.Total = (_totalProducto + _totalServicio);
-            nuevaVisita.HoraEntrada = new DateTime();
             nuevaVisita.Oferta = 1;
-            nuevaVisita.Hijos = (List<EN_Hijo>)HijosCollectionView.ItemsSource;
+            nuevaVisita.Hijos = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
             nuevaVisita.Padres = lisPadre;
-            nuevaVisita.Servicios = convertEN_ServicionToEN_ServicioVisita( (List<EN_Servicio>)ServicioCollectionView.ItemsSource);
-            nuevaVisita.Productos = convertEN_ProductosToEN_ProductosVisita((List<EN_Producto>)ProductosCollectionView.ItemsSource);
+            nuevaVisita.Servicios = convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
+            nuevaVisita.Productos = convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
             await RN_Visita.ingresarNuevaVisita(nuevaVisita);
-        }catch(InvalidCastException invalidCastException)
+
+            var toast = Toast.Make("Nueva visita registrada correctamente" , CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();
+
+            await MopupService.Instance.PopAsync();
+
+        }
+        catch(InvalidCastException invalidCastException)
         {
             await DisplayAlert("Error", "Por favor verifica que todos los datos esten correctos", "OK");
         }catch (Exception ex)
@@ -148,20 +155,19 @@ public partial class NuevaVisitaPopUp
     #endregion
 
     #region ConvertData
-    private List<EN_ServiciosVisita> convertEN_ServicionToEN_ServicioVisita(List<EN_Servicio> servicio)
+    private List<EN_ServiciosVisita> convertEN_ServicionToEN_ServicioVisita(EN_Servicio servicio)
     {
-        List<EN_ServiciosVisita> servicioVisita = new List<EN_ServiciosVisita>();
+        List<EN_ServiciosVisita> listaServicioVisita = new List<EN_ServiciosVisita>();
 
-        foreach (EN_Servicio s in servicio)
-        {
-            EN_ServiciosVisita serv = new EN_ServiciosVisita();
-            serv.Servicio_Id = s.id;
-            serv.ServicioName = s.ServicioName;
-            serv.Servicio_Precio = s.Precio;
-            serv.Tiempo = s.Tiempo;
-        }
+        EN_ServiciosVisita servicioVisita = new EN_ServiciosVisita();
+        servicioVisita.Servicio_Id = servicio.id;
+        servicioVisita.ServicioName = servicio.ServicioName;
+        servicioVisita.Servicio_Precio = servicio.Precio;
+        servicioVisita.Tiempo = servicio.Tiempo;
 
-        return servicioVisita;
+        listaServicioVisita.Add(servicioVisita);
+
+        return listaServicioVisita;
     }
 
     private List<EN_ProductosVisita> convertEN_ProductosToEN_ProductosVisita(List<EN_Producto> produ)
