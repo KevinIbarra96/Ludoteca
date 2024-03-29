@@ -26,9 +26,9 @@ namespace Negocio
         {
             return await DB_Producto.deleteProducto(_ide);
         }
-        public static async Task<List<EN_Producto>> RN_UpdateProducto(EN_Producto eN_Producto)
+        public static async Task RN_UpdateProducto(EN_Producto eN_Producto)
         {
-            return await DB_Producto.updateProducto(eN_Producto);
+            await DB_Producto.updateProducto(eN_Producto);
         }
         public static async Task<EN_Response<EN_Producto>> RN_AddNewProducto(EN_Producto eN_Producto)
         {

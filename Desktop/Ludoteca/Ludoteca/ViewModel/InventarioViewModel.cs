@@ -33,7 +33,7 @@ namespace Ludoteca.ViewModel
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion
-        private async void UpdateInventarioData(GlobalEnum.Action Action,EN_Producto product)
+        private void UpdateInventarioData(GlobalEnum.Action Action,EN_Producto product)
         {
             if(Action == GlobalEnum.Action.CREAR_NUEVO)
                 addProductToCollection(product);

@@ -1,4 +1,4 @@
-﻿using Entidad;
+using Entidad;
 using Ludoteca.Resources;
 
 namespace Ludoteca
@@ -37,3 +37,4 @@ namespace Ludoteca
       
     }
 }
+
