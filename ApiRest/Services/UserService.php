@@ -17,29 +17,43 @@ require_once($ProjectPath.'/Models/ResponseModel.php');
 
         function LoginService($userName,$pass){
             try{
-                $query = "SELECT id, UserName, Password, status FROM users WHERE UserName = :userName";
+                $Response = new ResponseModel();
+                $query = "SELECT u.id, u.UserName, u.Password, u.idRol, u.status, r.RolName
+                FROM users u
+                INNER JOIN rol r ON u.idRol= r.Id                
+                WHERE u.UserName = :userName";
                 $stmt = $this->DbConection->prepare($query);
                 $stmt->bindParam(':userName', $userName, PDO::PARAM_STR);
                 $stmt->execute();
 
-                $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if (!$userData) {
-                    return "Usuario incorrecto";
+                $userData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                //Si userData es vacía entonces el usuario es incorrecto, por que no existe el usuario                
+                if ($userData==null) {
+                    $Response-> Rmessage = "Usuario incorrecto";
+                    return $Response;
                 }
-                if ($userData['status'] == 0) {
-                    return"El usuario '{$userName}' está inhabilitado";
+                if ($userData[0]['status'] == 0) {
+                    $Response-> Rmessage = "El usuario {$userName} está inhabilitado";
+                    return $Response;
                 }
-                if ($userData['Password'] !== $pass) {
-                    return"Contraseña incorrecta";
+                if ($userData[0]['Password'] != $pass) {
+                    $Response-> Rmessage ="Contraseña incorrecta";
+                    return $Response;
                 }
-            // Usuario conectado correctamente
-            return "Usuario '{$userData['UserName']}' conectado correctamente";
+                
+            $Response-> Rmessage = "Usuario {$userData[0]['UserName']} conectado correctamente";
+            $Response-> Rbody    = $userData;
+            return $Response;
             }catch(Exception $ex) {
-                throw $ex;
+                $Response -> Rmessage = $ex->getMessage() ;
+                $Response -> Rbody = [];
+                return $Response;
             }
             }
+           
         }
+        
 
     
 ?>
