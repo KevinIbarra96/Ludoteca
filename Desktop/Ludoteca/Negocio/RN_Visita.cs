@@ -1,15 +1,18 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
-    internal class RN_Visita
+    public class RN_Visita
     {
+        public static async Task<EN_Response<EN_Visita>> ingresarNuevaVisita(EN_Visita visita)
+        {
+            return await DB_Visita.ingresarNuevaVisita(visita);
+        }
+        public static async Task<EN_Response<EN_Visita>> RN_getAllVisitasActivas()
+        {
+            return await DB_Visita.getAllVisitasActivas();
+        }
         public static async Task<List<EN_Visita>> RN_GetAllVisitas()
         {
             return await DB_Visita.getAllVisitas();
