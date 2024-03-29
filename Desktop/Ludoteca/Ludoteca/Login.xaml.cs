@@ -28,11 +28,11 @@ public partial class Login : ContentPage
                 // Realizar la solicitud de inicio de sesión a la API
                 var response = await RN_Users.RN_Login(username, password);
 
-                
                 // Verificar si la solicitud fue exitosa
                 if (response.RerrorCode == GlobalEnum.ErrorCode.SUCCESS.GetHashCode().ToString())//Significa que no hubo error en la peticion
                 {
                     // Obtener los datos del usuario de la respuesta
+
                    
                     var userData = response.Rbody.FirstOrDefault();
                     if (userData != null)
@@ -42,22 +42,20 @@ public partial class Login : ContentPage
                         AccionesSession.SaveSession();
 
                         // Mostrar un mensaje de éxito
-                        string successMessage = $"Usuario {username} conectado correctamente";
-                        var toastMessage = Toast.Make(successMessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
+                        var toastMessage = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
                         await toastMessage.Show();
 
                         // Redirigir a la página principal de la aplicación
                         App.Current.MainPage = new AppShell();
                     }
+                    else
+                    {
+                        await DisplayAlert("Error", response.Rmessage, "OK");
+                    }
 
                     
                 }
-                else
-                {
-                    // Mostrar un mensaje de error si la solicitud no fue exitosa
-                    await DisplayAlert("Error", response.Rmessage, "OK");
-                    
-                }
+                
             }
             catch (Exception ex)
             {

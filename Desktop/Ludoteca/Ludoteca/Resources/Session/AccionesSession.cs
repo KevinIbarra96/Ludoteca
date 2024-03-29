@@ -23,6 +23,7 @@ namespace Ludoteca.Resources
             Session.RolName = userData.RolName;
             Session.RolId = userData.idRol;
             Session.SessionActiva = true;
+            Session.HoraInicioSession = DateTime.Now;
         }
 
 
@@ -38,7 +39,8 @@ namespace Ludoteca.Resources
                     new XElement("RolName", Session.RolName),
                     new XElement("UserId", Session.UserId),
                     new XElement("RolId", Session.RolId),
-                    new XElement("SessionActiva", Session.SessionActiva)
+                    new XElement("SessionActiva", Session.SessionActiva),
+                    new XElement("HoraInicioSession", Session.HoraInicioSession)
                     );
                 sessionxml.Save(xmlFilePath);
             }
@@ -53,10 +55,6 @@ namespace Ludoteca.Resources
             bool SessionActiva = true;
             try
             {
-                //Validar si el archivo existe en caso contrario mandar directamente al login por que lo crea ahí
-                //Obtener los valores del archivo xml
-                //Verifica Si la session esta activa en el archivo xml en caso de que ya este creado
-                //Si esta activa la session mandar a main, si no mandar a login
 
                 if (File.Exists(xmlFilePath))
                 {
@@ -72,6 +70,7 @@ namespace Ludoteca.Resources
                             Session.RolName = doc.Element("Session").Element("RolName").Value;
                             Session.RolId = int.Parse(doc.Element("Session").Element("RolId").Value);
                             Session.SessionActiva = isSesionActive;
+                            
                             // La sesión está activa, se redirige a la página principal
                             App.Current.MainPage = new AppShell();   
                         }
@@ -101,7 +100,9 @@ namespace Ludoteca.Resources
             try
             {
                 // Crear un archivo XML vacío
+                Session.SessionId = "";
                 Session.SessionActiva = false;
+
 
                 SaveSession();
 

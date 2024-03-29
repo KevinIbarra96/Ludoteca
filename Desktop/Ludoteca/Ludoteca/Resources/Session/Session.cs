@@ -22,6 +22,9 @@ namespace Ludoteca.Resources
 
         public static bool SessionActiva { get; set; }
 
+        public static DateTime HoraInicioSession { get;set; }
+
+
 
 
 
