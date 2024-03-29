@@ -2,16 +2,6 @@
 
 require_once "config.php";
 
-/*class Connection extends mysqli {
-
-
-	public function __construct(){
-		parent:: __construct(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD,DB_DATABASE,DB_PORT);
-		$this->set_charset('utf8');
-		$this->connect_error == null ? 'Conexion Existosa a la DB' : die('Error al conectarse a la DB');
-	}
-}*/
-
 	class Connection{
 
 		private $Conection;

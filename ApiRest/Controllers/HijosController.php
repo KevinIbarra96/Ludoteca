@@ -1,9 +1,9 @@
 <?php
 
     $pt = explode('\\', __DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/HijoService.php');
@@ -13,6 +13,28 @@
         function home () {
             echo 'Hijos Controller Home';
         }
+
+        function getHijoByPadreId(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $hijoSvc = new HijoService();                
+                $Response->Rbody = $hijoSvc->getHijoByPadreId($BodyRequest['padreid']);
+                $database->closeConection();
+    
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Padre Encontrado";
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage= $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+    
+            } finally{
+                echo json_encode($Response);
+            }    
+        }
+
         function getAllHijos(){
             $Response = new ResponseModel();
 
