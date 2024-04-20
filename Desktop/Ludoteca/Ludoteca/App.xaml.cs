@@ -1,4 +1,4 @@
-using Entidad;
+﻿using Entidad;
 using Ludoteca.Resources;
 using Negocio;
 using Resources.Properties;
@@ -10,6 +10,15 @@ namespace Ludoteca
         public App()
         {
             InitializeComponent();
+
+            //string rutaProyecto = Configuracion.ObtenerRutaProyecto();
+            //if(string.IsNullOrEmpty(rutaProyecto))
+            //{
+                string rutaProyecto = @"C:\MiProyecto";
+            Configuracion.CreateSubKey();
+                //Configuracion.GuardarRutaProyecto(rutaProyecto);
+            //}
+
 
             //Initialize the application properties
             ApiRest_Properties apiRest_Properties = new ApiRest_Properties();
@@ -51,4 +60,3 @@ namespace Ludoteca
 
     }
 }
-

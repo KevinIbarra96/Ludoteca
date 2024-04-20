@@ -14,9 +14,26 @@ namespace Ludoteca.Resources
 
         private static string xmlFilePath = AppDomain.CurrentDomain.BaseDirectory + "session.xml";
 
-        public static void LLenarValoresSession(EN_User userData)
+        // Método para cargar la sesión desde el archivo XML
+        private static void CargarSessionDesdeArchivo()
+        {
+            if (File.Exists(xmlFilePath))
+            {
+                XDocument doc = XDocument.Load(xmlFilePath, LoadOptions.None);
+                Session.SessionId = doc.Element("Session").Element("SessionId").Value;
+                Session.UserId = int.Parse(doc.Element("Session").Element("UserId").Value);
+                Session.UserName = doc.Element("Session").Element("UserName").Value;
+                Session.RolName = doc.Element("Session").Element("RolName").Value;
+                Session.RolId = int.Parse(doc.Element("Session").Element("RolId").Value);
+                Session.SessionActiva = bool.Parse(doc.Element("Session").Element("SessionActiva").Value);
+                Session.HoraInicioSession = DateTime.Parse(doc.Element("Session").Element("HoraInicioSession").Value);
+            } else App.Current.MainPage = new Login();
+        }
+
+        public static void LLenarValoresSession(GlobalEnum.ActionSession action, EN_User userData)
         {
             // Llenar la clase Session con los datos del usuario
+
             Session.SessionId = Guid.NewGuid().ToString();
             Session.UserId = userData.id;
             Session.UserName = userData.UserName;
@@ -24,6 +41,8 @@ namespace Ludoteca.Resources
             Session.RolId = userData.idRol;
             Session.SessionActiva = true;
             Session.HoraInicioSession = DateTime.Now;
+
+            SaveSession();
         }
 
 
@@ -52,47 +71,31 @@ namespace Ludoteca.Resources
 
         public static bool VerificarSession()
         {
-            bool SessionActiva = true;
+            
             try
             {
-
-                if (File.Exists(xmlFilePath))
-                {
-                    XDocument doc = XDocument.Load(xmlFilePath, LoadOptions.None);
-                    bool isSesionActive = bool.Parse(doc.Element("Session").Element("SessionActiva").Value);
-                    
-
-                        if (isSesionActive == SessionActiva)
+                    CargarSessionDesdeArchivo();
+                    if (Session.SessionActiva)
                         {
-                            Session.SessionId = doc.Element("Session").Element("SessionId").Value; ;
-                            Session.UserId = int.Parse(doc.Element("Session").Element("UserId").Value);
-                            Session.UserName = doc.Element("Session").Element("UserName").Value;
-                            Session.RolName = doc.Element("Session").Element("RolName").Value;
-                            Session.RolId = int.Parse(doc.Element("Session").Element("RolId").Value);
-                            Session.SessionActiva = isSesionActive;
-                            
                             // La sesión está activa, se redirige a la página principal
-                            App.Current.MainPage = new AppShell();   
+                            App.Current.MainPage = new AppShell();
+                            return true;
                         }
-                        else
+                    else
                         {
                             // La sesión no está activa, se redirige a la página de inicio de sesión
                             App.Current.MainPage = new Login();
-                        }
+                            return false;
+                    }
                     
-                }
-                else
-                {
-                    // No hay archivo de sesión, se redirige a la página de inicio de sesión
-                    App.Current.MainPage = new Login();
-                }
+                
             }
             catch (Exception ex)
             {
-                SessionActiva = false;
+                return false;
             }
 
-            return SessionActiva;
+            return Session.SessionActiva;
         }
 
         public static void CerrarSession()
