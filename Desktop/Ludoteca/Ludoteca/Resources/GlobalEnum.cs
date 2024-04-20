@@ -19,6 +19,11 @@ namespace Ludoteca.Resources
             SUCCESS = 0,
             NOT_FOUND = 402
         }
+        public enum ActionSession
+        {
+            LOGIN,
+            GET_VALUE_FROM_XML
+        }
 
     }
 }
