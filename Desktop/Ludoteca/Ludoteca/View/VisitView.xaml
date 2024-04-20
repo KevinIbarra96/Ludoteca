@@ -21,6 +21,7 @@
 
         <Frame Grid.Row="0" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
             <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
+                <Button Text="Nuevo Visitante" BackgroundColor="{StaticResource CasitaPrimaryGreen}" Clicked="RegistrarPadreEHijo_Clicked" TextColor="White" Margin="0,0,10,0"></Button>
                 <Button Text="Nueva visita" BackgroundColor="{StaticResource CasitaPrimaryGreen}" Clicked="NuevaVisita_Clicked" TextColor="White" Margin="0,0,10,0"></Button>
                 <SearchBar Placeholder="Buscar" x:Name="searchBar" WidthRequest="200" />
             </HorizontalStackLayout>
@@ -48,7 +49,7 @@
                 <Label Grid.Column="4" FontAttributes="Bold" Text="Productos" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Label Grid.Column="5" FontAttributes="Bold" Text="Oferta" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Label Grid.Column="6" FontAttributes="Bold" Text="Fecha y Hora de entrada" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Label Grid.Column="7" FontAttributes="Bold" Text="Tiempo Transcurrido" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="7" FontAttributes="Bold" Text="Tiempo Transcurrido (Min)" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Label Grid.Column="8" FontAttributes="Bold" Text="Total" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Label Grid.Column="9" FontAttributes="Bold" Text="Acciones" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
             </Grid>
@@ -83,7 +84,7 @@
 
                                 <Border  Grid.Column="0" >
                                     <Label  HorizontalOptions="Center" VerticalOptions="Center"
-                                       Text="{Binding id}"
+                                       Text="{Binding NumeroGafete}"
                                        FontAttributes="Bold" />
                                 </Border>
 
@@ -147,24 +148,24 @@
 
                                 <Border  Grid.Column="8" >
                                     <Label HorizontalOptions="Center" VerticalOptions="Center"
-                                           Text="{Binding Total,StringFormat='{0} $' }"
+                                           Text="{Binding Total,StringFormat='{0:C2} $' }"
                                     FontAttributes="Italic"/>
                                 </Border>
                                 <Border Grid.Column="9">
                                     <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
                                         <!-- StackLayout para los dos primeros botones en la misma línea -->
-                                        <Label Text="Ag Producto" ToolTipProperties.Text="Ingresar producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                        <Label Text="Ag Producto" ToolTipProperties.Text="Agregarle un producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Tapped="AddProducto_Clicked" />
                                             </Label.GestureRecognizers>
                                         </Label>
-                                        <Label Text="Ag Servicio" ToolTipProperties.Text="Ingresar Servicio" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                        <Label Text="Ag Servicio" ToolTipProperties.Text="Agregarle un servicio" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Tapped="AddServicio_Clicked" CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                         <!-- Botón tercero debajo de los dos primeros botones -->
-                                        <Label Text="Cobrar" ToolTipProperties.Text="Editar Producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                        <Label Text="Cobrar" ToolTipProperties.Text="Cobrar" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
                                             <Label.GestureRecognizers>
                                                 <TapGestureRecognizer Tapped="Cobrar_Clicked" CommandParameter="{Binding .}" />
                                             </Label.GestureRecognizers>

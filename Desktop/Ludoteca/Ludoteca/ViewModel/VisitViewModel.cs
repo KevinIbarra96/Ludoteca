@@ -1,13 +1,8 @@
 ﻿using Entidad;
 using Ludoteca.Resources;
 using Negocio;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Resources.Properties;
 
 namespace Ludoteca.ViewModel
 {
@@ -42,14 +37,26 @@ namespace Ludoteca.ViewModel
         {
             EN_Visita visita = (EN_Visita)state;
 
+            double PrecioxMinuto = ApplicationProperties.precioXMinute;
+
             // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
             DateTime now = DateTime.Now;
             TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-            // Realiza otras acciones según sea necesario
-            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-            Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+            int totalTiempo = visita.Servicios.Sum(servicio => servicio.Tiempo);
 
+            //Validar si el tiempo transcurrido es menor al tiempo acordado
+            if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempo)
+            {
+                visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+                Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+            }
+            else
+            {
+                int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+                visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+                visita.Total += (PrecioxMinuto*tiempoExcedente);
+            }
         }
 
         private void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita)
@@ -58,6 +65,8 @@ namespace Ludoteca.ViewModel
                 addVisitaToCollection(visita);
             if (Action == GlobalEnum.Action.ACTUALIZAR)
                 updateVisitaToColection(visita);
+            if (Action == GlobalEnum.Action.REMOVER)
+                removerVisitaActiva(visita);
         }
 
         //Metodo destinado para limpiar y recargar la informacion de la tabla desde el inicio.
@@ -83,18 +92,18 @@ namespace Ludoteca.ViewModel
             VisitasInmutable.Add(visita);
         }
 
-        private int calcularTotalVisita(EN_Visita visita)
+        private double calcularTotalVisita(EN_Visita visita)
         {
-            int totalVisita = 0;
+            double totalVisita = 0;
             
             foreach (EN_ServiciosVisita servicio in visita.Servicios)
             {
-                totalVisita += servicio.Servicio_Precio;
+                totalVisita += Math.Round(servicio.Servicio_Precio);
             }
 
             foreach (EN_ProductosVisita produc in visita.Productos)
             {
-                totalVisita += produc.precioProductoVisita;
+                totalVisita += Math.Round(produc.precioProductoVisita);
             }
 
             return totalVisita;
@@ -110,6 +119,18 @@ namespace Ludoteca.ViewModel
             }
 
             return TiempoRestante;
+        }
+
+        private void removerVisitaActiva(EN_Visita visita)
+        {
+
+            EN_Visita Encontrado = Visitas.FirstOrDefault(p => p.id == visita.id);
+
+            if (Encontrado != null)
+            {
+                Visitas.Remove(Encontrado);
+                VisitasInmutable.Remove(Encontrado);
+            }
         }
 
         private void updateVisitaToColection(EN_Visita visita)

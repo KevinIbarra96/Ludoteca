@@ -85,13 +85,13 @@ namespace Data
             return PadresResponse;
         }
 
-        public static async Task<List<EN_Padre>> addNewPadre(EN_Padre _Padre)
+        public static async Task<EN_Response<EN_Padre>> addNewPadre(EN_Padre _Padre)
         {
 
-            PadresResponse = null;
+            EN_Response<EN_Padre> PadresResponse = null;
             string endpointpath = _apiPath + "/addNewPadre";
 
-            EN_Padre RequestBody = new EN_Padre();
+            EN_Padre RequestBody = _Padre;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -99,13 +99,11 @@ namespace Data
 
             var httpResponse = await cliente.PostAsync(endpointpath, content);
 
-
             if (httpResponse.IsSuccessStatusCode)
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Padre> PadreRest = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
-                PadresResponse = PadreRest.Rbody;
+                PadresResponse = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
             }
 
             return PadresResponse;

@@ -18,8 +18,8 @@ namespace Entidad
 
         public int id {  get; set; }
         //public string NombreHijo { get; set; }
-        public int? papa {  get; set; }
-        public int? mama { get; set; }
+        public int papa {  get; set; }
+        public int mama { get; set; }
         public string fechaNac {  get; set; }
 
         private string _selectedBackgroundColor;

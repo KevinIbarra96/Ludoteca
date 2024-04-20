@@ -3,79 +3,55 @@
     $pt = explode('\\',__DIR__);
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
-
     //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
-    require_once($ProjectPath.'/Services/UserService.php');
+    require_once($ProjectPath.'/Services/ConfiguracionService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
 
-    class UsersController{
+    class ConfiguracionController{
 
         function home(){
-            echo 'User Controller Home';
-        }
-        
-        function Login(){
-            $Response = new ResponseModel();
-            
-
-            try{
-                $BodyRequest = json_decode(file_get_contents('php://input'),true);
-                $userName = $BodyRequest['UserName'];
-                $password = $BodyRequest['Password'];
-                //creamos instancia del servicio de user
-                $userSvc = new UserService();
-                $Response = $userSvc->LoginService($userName, $password);
-                
-                $Response->Rcode = 200;
-            }catch(Exception $ex){
-                $Response->Rcode = 402;
-                $Response->Rmessage = $ex->getMessage();
-                $Response->RerrorCode = $ex->getCode();
-            }finally{
-                echo json_encode($Response);
-            }            
+            echo 'Configuracion Controller Home';
         }
 
-        function getAllUsers(){
+        function getAllConfiguracion(){
 
             $Response = new ResponseModel();
 
             try{            
                 $database = new Connection();
-                $userSvc = new UserService();
-                $Response->Rbody = $userSvc->getAll();
-                $database->closeConection();
+                $ConfiguracionSvc = new ConfiguracionService();
+                $Response->Rbody = $ConfiguracionSvc->getAll();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "All User listed";
-                
+                $Response->Rmessage = "All Configuracion listed";
+                                
             }catch(Exception $ex){
                 $Response->Rcode = 402;
                 $Response->Rmessage = $ex->getMessage();
                 $Response->RerrorCode = $ex->getCode();
             }finally{
+                $database->closeConection();
                 echo json_encode($Response);
             }
             /*echo '<prev>';
-                var_dump($Users);
+                var_dump($Configuracion);
             echo '</prev>';*/
         }
 
-        function getUserById(){
+        function getConfiguracionById(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $userSvc = new UserService();
-                $Response->Rbody = $userSvc->getById($BodyRequest['id']);
+                $ConfiguracionSvc = new ConfiguracionService();
+                $Response->Rbody = $ConfiguracionSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Founded";
+                $Response->Rmessage = "Configuracion Founded";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -85,25 +61,24 @@
                 echo json_encode($Response);
             }
         }
-        function addNewUser(){
+        function addNewConfiguracion(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'UserName' =>$BodyRequest['UserName'],
-                    'Password' =>$BodyRequest['Password'],
-                    'idRol' =>$BodyRequest['idRol']
+                    'ConfiguracionName' =>$BodyRequest['ConfiguracionName'],
+                    'status' =>$BodyRequest['status'],
                 ];
 
                 $database = new Connection();
-                $userSvc = new UserService();                
-                $userSvc->new($dataBody);
+                $ConfiguracionSvc = new ConfiguracionService();
+                $ConfiguracionSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Inserted";
+                $Response->Rmessage = "Configuracion created";
 
                 
             }catch(Exception $ex){
@@ -114,27 +89,29 @@
                 echo json_encode($Response);
             }
         }
-        function editUser(){
+        function editConfiguracion(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'UserName' =>$BodyRequest['UserName'],
-                    'Password' =>$BodyRequest['Password'],
-                    'idRol' =>$BodyRequest['idRol']
+                    'id' =>$BodyRequest['id'],
+                    'ConfigName' =>$BodyRequest['ConfigName'],
+                    'ConfigDescripcion' =>$BodyRequest['ConfigDescripcion'],
+                    'ConfigStringValue' =>$BodyRequest['ConfigStringValue'],
+                    'ConfigBoolValue' =>$BodyRequest['ConfigBoolValue'],
+                    'ConfigIntValue' =>$BodyRequest['ConfigIntValue'],
+                    'ConfigDecimalValue' =>$BodyRequest['ConfigDecimalValue']
                 ];
-                        /*echo '<prev>';
-                var_dump($RequestBody);
-            echo '</prev>';*/
+
                 $database = new Connection();
-                $userSvc = new UserService();                
-                $userSvc->update($BodyRequest['id'],$dataBody);
+                $ConfiguracionSvc = new ConfiguracionService();
+                $ConfiguracionSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Updated";
+                $Response->Rmessage = "Configuracion Updated";
 
                 
             }catch(Exception $ex){
@@ -145,17 +122,17 @@
                 echo json_encode($Response);
             }
         }
-        function deleteUser(){
+        function deleteConfiguracion(){
             $Response = new ResponseModel();
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $userSvc = new UserService();
-                $userSvc->delete($BodyRequest['id']);
+                $ConfiguracionSvc = new ConfiguracionService();
+                $ConfiguracionSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "User Deleted";
+                $Response->Rmessage = "Configuracion Deleted";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -165,6 +142,5 @@
                 echo json_encode($Response);
             }
         }
-
     }
 ?>

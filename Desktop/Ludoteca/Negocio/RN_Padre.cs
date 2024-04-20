@@ -31,7 +31,7 @@ namespace Negocio
         {
             return await DB_Padre.updatePadre(eN_Padre);
         }
-        public static async Task<List<EN_Padre>> RN_AddNewPadre(EN_Padre eN_Padre)
+        public static async Task<EN_Response<EN_Padre>> RN_AddNewPadre(EN_Padre eN_Padre)
         {
             return await DB_Padre.addNewPadre(eN_Padre);
         }

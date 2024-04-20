@@ -39,8 +39,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- App Icon -->		
+		<MauiIcon Include="Resources\AppIcon\logo_casita.svg" color="White" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -57,11 +57,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Mopups" Version="1.3.0" />
+		<PackageReference Include="Mopups" Version="1.3.1" />
+		<PackageReference Include="PdfSharpCore" Version="1.3.63" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -77,6 +79,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="PopUp\ProductoPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="PopUp\RegistrarPadresEHijos.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="PopUp\ServicioList.xaml">

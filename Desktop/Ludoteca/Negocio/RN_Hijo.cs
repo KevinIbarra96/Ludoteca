@@ -30,7 +30,7 @@ namespace Negocio
         {
             return await DB_Hijo.updateHijo(eN_Hijo);
         }
-        public static async Task<List<EN_Hijo>> RN_AddNewHijo(EN_Hijo eN_Hijo)
+        public static async Task<EN_Response<EN_Hijo>> RN_AddNewHijo(EN_Hijo eN_Hijo)
         {
             return await DB_Hijo.addNewHijo(eN_Hijo);
         }

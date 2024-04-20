@@ -7,6 +7,7 @@
     require 'ProductoService.php';
     require 'HijoService.php';
     require 'ServiciosService.php';
+    require 'GafeteService.php';
 
     class VisitaService extends Actions{
 
@@ -15,39 +16,59 @@
             parent::__construct('visitas','Hijo,Servicio,Productos,HoraEntrada,HoraSalida,Oferta, status',$database->getConnection());
         }
 
+        function cobrarVisitas($idVisita,$total,$idGafete){
+            $stm = $this->DbConection->prepare("update visitas set HoraSalida = NOW(),status =0,Total=:Total where id=:idVisita");
+            $stm->bindValue(':idVisita', $idVisita, PDO::PARAM_INT);
+            $stm->bindValue(':Total', $total, PDO::PARAM_INT);
+            $stm->execute();
+            
+            $GS = new GafeteService();
+            $GS->updateAsNotAsignado($idGafete);
+        }
+
         function ingresarVisita($visita){
             $HS = new HijoService();
             $PadreS = new PadreService();
             $PS = new ProductoService();
             $SS = new ServiciosService();
+            $GS = new GafeteService();
 
-            $stm =  $this-> DbConection->prepare("insert into visitas(HoraEntrada,
+            $stm =  $this-> DbConection->prepare("insert into visitas(GafeteId,
+                                                                      NumeroGafete,
+                                                                      HoraEntrada,
                                                                       Oferta,
                                                                       Total)
-                                                                value (NOW(),
+                                                                value (:GafeteId,
+                                                                      :NumeroGafete,
+                                                                      NOW(),
                                                                       :Oferta,
                                                                       :Total);");
+            $stm->bindValue(':GafeteId', $visita["GafeteId"], PDO::PARAM_INT);
+            $stm->bindValue(':NumeroGafete', $visita["NumeroGafete"], PDO::PARAM_INT);
             $stm->bindValue(':Oferta', $visita["Oferta"], PDO::PARAM_INT);
             $stm->bindValue(':Total', $visita["Total"], PDO::PARAM_INT);
             $stm->execute();
 
-            $query ="Select max(id) as id from visitas;";
+            $query ="Select max(id) as id,NOW() as HoraEntrada from visitas;";
             $stm = $this->DbConection->prepare($query);
             $stm->execute();
-            $newId = $stm->fetchAll(PDO::FETCH_ASSOC);
-            $idVisita = $newId[0];
+            $VisitaResponse = $stm->fetchAll(PDO::FETCH_ASSOC);
+            $idVisita = $VisitaResponse[0];
 
             $HS->newVisitaHijo($idVisita["id"],$visita["Hijos"]);
             $PS->newVisitaProducto($idVisita["id"],$visita["Productos"]);
             $SS->newVisitaServicios($idVisita["id"],$visita["Servicios"]);
+            $GS->updateAsAsignado($visita["GafeteId"]);
 
-            return $newId;
+            return $VisitaResponse;
         }
 
         function getVisitasActivas(){
             $stm =  $this-> DbConection->prepare("select a.id,
                                                          a.HoraEntrada,
                                                          a.HoraSalida,
+                                                         a.GafeteId,
+                                                         A.NumeroGafete,
                                                          b.OfertaName
                                                     from visitas as a
                                               inner join ofertas as b on b.id = a.Oferta

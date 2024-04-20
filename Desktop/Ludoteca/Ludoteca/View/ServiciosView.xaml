@@ -19,7 +19,7 @@
             <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
         </HorizontalStackLayout>
         <!-- Encabezados fijos -->
-        <Grid BackgroundColor="DarkGray">
+        <Grid BackgroundColor="{StaticResource FrameBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -27,11 +27,11 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del servicio" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="1" FontAttributes="Bold" Text="Descripcion" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="2" FontAttributes="Bold" Text="Tiempo" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="3" FontAttributes="Bold" Text="Precio" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="4" FontAttributes="Bold" Text="Acciones" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del servicio" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Descripcion" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="2" FontAttributes="Bold" Text="Tiempo" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Precio" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="4" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
 
         <!-- Lista de productos -->

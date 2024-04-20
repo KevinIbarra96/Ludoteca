@@ -11,7 +11,8 @@ namespace Ludoteca.Resources
         public enum Action
         {
             CREAR_NUEVO,
-            ACTUALIZAR
+            ACTUALIZAR,
+            REMOVER
         }
 
         public enum ErrorCode
