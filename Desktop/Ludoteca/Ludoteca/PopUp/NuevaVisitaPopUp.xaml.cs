@@ -6,6 +6,10 @@ using Ludoteca.ViewModel;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
+using Ludoteca.Resources;
+using System.ComponentModel;
+using System.Diagnostics;
+using Data;
 
 public partial class NuevaVisitaPopUp
 {
@@ -14,11 +18,12 @@ public partial class NuevaVisitaPopUp
 
     ObservableCollection<EN_Hijo> Hijos;
 
-    int _totalProducto = 0;
-    int _totalServicio = 0;
+    double _totalProducto = 0;
+    double _totalServicio = 0;
+
+    EN_Gafete _Gafete;
 
     EN_Padre padre;
-
 
     public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable)
 	{
@@ -30,8 +35,7 @@ public partial class NuevaVisitaPopUp
         getAllServicios();
 
         calcularTotal();
-
-
+        asignarGafete("Sin asignacion");
 
         _updateVisitasTable = updateVisitasTable;
 	}
@@ -55,7 +59,32 @@ public partial class NuevaVisitaPopUp
         TotalVisita.Text = "<strong style=\"color:red\"> Total: </strong>" + (_totalProducto + _totalServicio) + "$";
     }
 
+    private void asignarGafete(string _gafete)
+    {
+        Gafete.Text = "";
+        Gafete.Text = "<strong style=\"color:red\"> Gafete: </strong>"+_gafete;
+    }
+
     #region Events
+
+    private async void AsignarGafete_Clicked(object sender, EventArgs e)
+    {
+        EN_Response<EN_Gafete> responseGafete = await RN_Gafete.getGafeteNoAsignado();
+        string[] Actions = new string[responseGafete.Rbody.Count];
+        int count = 0;
+
+        foreach (EN_Gafete gafete in responseGafete.Rbody)
+        {
+            
+            Actions[count] = gafete.Numero.ToString();
+            count = count+ 1;
+        }
+
+        //string action = await DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
+        string action = await Shell.Current.DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
+        asignarGafete(action);        
+        _Gafete = responseGafete.Rbody.Single( s=> s.Numero == int.Parse(action) );
+    }
 
     private async void Ingresar_Clicked(object sender, EventArgs e)
     {
@@ -66,11 +95,20 @@ public partial class NuevaVisitaPopUp
             EN_Visita nuevaVisita = new EN_Visita();
             nuevaVisita.Total = (_totalProducto + _totalServicio);
             nuevaVisita.Oferta = 1;
+            nuevaVisita.GafeteId = _Gafete.id;
+            nuevaVisita.NumeroGafete = _Gafete.Numero;
             nuevaVisita.Hijos = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
             nuevaVisita.Padres = lisPadre;
             nuevaVisita.Servicios = convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
-            nuevaVisita.Productos = convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
-            await RN_Visita.ingresarNuevaVisita(nuevaVisita);
+            nuevaVisita.Productos = convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());            
+
+            EN_Response<EN_Visita> response = await RN_Visita.ingresarNuevaVisita(nuevaVisita);
+            nuevaVisita.id = response.Rbody[0].id;
+            nuevaVisita.HoraEntrada = response.Rbody[0].HoraEntrada;
+            nuevaVisita.OfertaName = "Sin Oferta"; //Por definir que sigue en este caso
+            nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 20000);
+
+            _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO,nuevaVisita);
 
             var toast = Toast.Make("Nueva visita registrada correctamente" , CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
@@ -97,7 +135,7 @@ public partial class NuevaVisitaPopUp
         _totalProducto = 0;
         foreach (EN_Producto prod in e.CurrentSelection)
         {
-            _totalProducto += prod.Precio;
+            _totalProducto += Math.Round(prod.Precio,2);
         }
         calcularTotal();
     }
@@ -107,13 +145,27 @@ public partial class NuevaVisitaPopUp
         _totalServicio = 0;
         foreach (EN_Servicio serv in e.CurrentSelection)
         {
-            _totalServicio += serv.Precio;
+            _totalServicio += Math.Round(serv.Precio,2);
         }
         calcularTotal();
     }
+
+    private void TimerCallback(object state)
+    {
+        EN_Visita visita = (EN_Visita)state;
+
+        // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
+        DateTime now = DateTime.Now;
+        TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
+
+        // Realiza otras acciones según sea necesario
+        visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+        Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+
+    }
     #endregion
 
-#region GetData
+    #region GetData
     private async void getPadresEHijos(string _phone)
     {
         try

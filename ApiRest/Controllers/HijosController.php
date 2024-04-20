@@ -83,14 +83,14 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $dataBody = [
                     'NombreHijo' =>$BodyRequest['NombreHijo'],
-                    'Papa' =>$BodyRequest['Papa'],
-                    'Mama'=>$BodyRequest['Mama'],
+                    'Papa' =>$BodyRequest['papa'],
+                    'Mama'=>$BodyRequest['mama'],
                     'fechaNac' =>$BodyRequest['fechaNac'] 
                 ];
 
                 $database = new Connection();
                 $hijoSvc = new HijoService();   
-                $hijoSvc-> new ($dataBody);
+                $Response->Rbody = $hijoSvc-> new ($dataBody);
                 $database-> closeConection();
 
                 $Response->Rcode = 200;

@@ -1,12 +1,6 @@
 <?php
-//$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
-
-//echo $ProjectPath;
-
-require_once($ProjectPath.'/Database/conexion.php');
-require_once(__DIR__.'/Actions.php');
-require_once($ProjectPath.'/Models/ResponseModel.php');
+    require_once($ProjectPath.'/Database/conexion.php');
+    require_once(__DIR__.'/Actions.php');
 
     class UserService extends Actions{
         

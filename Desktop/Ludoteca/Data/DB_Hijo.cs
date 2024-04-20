@@ -84,13 +84,13 @@ namespace Data
             return HijosResponse;
         }
 
-        public static async Task<List<EN_Hijo>> addNewHijo(EN_Hijo _Hijo)
+        public static async Task<EN_Response<EN_Hijo>> addNewHijo(EN_Hijo _Hijo)
         {
 
-            HijosResponse = null;
+            EN_Response<EN_Hijo> HijosResponse = null;
             string endpointpath = _apiPath + "/addNewHijo";
 
-            EN_Hijo RequestBody = new EN_Hijo();
+            EN_Hijo RequestBody = _Hijo;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -103,8 +103,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Hijo> HijoRest = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
-                HijosResponse = HijoRest.Rbody;
+                HijosResponse = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(result);
             }
 
             return HijosResponse;

@@ -20,6 +20,9 @@
     <MauiXaml Update="PopUp\ProductoPopup.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="PopUp\RegistrarPadresEHijos.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="PopUp\ServicioList.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

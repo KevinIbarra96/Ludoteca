@@ -14,6 +14,30 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Visitas"; //Adding ControllerName to Path
         private static List<EN_Visita> VisitasResponse = null;
 
+        public static async Task<EN_Response<EN_Visita>> cobrarVisitas(EN_Visita visita)
+        {
+            EN_Response<EN_Visita> response = null;
+
+            string _endPoint = _apiPath + "/cobrarVisitas"; //Adding endpoint to path
+
+            EN_Visita RequestBody = visita;
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+            }
+
+            return response;
+        }
+
         public static async Task<EN_Response<EN_Visita>> ingresarNuevaVisita(EN_Visita visita)
         {
             EN_Response<EN_Visita> response = null;

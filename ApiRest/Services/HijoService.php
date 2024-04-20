@@ -5,7 +5,7 @@
     class HijoService extends Actions {
         public function __construct(){
             $database = new Connection();
-            parent::__construct('hijos','NombreHijo,Papa,Mama,FechaNac,status',$database->getConnection());
+            parent::__construct('hijos','NombreHijo,Papa,Mama,fechaNac',$database->getConnection());
         }
 
         function newVisitaHijo($idVisita,$Hijos){

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="Ludoteca.PopUp.RegistrarPadresEHijos"
+             Title="RegistrarPadresEHijos" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
+    
+    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+        <Border WidthRequest="900" HeightRequest="500" BackgroundColor="{StaticResource FrameBackground}" HorizontalOptions="Center" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout VerticalOptions="FillAndExpand">
+
+                <Grid VerticalOptions="StartAndExpand" Margin="10,10,10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Column="0" Margin="10">
+                        <Label Text="Padres" HorizontalOptions="Center" FontAttributes="Bold" />
+                        <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
+                        <ScrollView HeightRequest="380" BackgroundColor="White">
+                            <VerticalStackLayout Margin="10">
+                                <Label Text="Nombre del papa" VerticalOptions="Start" />
+                                <Entry x:Name="EntryNombrePapa" HorizontalOptions="Start" WidthRequest="350" />
+
+                                <Label Text="Numero telefono Papa" VerticalOptions="Start" />
+                                <Entry x:Name="EntryNumeroPapa" HorizontalOptions="Start" WidthRequest="350" />
+
+                                <Label Text="Nombre de Mama" VerticalOptions="Start" />
+                                <Entry x:Name="EntryNombreMama" HorizontalOptions="Start" WidthRequest="350" />
+
+                                <Label Text="Numero telefono Mama" VerticalOptions="Start" />
+                                <Entry x:Name="EntryNumeroMama" HorizontalOptions="Start" WidthRequest="350" />
+
+                                <Label Text="Direccion" VerticalOptions="Start" />
+                                <Editor x:Name="EditorDireccion" HeightRequest="90" HorizontalOptions="Start" AutoSize="TextChanges" WidthRequest="350" />
+
+                            </VerticalStackLayout>
+                        </ScrollView>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="1" Margin="10">
+                        <Label Text="Hijos" HorizontalOptions="Center" FontAttributes="Bold"/>
+                        <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
+                        <ScrollView HeightRequest="380" BackgroundColor="White" >
+                            <VerticalStackLayout Margin="10">
+                                
+                                <Label Text="Nombre del hijo" VerticalOptions="Start" />
+                                <Entry x:Name="EntryNombreHijo" HorizontalOptions="Start" WidthRequest="350" />
+
+                                <DatePicker x:Name="DateFechaNacimientoHijo" />
+
+                            </VerticalStackLayout>
+                        </ScrollView>
+                    </StackLayout>
+                </Grid>
+                
+                <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="200" Clicked="BtnGuardar_Clicked" />
+
+                    <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200" Clicked="BtnCancelar_Clicked" />
+                </HorizontalStackLayout>
+                
+            </VerticalStackLayout>
+
+
+        </Border>
+    </ScrollView>
+    
+</mopups:PopupPage>

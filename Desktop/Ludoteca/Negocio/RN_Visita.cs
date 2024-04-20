@@ -5,6 +5,10 @@ namespace Negocio
 {
     public class RN_Visita
     {
+        public static async Task<EN_Response<EN_Visita>> cobrarVisitas(EN_Visita visita)
+        {
+            return await DB_Visita.cobrarVisitas(visita);
+        }
         public static async Task<EN_Response<EN_Visita>> ingresarNuevaVisita(EN_Visita visita)
         {
             return await DB_Visita.ingresarNuevaVisita(visita);
@@ -21,9 +25,9 @@ namespace Negocio
         {
             return await DB_Visita.getVisitaById(_id);
         }
-        public static async Task<List<EN_Visita>> RN_DeleteVisita(int _ide)
+        public static async Task<List<EN_Visita>> RN_DeleteVisita(int _id)
         {
-            return await DB_Visita.deleteVisita(_ide);
+            return await DB_Visita.deleteVisita(_id);
         }
         public static async Task<List<EN_Visita>> RN_UpdateVisita(EN_Visita eN_Visita)
         {

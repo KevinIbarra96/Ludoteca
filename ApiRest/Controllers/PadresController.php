@@ -90,12 +90,11 @@ class PadresController {
                 'PadreName' => $BodyRequest["PadreName"],
                 'Address' => $BodyRequest["Address"],
                 'Telefono' => $BodyRequest["Telefono"]
-
             ];
 
             $database = new Connection();
             $padreSvc = new PadreService();                
-            $padreSvc->new($dataBody);
+            $Response->Rbody = $padreSvc->new($dataBody);
             $database->closeConection();
 
             $Response->Rcode = 200;

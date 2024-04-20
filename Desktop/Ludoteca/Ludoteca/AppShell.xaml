@@ -14,5 +14,10 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" 
         />
-    
+    <ShellContent
+        Title="String"
+        ContentTemplate="{DataTemplate views:StringFormatTemplate}"
+        Route="StringFormatTemplate" 
+        />
+
 </Shell>

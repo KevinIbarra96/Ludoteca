@@ -10,7 +10,7 @@ namespace Entidad
     {
         public int id_Producto {  get; set; }
         public string ProductoName { get; set; }
-        public int precioProductoVisita { get; set; }
+        public double precioProductoVisita { get; set; }
         public int CantidadProductoVisita { get; set; }
     }
 }

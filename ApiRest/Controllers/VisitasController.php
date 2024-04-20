@@ -14,6 +14,35 @@
             echo 'Visitas Controller Home';
         }
 
+        function cobrarVisitas(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'id' =>$BodyRequest['id'],
+                    'GafeteId' => $BodyRequest['GafeteId'],
+                    'Total' => $BodyRequest['Total']
+                ];
+
+                $database = new Connection();
+                $visitaSvc = new VisitaService();                
+                $visitaSvc->cobrarVisitas($dataBody["id"],$dataBody["Total"],$dataBody["GafeteId"]);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Visita Updated";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
         function ingresarNuevaVisita(){
             $Response = new ResponseModel();
 
@@ -28,7 +57,9 @@
                     'Servicios' => $BodyRequest['Servicios'],
                     'Padres' => $BodyRequest['Padres'],
                     'Productos' => $BodyRequest['Productos'],
-                    'Total' => $BodyRequest['Total']
+                    'Total' => $BodyRequest['Total'],
+                    'GafeteId' => $BodyRequest['GafeteId'],
+                    'NumeroGafete' => $BodyRequest['NumeroGafete']
                 ];
 
                 $database = new Connection();
@@ -46,9 +77,8 @@
                 $Response->RerrorCode = $ex->getCode();
             }finally{
                 echo json_encode($Response);
-            }            
+            }
         }
-
 
         function getVisitasActivas(){
             $Response = new ResponseModel();

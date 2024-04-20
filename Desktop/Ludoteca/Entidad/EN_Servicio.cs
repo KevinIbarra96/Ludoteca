@@ -10,7 +10,7 @@ namespace Entidad
         public int id { get; set; }
         private string _ServicioName;
         private string _Descripcion;
-        private int _Precio;
+        private double _Precio;
         private int _Tiempo; // Time in minutesw
         private int _status;
 
@@ -24,10 +24,10 @@ namespace Entidad
             get { return _Descripcion; }
             set { if (_Descripcion != value) { _Descripcion = value; OnPropertyChanged(nameof(Descripcion)); } }
         }
-        public int Precio
+        public double Precio
         {
             get { return _Precio; }
-            set { if (_Precio != value) { _Precio = value; OnPropertyChanged(nameof(Precio)); } }
+            set { if (_Precio != Math.Round(value, 2)) { _Precio = Math.Round(value, 2); OnPropertyChanged(nameof(Precio)); } }
         }
         public int Tiempo
         {

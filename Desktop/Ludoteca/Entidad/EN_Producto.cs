@@ -7,7 +7,7 @@ namespace Entidad
         public int id {  get; set; }
         private string _productoName;
         private int _cantidad;
-        private int _precio;
+        private double _precio;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -16,10 +16,10 @@ namespace Entidad
             get { return _productoName; } 
             set { if (_productoName != value){ _productoName = value; OnPropertyChanged(nameof(ProductoName)); }  }
         }
-        public int Precio
+        public double Precio
         {
             get { return _precio; }
-            set { if (_precio != value) { _precio = value; OnPropertyChanged(nameof(Precio)); } }
+            set { if (_precio != Math.Round(value, 2) ) { _precio = Math.Round(value, 2); OnPropertyChanged(nameof(Precio)); } }
         }
         public int Cantidad
         {
