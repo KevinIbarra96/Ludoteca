@@ -112,6 +112,22 @@ namespace Entidad
                 }
             }
         }
+
+        private int _tiempoExcedido;
+
+        public int TiempoExcedido
+        {
+            get { return _tiempoExcedido; }
+            set
+            {
+                if (_tiempoExcedido != value)
+                {
+                    _tiempoExcedido = value;
+                    OnPropertyChanged(nameof(TiempoExcedido));
+                }
+            }
+        }
+
         public Timer? Timer { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;

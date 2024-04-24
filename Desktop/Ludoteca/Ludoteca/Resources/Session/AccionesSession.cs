@@ -30,7 +30,7 @@ namespace Ludoteca.Resources
             } else App.Current.MainPage = new Login();
         }
 
-        public static void LLenarValoresSession(GlobalEnum.ActionSession action, EN_User userData)
+        public static void LLenarValoresSession(EN_User userData)
         {
             // Llenar la clase Session con los datos del usuario
 

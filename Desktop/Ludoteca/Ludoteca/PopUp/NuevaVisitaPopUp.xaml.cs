@@ -7,14 +7,13 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
 using Ludoteca.Resources;
-using System.ComponentModel;
-using System.Diagnostics;
-using Data;
+using global::Resources.Properties;
 
 public partial class NuevaVisitaPopUp
 {
 
 	UpdateVisitasTable _updateVisitasTable;
+    CalcularTotalVisita _calcularTotalVisitas;
 
     ObservableCollection<EN_Hijo> Hijos;
 
@@ -25,7 +24,7 @@ public partial class NuevaVisitaPopUp
 
     EN_Padre padre;
 
-    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable)
+    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable,CalcularTotalVisita calcularTotalVisita)
 	{
 		InitializeComponent();
 
@@ -38,6 +37,7 @@ public partial class NuevaVisitaPopUp
         asignarGafete("Sin asignacion");
 
         _updateVisitasTable = updateVisitasTable;
+        _calcularTotalVisitas = calcularTotalVisita;
 	}
 
     private void Hijos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -154,13 +154,27 @@ public partial class NuevaVisitaPopUp
     {
         EN_Visita visita = (EN_Visita)state;
 
+        double PrecioxMinuto = ApplicationProperties.precioXMinute;
+
         // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
         DateTime now = DateTime.Now;
         TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-        // Realiza otras acciones según sea necesario
-        visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-        Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+        int totalTiempo = visita.Servicios.Sum(servicio => servicio.Tiempo);
+
+        //Validar si el tiempo transcurrido es menor al tiempo acordado
+        if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempo)
+        {
+            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+            Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+        }
+        else
+        {
+            int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+            visita.Total = 0;
+            visita.Total += (PrecioxMinuto * tiempoExcedente) + _calcularTotalVisitas(visita);
+        }
 
     }
     #endregion

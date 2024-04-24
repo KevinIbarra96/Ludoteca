@@ -16,6 +16,7 @@ public partial class VisitView : ContentPage
     VisitViewModel viewModel;
 
     UpdateVisitasTable _updateVisitasTable;
+    CalcularTotalVisita _calcularTotalVisita;
 
     public VisitView()
 	{
@@ -25,6 +26,7 @@ public partial class VisitView : ContentPage
         BindingContext = viewModel;
 
         _updateVisitasTable = viewModel._UpdateVisitasTable;
+        _calcularTotalVisita = viewModel._CalcularTotalVisita;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
@@ -34,13 +36,6 @@ public partial class VisitView : ContentPage
     {
         string searchText = searchBar.Text;
         int count = 0;
-        // Filtrar la ObservableCollection en función del texto de búsqueda
-       /* var filteredProducts = viewModel.VisitasInmutable
-            .Where(visita => visita.Hijos != null &&
-                             visita.Hijos.Any(hijo =>
-                             hijo.NombreHijo.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-                ).ToList();*/
-
         viewModel.Visitas.Clear();
 
         foreach (var product in viewModel.VisitasInmutable.Where(visita =>
@@ -54,7 +49,7 @@ public partial class VisitView : ContentPage
     }    
     private async void NuevaVisita_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable));
+        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable,_calcularTotalVisita));
     }
 
     private async void AddProducto_Clicked(object sender, EventArgs e)
@@ -75,9 +70,7 @@ public partial class VisitView : ContentPage
     private async void Cobrar_Clicked(object sender, EventArgs e)
     {
         //TODO fañta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
-        //TODO falta agregarle las actualizaciones para cuando se agrega un nuevo producto o un nuevo servicio a la visita esa misma actualizacion debe realizarce a la base de datos        
-        //TODO falta agregarle a la entidad visita una propiedad para tener en cuenta el tiempo que se excedió
-        //TODO falta 
+        //TODO falta agregarle las actualizaciones para cuando se agrega un nuevo producto o un nuevo servicio a la visita esa misma actualizacion debe realizarce a la base de datos
 
         try
         {
@@ -145,7 +138,9 @@ public partial class VisitView : ContentPage
         y += lineHeight;
         gfx.DrawString("Hora de salida: " + DateTime.Now , regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
-        gfx.DrawString("Gafete: " + visita.id, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
+        gfx.DrawString("Gafete: " + visita.NumeroGafete, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
+        y += lineHeight;
+        gfx.DrawString("Minutos extendidos: " + visita.TiempoExcedido, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
 
         y += 5;
@@ -171,6 +166,7 @@ public partial class VisitView : ContentPage
 
             y += lineHeight;
         }
+
 
         y += 5;
         gfx.DrawLine(XPens.Black, x, y, width, y);

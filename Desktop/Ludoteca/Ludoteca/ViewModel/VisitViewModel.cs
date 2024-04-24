@@ -10,6 +10,7 @@ namespace Ludoteca.ViewModel
 
     public delegate void LoadVisitasTable();
     public delegate void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita);
+    public delegate double CalcularTotalVisita(EN_Visita visita);
 
     public class VisitViewModel
     {
@@ -19,6 +20,7 @@ namespace Ludoteca.ViewModel
         //Iniciacion de delegados
         public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
+        public CalcularTotalVisita _CalcularTotalVisita;
 
         public VisitViewModel() {
 
@@ -28,6 +30,7 @@ namespace Ludoteca.ViewModel
             //Asignacin de delegados
             _loadVisitasTable = loadVisitasTable;
             _UpdateVisitasTable = UpdateVisitasTable;
+            _CalcularTotalVisita = calcularTotalVisita;
 
             loadVisitasTable();
 
@@ -55,7 +58,9 @@ namespace Ludoteca.ViewModel
             {
                 int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
                 visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-                visita.Total += (PrecioxMinuto*tiempoExcedente);
+                visita.Total =0;
+                visita.Total += (PrecioxMinuto*tiempoExcedente) + calcularTotalVisita(visita);
+                visita.TiempoExcedido = tiempoExcedente;
             }
         }
 
