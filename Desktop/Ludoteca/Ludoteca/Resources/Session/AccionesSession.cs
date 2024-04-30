@@ -14,6 +14,34 @@ namespace Ludoteca.Resources
 
         private static string xmlFilePath = AppDomain.CurrentDomain.BaseDirectory + "session.xml";
 
+
+        public static void LLenarValoresSession(object userData)
+        {
+            // Llenar la clase Session con los datos del usuario 
+            //GlobalEnum.ActionSession action,
+
+            if (userData is EN_User)
+            {
+                EN_User user = (EN_User)userData;
+
+                // Llenar la clase Session con los datos del usuario 
+                Session.SessionId = Guid.NewGuid().ToString();
+                Session.UserId = user.id;
+                Session.UserName = user.UserName;
+                Session.RolName = user.RolName;
+                Session.RolId = user.idRol;
+                Session.SessionActiva = true;
+                Session.HoraInicioSession = DateTime.Now;
+
+                SaveSession();
+            }
+            else
+            {
+                // Manejar el caso en que el parámetro userData no sea de tipo EN_User
+                Console.WriteLine("Error: El parámetro userData no es de tipo EN_User");
+            }
+        }
+
         // Método para cargar la sesión desde el archivo XML
         private static void CargarSessionDesdeArchivo()
         {
@@ -29,22 +57,6 @@ namespace Ludoteca.Resources
                 Session.HoraInicioSession = DateTime.Parse(doc.Element("Session").Element("HoraInicioSession").Value);
             } else App.Current.MainPage = new Login();
         }
-
-        public static void LLenarValoresSession(GlobalEnum.ActionSession action, EN_User userData)
-        {
-            // Llenar la clase Session con los datos del usuario
-
-            Session.SessionId = Guid.NewGuid().ToString();
-            Session.UserId = userData.id;
-            Session.UserName = userData.UserName;
-            Session.RolName = userData.RolName;
-            Session.RolId = userData.idRol;
-            Session.SessionActiva = true;
-            Session.HoraInicioSession = DateTime.Now;
-
-            SaveSession();
-        }
-
 
         // Método para guardar la sesión en un archivo XML
         public static void SaveSession()

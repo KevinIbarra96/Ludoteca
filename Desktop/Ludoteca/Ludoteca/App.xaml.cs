@@ -14,7 +14,6 @@ namespace Ludoteca
             //string rutaProyecto = Configuracion.ObtenerRutaProyecto();
             //if(string.IsNullOrEmpty(rutaProyecto))
             //{
-                string rutaProyecto = @"C:\MiProyecto";
             Configuracion.CreateSubKey();
                 //Configuracion.GuardarRutaProyecto(rutaProyecto);
             //}
