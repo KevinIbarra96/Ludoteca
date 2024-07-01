@@ -16,7 +16,7 @@
             <StackLayout VerticalOptions="FillAndExpand">
                 <!-- Aquí agregué un StackLayout como contenedor principal -->
 
-                <Frame VerticalOptions="Start" HeightRequest="150" Margin="10">
+                <Frame VerticalOptions="Start" HeightRequest="150" Margin="10" BackgroundColor="White">
                     <StackLayout>
                         <Grid>
                             <Grid.ColumnDefinitions>

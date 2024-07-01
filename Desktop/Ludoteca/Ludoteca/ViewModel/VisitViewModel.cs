@@ -12,6 +12,8 @@ namespace Ludoteca.ViewModel
     public delegate void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita);
     public delegate double CalcularTotalVisita(EN_Visita visita);
 
+    public delegate void AddProductoToVisita(EN_ProductosVisita producto, int visitaId);
+
     public class VisitViewModel
     {
         public ObservableCollection<EN_Visita> Visitas { get; set; }
@@ -21,6 +23,7 @@ namespace Ludoteca.ViewModel
         public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
         public CalcularTotalVisita _CalcularTotalVisita;
+        public AddProductoToVisita _AddProductoToVisita;
 
         public VisitViewModel() {
 
@@ -31,6 +34,8 @@ namespace Ludoteca.ViewModel
             _loadVisitasTable = loadVisitasTable;
             _UpdateVisitasTable = UpdateVisitasTable;
             _CalcularTotalVisita = calcularTotalVisita;
+
+            _AddProductoToVisita = addProductoToVisita;
 
             loadVisitasTable();
 
@@ -95,6 +100,14 @@ namespace Ludoteca.ViewModel
         {
             Visitas.Add(visita);
             VisitasInmutable.Add(visita);
+        }
+
+        private void addProductoToVisita(EN_ProductosVisita producto,int visitaId)
+        {
+            EN_Visita Encontrado = Visitas.FirstOrDefault(p => p.id == visitaId);
+
+            Encontrado.Productos.Add(producto);
+
         }
 
         private double calcularTotalVisita(EN_Visita visita)

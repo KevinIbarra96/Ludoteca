@@ -17,6 +17,7 @@ public partial class VisitView : ContentPage
 
     UpdateVisitasTable _updateVisitasTable;
     CalcularTotalVisita _calcularTotalVisita;
+    AddProductoToVisita _addProductoToVisita;
 
     public VisitView()
 	{
@@ -27,6 +28,7 @@ public partial class VisitView : ContentPage
 
         _updateVisitasTable = viewModel._UpdateVisitasTable;
         _calcularTotalVisita = viewModel._CalcularTotalVisita;
+        _addProductoToVisita = viewModel._AddProductoToVisita;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
@@ -54,7 +56,10 @@ public partial class VisitView : ContentPage
 
     private async void AddProducto_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.ProductoList() );
+        var btn = sender as Label;
+        var visitaSelected = btn.BindingContext as EN_Visita;
+
+        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id) );
     }
 
     private async void AddServicio_Clicked(object sender, EventArgs e)

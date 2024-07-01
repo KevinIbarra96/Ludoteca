@@ -156,7 +156,7 @@
                                         <!-- StackLayout para los dos primeros botones en la misma línea -->
                                         <Label Text="Ag Producto" ToolTipProperties.Text="Agregarle un producto" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
                                             <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Tapped="AddProducto_Clicked" />
+                                                <TapGestureRecognizer Tapped="AddProducto_Clicked" CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
                                         <Label Text="Ag Servicio" ToolTipProperties.Text="Agregarle un servicio" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">

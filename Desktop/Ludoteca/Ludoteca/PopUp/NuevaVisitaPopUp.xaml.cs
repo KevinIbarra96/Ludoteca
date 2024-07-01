@@ -82,7 +82,7 @@ public partial class NuevaVisitaPopUp
 
         //string action = await DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
         string action = await Shell.Current.DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
-        asignarGafete(action);        
+        asignarGafete(action);
         _Gafete = responseGafete.Rbody.Single( s=> s.Numero == int.Parse(action) );
     }
 
