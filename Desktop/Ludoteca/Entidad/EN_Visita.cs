@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -81,9 +82,22 @@ namespace Entidad
             }
         }
         public List<EN_Hijo>? Hijos { get; set; }
-        public List<EN_ServiciosVisita>? Servicios { get; set; }
+
+        private ObservableCollection<EN_ServiciosVisita>? _servicios;
+        public ObservableCollection<EN_ServiciosVisita>? Servicios 
+        {
+            get => _servicios;
+            set { _servicios = value; OnPropertyChanged(nameof(Servicios)); } 
+        }
         public List<EN_Padre>? Padres {  get; set; }
-        public List<EN_ProductosVisita>? Productos { get; set; }
+
+        public ObservableCollection<EN_ProductosVisita>? _productos;
+        public ObservableCollection<EN_ProductosVisita>? Productos 
+        { 
+            get { return _productos; }
+            set { _productos = value; OnPropertyChanged(nameof(Productos)); }
+        }
+
         private double _Total;
         public double Total
         {
@@ -112,6 +126,22 @@ namespace Entidad
                 }
             }
         }
+
+        private int _tiempoExcedido;
+
+        public int TiempoExcedido
+        {
+            get { return _tiempoExcedido; }
+            set
+            {
+                if (_tiempoExcedido != value)
+                {
+                    _tiempoExcedido = value;
+                    OnPropertyChanged(nameof(TiempoExcedido));
+                }
+            }
+        }
+
         public Timer? Timer { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;

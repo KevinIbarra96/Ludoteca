@@ -13,6 +13,14 @@ namespace Negocio
         {
             return await DB_Visita.ingresarNuevaVisita(visita);
         }
+        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita, List<EN_ServiciosVisita> servicio)
+        {
+            return await DB_Visita.addServicioToVisita( idvisita, servicio);
+        }
+        public static async Task<EN_Response<EN_Visita>> addProductosToVisita(int idvisita, List<EN_ProductosVisita> productos)
+        {
+            return await DB_Visita.addProductosToVisita(idvisita, productos);
+        }
         public static async Task<EN_Response<EN_Visita>> RN_getAllVisitasActivas()
         {
             return await DB_Visita.getAllVisitasActivas();

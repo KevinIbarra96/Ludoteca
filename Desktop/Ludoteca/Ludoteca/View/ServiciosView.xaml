@@ -63,12 +63,14 @@
                             <Label Grid.Column="1" Text="{Binding Descripcion}" HorizontalOptions="Center" VerticalOptions="Center" />
                             <Label Grid.Column="2" Text="{Binding Tiempo}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             <Label Grid.Column="3" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <StackLayout Grid.Column="4" Orientation="Horizontal" VerticalOptions="Center">
+                            
+                            <Button Grid.Column="4" Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                            <!-- <StackLayout Grid.Column="4" Grid.Column="4" Orientation="Horizontal" VerticalOptions="Center">
                                 <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
-                                    <Button Text="Precio" ToolTipProperties.Text="Actualizar precio" Clicked="ActualizarPrecio_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                   <Button Text="Precio" ToolTipProperties.Text="Actualizar Tiempo" Clicked="ActualizarTiempo_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                                     <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                                 </StackLayout>
-                            </StackLayout>
+                            </StackLayout>-->
 
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />

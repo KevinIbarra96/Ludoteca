@@ -10,6 +10,10 @@ namespace Ludoteca.ViewModel
 
     public delegate void LoadVisitasTable();
     public delegate void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita);
+    public delegate double CalcularTotalVisita(EN_Visita visita);
+
+    public delegate void AddProductoToVisita(EN_ProductosVisita producto, int visitaId);
+    public delegate void AddServicioToVisita(EN_ServiciosVisita servicio, int visitaId);
 
     public class VisitViewModel
     {
@@ -19,6 +23,9 @@ namespace Ludoteca.ViewModel
         //Iniciacion de delegados
         public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
+        public CalcularTotalVisita _CalcularTotalVisita;
+        public AddProductoToVisita _AddProductoToVisita;
+        public AddServicioToVisita _addServicioToVIsita;
 
         public VisitViewModel() {
 
@@ -28,6 +35,10 @@ namespace Ludoteca.ViewModel
             //Asignacin de delegados
             _loadVisitasTable = loadVisitasTable;
             _UpdateVisitasTable = UpdateVisitasTable;
+            _CalcularTotalVisita = calcularTotalVisita;
+
+            _AddProductoToVisita = addProductoToVisita;
+            _addServicioToVIsita = addServicioToVisita;
 
             loadVisitasTable();
 
@@ -55,7 +66,9 @@ namespace Ludoteca.ViewModel
             {
                 int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
                 visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-                visita.Total += (PrecioxMinuto*tiempoExcedente);
+                visita.Total =0;
+                visita.Total += (PrecioxMinuto*tiempoExcedente) + calcularTotalVisita(visita);
+                visita.TiempoExcedido = tiempoExcedente;
             }
         }
 
@@ -79,7 +92,7 @@ namespace Ludoteca.ViewModel
 
             foreach (var visita in visitasResponse.Rbody)
             {
-                visita.Timer = new Timer(TimerCallback, visita, 0, 20000);
+                visita.Timer = new Timer(TimerCallback, visita, 0, 15000);
                 visita.Total = calcularTotalVisita(visita);
                 visita.TiempoTranscurrido = calcularTiempoRestanteVisita(visita);
                 addVisitaToCollection(visita);
@@ -90,6 +103,22 @@ namespace Ludoteca.ViewModel
         {
             Visitas.Add(visita);
             VisitasInmutable.Add(visita);
+        }
+
+        private void addProductoToVisita(EN_ProductosVisita producto,int visitaId)
+        {
+            EN_Visita Encontrado = getVisitaByID(visitaId);
+
+            Encontrado.Productos.Add(producto);
+
+        }
+
+        private void addServicioToVisita(EN_ServiciosVisita servicio,int visitaId)
+        {
+
+            EN_Visita Encontrado = getVisitaByID(visitaId);
+
+            Encontrado.Servicios.Add(servicio);
         }
 
         private double calcularTotalVisita(EN_Visita visita)
@@ -103,7 +132,7 @@ namespace Ludoteca.ViewModel
 
             foreach (EN_ProductosVisita produc in visita.Productos)
             {
-                totalVisita += Math.Round(produc.precioProductoVisita);
+                totalVisita += Math.Round(produc.precioProductoVisita * produc.CantidadProductoVisita);
             }
 
             return totalVisita;
@@ -135,12 +164,18 @@ namespace Ludoteca.ViewModel
 
         private void updateVisitaToColection(EN_Visita visita)
         {
-            EN_Visita Encontrado = Visitas.FirstOrDefault(p => p.id == visita.id);
+            EN_Visita Encontrado = getVisitaByID(visita.id);
 
             if (Encontrado != null)
             {
                 //TODO necesitamos implementar los cambios para actualizar.
             }
+        }
+
+        private EN_Visita getVisitaByID(int visitaId)
+        {
+           return Visitas.FirstOrDefault(p => p.id == visitaId);
+
         }
 
     }

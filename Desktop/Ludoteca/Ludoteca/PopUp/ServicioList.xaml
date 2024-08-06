@@ -21,7 +21,7 @@
                     <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Nombre del producto" />
                     <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold" Text="Precio" />
                 </Grid>
-                <CollectionView x:Name="ServicioCollectionView">
+                <CollectionView x:Name="ServicioCollectionView"  SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="5" BackgroundColor="White">
@@ -39,7 +39,7 @@
                 <StackLayout BackgroundColor="#F3F3F3" Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                     <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
                             BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
-                            CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="180"/>
+                            CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="180" Clicked="Guardar_Clicked" />
 
                     <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Clicked="Cancelar_Clicked"
                             BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"

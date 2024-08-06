@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Mopups.Hosting;
+//using CommunityToolkit.Maui.Markup;
+using UraniumUI;
 
 namespace Ludoteca
 {
@@ -13,6 +15,9 @@ namespace Ludoteca
                 .UseMauiApp<App>()
                 .ConfigureMopups()
                 .UseMauiCommunityToolkit()
+                .UseUraniumUI()
+                .UseUraniumUIMaterial()
+                //.UseMauiCommunityToolkitMarkup()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

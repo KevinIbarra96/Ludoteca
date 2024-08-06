@@ -12,5 +12,13 @@ namespace Entidad
         public string ProductoName { get; set; }
         public double precioProductoVisita { get; set; }
         public int CantidadProductoVisita { get; set; }
+
+        public string CantidadProducto 
+        { 
+            get {
+                return $"({CantidadProductoVisita}) {ProductoName}";
+            } 
+        
+        }
     }
 }

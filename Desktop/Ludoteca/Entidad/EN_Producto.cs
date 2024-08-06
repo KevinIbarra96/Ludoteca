@@ -9,6 +9,9 @@ namespace Entidad
         private int _cantidad;
         private double _precio;
 
+        private int _cantidadVisita;
+        private bool _isEnable;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public string ProductoName
@@ -25,6 +28,16 @@ namespace Entidad
         {
             get { return _cantidad; }
             set { if (_cantidad != value) { _cantidad = value; OnPropertyChanged(nameof(Cantidad)); } }
+        }
+        public int CantidadVisita
+        {
+            get { return _cantidadVisita; }
+            set { if (_cantidadVisita != value) { _cantidadVisita = value; OnPropertyChanged(nameof(CantidadVisita)); } }
+        }
+        public bool IsEnable
+        {
+            get { return _isEnable; }
+            set { if (_isEnable != value) { _isEnable = value; OnPropertyChanged(nameof(IsEnable)); } }
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

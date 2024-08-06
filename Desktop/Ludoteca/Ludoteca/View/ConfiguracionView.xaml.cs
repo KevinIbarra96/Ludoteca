@@ -1,6 +1,9 @@
 using Entidad;
 using Negocio;
 using Resources.Properties;
+using CommunityToolkit.Maui.Core;
+//using CommunityToolkit.Maui.Markup;
+
 
 namespace Ludoteca.View;
 
@@ -16,7 +19,13 @@ public partial class ConfiguracionView : ContentPage
 		InitializeComponent();
 
 		EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ToString();
+        
+    }
 
+    // Método para manejar el evento de clic
+    private void OnButtonClicked(object sender, EventArgs e)
+    {
+        DisplayAlert("Alerta", "Botón clicado", "OK");
     }
 
     private async void EntryPrecioxMinuto_TextChanged(object sender, TextChangedEventArgs e)

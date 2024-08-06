@@ -68,7 +68,8 @@ public partial class RegistrarPadresEHijos
                 }
             }
 
-            await DisplayAlert("Advertencia", "Verifica que los campos esten correctos, Los abajo un listado de los campos que no pueden estar vacíos\n-Almenos la informacion de un Papa\n-Direccion\n-La fecha de nacimiento", "OK");
+            await DisplayAlert("Advertencia", "Verifica que los campos esten correctos, Los abajo un listado de los campos que no pueden estar vacíos" +
+                "\n-Almenos la informacion de un Papa\n-Direccion\n-La fecha de nacimiento", "OK");
 
         }
         catch (Exception ex)

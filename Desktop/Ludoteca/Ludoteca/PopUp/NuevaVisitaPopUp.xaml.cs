@@ -7,14 +7,14 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
 using Ludoteca.Resources;
-using System.ComponentModel;
-using System.Diagnostics;
-using Data;
+using global::Resources.Properties;
+using PdfSharpCore.Pdf;
 
 public partial class NuevaVisitaPopUp
 {
 
 	UpdateVisitasTable _updateVisitasTable;
+    CalcularTotalVisita _calcularTotalVisitas;
 
     ObservableCollection<EN_Hijo> Hijos;
 
@@ -25,7 +25,7 @@ public partial class NuevaVisitaPopUp
 
     EN_Padre padre;
 
-    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable)
+    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable,CalcularTotalVisita calcularTotalVisita)
 	{
 		InitializeComponent();
 
@@ -38,6 +38,7 @@ public partial class NuevaVisitaPopUp
         asignarGafete("Sin asignacion");
 
         _updateVisitasTable = updateVisitasTable;
+        _calcularTotalVisitas = calcularTotalVisita;
 	}
 
     private void Hijos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -82,7 +83,7 @@ public partial class NuevaVisitaPopUp
 
         //string action = await DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
         string action = await Shell.Current.DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
-        asignarGafete(action);        
+        asignarGafete(action);
         _Gafete = responseGafete.Rbody.Single( s=> s.Numero == int.Parse(action) );
     }
 
@@ -99,14 +100,14 @@ public partial class NuevaVisitaPopUp
             nuevaVisita.NumeroGafete = _Gafete.Numero;
             nuevaVisita.Hijos = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
             nuevaVisita.Padres = lisPadre;
-            nuevaVisita.Servicios = convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
-            nuevaVisita.Productos = convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());            
+            nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
+            nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());            
 
             EN_Response<EN_Visita> response = await RN_Visita.ingresarNuevaVisita(nuevaVisita);
             nuevaVisita.id = response.Rbody[0].id;
             nuevaVisita.HoraEntrada = response.Rbody[0].HoraEntrada;
             nuevaVisita.OfertaName = "Sin Oferta"; //Por definir que sigue en este caso
-            nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 20000);
+            nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 15000);
 
             _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO,nuevaVisita);
 
@@ -132,10 +133,33 @@ public partial class NuevaVisitaPopUp
 
     private void Producto_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        DesactivarProductoVisitaEntry();
         _totalProducto = 0;
-        foreach (EN_Producto prod in e.CurrentSelection)
+        //foreach (EN_Producto prod in e.CurrentSelection)
+        foreach (EN_Producto prod in ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList())
         {
-            _totalProducto += Math.Round(prod.Precio,2);
+            if (prod.CantidadVisita == 0 || prod.CantidadVisita == null)
+                    prod.CantidadVisita = 1;
+                
+            double total = prod.Precio * prod.CantidadVisita;
+            _totalProducto += Math.Round(total, 2);
+            prod.IsEnable = true;
+        }
+        calcularTotal();
+    }
+
+    private void EntryCantidadProducto_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        
+        _totalProducto = 0;        
+        foreach (EN_Producto prod in ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList())
+        {
+            int cantidadV = prod.CantidadVisita;
+            if (e.NewTextValue == "")
+                cantidadV = 0;
+
+            double total = prod.Precio * cantidadV;
+            _totalProducto += Math.Round(total, 2);
         }
         calcularTotal();
     }
@@ -154,13 +178,28 @@ public partial class NuevaVisitaPopUp
     {
         EN_Visita visita = (EN_Visita)state;
 
+        double PrecioxMinuto = ApplicationProperties.precioXMinute;
+
         // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
         DateTime now = DateTime.Now;
         TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-        // Realiza otras acciones según sea necesario
-        visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-        Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+        int totalTiempo = visita.Servicios.Sum(servicio => servicio.Tiempo);
+
+        //Validar si el tiempo transcurrido es menor al tiempo acordado
+        if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempo)
+        {
+            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+            Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
+        }
+        else
+        {
+            int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+            visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
+            visita.Total = 0;
+            visita.Total += (PrecioxMinuto * tiempoExcedente) + _calcularTotalVisitas(visita);
+            visita.TiempoExcedido = tiempoExcedente;
+        }
 
     }
     #endregion
@@ -206,37 +245,15 @@ public partial class NuevaVisitaPopUp
     }
     #endregion
 
-    #region ConvertData
-    private List<EN_ServiciosVisita> convertEN_ServicionToEN_ServicioVisita(EN_Servicio servicio)
+    #region PrivatMethod
+    private void DesactivarProductoVisitaEntry()
     {
-        List<EN_ServiciosVisita> listaServicioVisita = new List<EN_ServiciosVisita>();
-
-        EN_ServiciosVisita servicioVisita = new EN_ServiciosVisita();
-        servicioVisita.Servicio_Id = servicio.id;
-        servicioVisita.ServicioName = servicio.ServicioName;
-        servicioVisita.Servicio_Precio = servicio.Precio;
-        servicioVisita.Tiempo = servicio.Tiempo;
-
-        listaServicioVisita.Add(servicioVisita);
-
-        return listaServicioVisita;
-    }
-
-    private List<EN_ProductosVisita> convertEN_ProductosToEN_ProductosVisita(List<EN_Producto> produ)
-    {
-        List<EN_ProductosVisita> productosVisitas = new List<EN_ProductosVisita>();
-        foreach (EN_Producto p in produ)
-        {
-            EN_ProductosVisita pro = new EN_ProductosVisita();
-            pro.id_Producto = p.id;
-            pro.ProductoName = p.ProductoName;
-            pro.precioProductoVisita = p.Precio;
-            pro.CantidadProductoVisita = p.Cantidad;
-            productosVisitas.Add(pro);
+        foreach (EN_Producto prod in ProductosCollectionView.ItemsSource )
+        {            
+            prod.IsEnable = false;
         }
-
-        return productosVisitas;
     }
     #endregion
+
 
 }
