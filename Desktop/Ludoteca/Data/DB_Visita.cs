@@ -62,6 +62,54 @@ namespace Data
             return response;
         }
 
+        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita,List<EN_ServiciosVisita> servicio)
+        {
+            EN_Response<EN_Visita> response = null;
+
+            string _endPoint = _apiPath + "/addServicioToVisita"; //Adding endpoint to path
+
+            var RequestBody = new {id=idvisita, Servicios = servicio };
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+            }
+
+            return response;
+        }
+
+        public static async Task<EN_Response<EN_Visita>> addProductosToVisita(int idvisita, List<EN_ProductosVisita> productos)
+        {
+            EN_Response<EN_Visita> response = null;
+
+            string _endPoint = _apiPath + "/addProductosToVisita"; //Adding endpoint to path
+
+            var RequestBody = new { id = idvisita, productos = productos };
+
+            var requestData = JsonConvert.SerializeObject(RequestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+            }
+
+            return response;
+        }
+
         public static async Task<EN_Response<EN_Visita>> getAllVisitasActivas()
         {
             EN_Response<EN_Visita> response = null;

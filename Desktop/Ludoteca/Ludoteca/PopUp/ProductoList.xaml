@@ -5,23 +5,24 @@
              x:Class="Ludoteca.PopUp.ProductoList"
              Title="ProductoList" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
 
-    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
-        <Border WidthRequest="400" HeightRequest="500" BackgroundColor="{StaticResource FrameBackground}" HorizontalOptions="Center" >
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="10" />
-            </Border.StrokeShape>
 
-            <StackLayout Margin="20" BackgroundColor="White">
-                <Grid Padding="5" BackgroundColor="{StaticResource FrameBackground}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+    <Border WidthRequest="400" HeightRequest="600" BackgroundColor="{StaticResource FrameBackground}" HorizontalOptions="Center" >
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="10" />
+        </Border.StrokeShape>
 
-                    <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Nombre del producto" />
-                    <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold" Text="Precio" />
-                </Grid>
-                <CollectionView x:Name="ProductosCollectionView" SelectionMode="Single" SelectionChanged="Productos_SelectionChanged">
+        <StackLayout Margin="20" BackgroundColor="White">
+            <Grid Padding="5" BackgroundColor="{StaticResource FrameBackground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Nombre del producto" />
+                <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold" Text="Precio" />
+            </Grid>
+            <ScrollView HeightRequest="450">
+                <CollectionView x:Name="ProductosCollectionView" SelectionMode="Multiple" SelectionChanged="Productos_SelectionChanged">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="5" BackgroundColor="White">
@@ -30,13 +31,17 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Column="0" HorizontalOptions="Start" Text="{Binding ProductoName, StringFormat='- {0}'}" />
-                                <Label Grid.Column="1" HorizontalOptions="EndAndExpand" FontAttributes="Bold" Text="{Binding Precio, StringFormat=' $ {0}'}" />
+                                <StackLayout Grid.Column="0" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Orientation="Horizontal" Margin="0">
+                                    <Entry  Text="{Binding CantidadVisita, Mode=TwoWay}" VerticalOptions="Center" Scale=".5" FontSize="25" Margin="0" IsEnabled="{Binding IsEnable}" TextChanged="EntryCantidadProducto_TextChanged"/>
+                                    <Label Text="{Binding ProductoName, StringFormat='- {0}'}" VerticalOptions="Center" FontSize="13"/>
+                                </StackLayout>
+                                <Label Grid.Column="1" HorizontalOptions="End" FontAttributes="Bold" Text="{Binding Precio, StringFormat=' $ {0}'}" VerticalOptions="Center" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <StackLayout BackgroundColor="#F3F3F3" Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+            </ScrollView>
+            <StackLayout BackgroundColor="#F3F3F3" Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                     <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
                             BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5" Clicked="BtnGuardar_Clicked"
                             CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="180"/>
@@ -44,8 +49,7 @@
                     <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Clicked="Cancelar_Clicked"
                             BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
                             CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="180" />
-                </StackLayout>
             </StackLayout>
-        </Border>
-    </ScrollView>
+        </StackLayout>
+    </Border>
 </mopups:PopupPage>

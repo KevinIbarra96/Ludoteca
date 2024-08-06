@@ -69,7 +69,7 @@
                         <Label Text="Productos" HorizontalOptions="Center" FontAttributes="Bold" />
                         <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
                         <ScrollView HeightRequest="300" BackgroundColor="White">
-                            <CollectionView Margin="15" x:Name="ProductosCollectionView" SelectionMode="Multiple" SelectionChanged="Producto_SelectionChanged">
+                            <CollectionView x:Name="ProductosCollectionView" SelectionMode="Multiple" SelectionChanged="Producto_SelectionChanged">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Padding="5" BackgroundColor="{Binding SelectedBackgroundColor}">
@@ -77,9 +77,11 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-
-                                            <Label Grid.Column="0" HorizontalOptions="Start" Text="{Binding ProductoName, StringFormat='- {0}'}" />
-                                            <Label Grid.Column="1" HorizontalOptions="EndAndExpand" FontAttributes="Bold" Text="{Binding Precio, StringFormat=' $ {0}'}" />
+                                            <StackLayout Grid.Column="0" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Spacing="0" Orientation="Horizontal" Margin="0">
+                                                <Entry  Text="{Binding CantidadVisita, Mode=TwoWay}" VerticalOptions="Center" Scale=".5" FontSize="25" Margin="0" IsEnabled="{Binding IsEnable}" TextChanged="EntryCantidadProducto_TextChanged"/>
+                                                <Label Text="{Binding ProductoName, StringFormat='- {0}'}" VerticalOptions="Center" FontSize="13"/>
+                                            </StackLayout>
+                                            <Label Grid.Column="1" HorizontalOptions="End" FontAttributes="Bold" Text="{Binding Precio, StringFormat=' $ {0}'}" VerticalOptions="Center" />
                                         </Grid>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -87,7 +89,7 @@
                         </ScrollView>
                     </StackLayout>
 
-                    <StackLayout Grid.Column="1" Margin="10,0,10,10">
+                    <StackLayout Grid.Column="1" Margin="10,0,10,0">
                         <Label Text="Servicios" HorizontalOptions="Center" FontAttributes="Bold"/>
                         <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
                         <ScrollView HeightRequest="300" BackgroundColor="White" >
@@ -99,7 +101,6 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-
                                             <Label Grid.Column="0" HorizontalOptions="Start" Text="{Binding ServicioName, StringFormat='- {0}'}" />
                                             <Label Grid.Column="1" HorizontalOptions="EndAndExpand" FontAttributes="Bold" Text="{Binding Precio, StringFormat=' $ {0}'}" />
                                         </Grid>

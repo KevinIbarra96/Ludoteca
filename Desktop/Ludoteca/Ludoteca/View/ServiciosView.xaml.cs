@@ -45,7 +45,7 @@ public partial class ServiciosView : ContentPage
             viewModel.servicios.Add(product); // Agregar los productos filtrados de nuevo
         }
     }
-    private async void ActualizarPrecio_Clicked(object sender, EventArgs e)
+   /* private async void ActualizarPrecio_Clicked(object sender, EventArgs e)
     {
         EN_Response<EN_Servicio> resp;
 
@@ -55,7 +55,7 @@ public partial class ServiciosView : ContentPage
             if (button != null && button.CommandParameter is EN_Servicio servicio)
             {
 
-                string responseEntry = await DisplayPromptAsync("Producto", "Ingresa el nuevo tiempo: ", "Actualizar", "Cancelar", "Precio", 4, Keyboard.Numeric);
+                string responseEntry = await DisplayPromptAsync("Servicio", "Ingresa el nuevo Precio: ", "Actualizar", "Cancelar", "Precio", 4, Keyboard.Numeric);
 
                 if (responseEntry == "" && responseEntry != null) { await DisplayAlert("Error", "Valor no puede ser vacío", "ok"); return; } //Validar que el valor enviado no se vacío
 
@@ -82,7 +82,7 @@ public partial class ServiciosView : ContentPage
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "ok");
         }
-    }
+    }*/
 
     private async void EditarServicios_Clicked(object sender, EventArgs e)
     {

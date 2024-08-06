@@ -122,7 +122,7 @@
                                     <CollectionView ItemsSource="{Binding Productos}">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
-                                                <Label Text="{Binding ProductoName, StringFormat=' - {0}'}"></Label>
+                                                <Label Text="{Binding CantidadProducto, StringFormat=' - {0}'}"></Label>
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                     </CollectionView>

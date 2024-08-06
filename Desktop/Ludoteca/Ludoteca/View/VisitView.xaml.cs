@@ -18,6 +18,7 @@ public partial class VisitView : ContentPage
     UpdateVisitasTable _updateVisitasTable;
     CalcularTotalVisita _calcularTotalVisita;
     AddProductoToVisita _addProductoToVisita;
+    AddServicioToVisita _addServicioToVisita;
 
     public VisitView()
 	{
@@ -29,6 +30,7 @@ public partial class VisitView : ContentPage
         _updateVisitasTable = viewModel._UpdateVisitasTable;
         _calcularTotalVisita = viewModel._CalcularTotalVisita;
         _addProductoToVisita = viewModel._AddProductoToVisita;
+        _addServicioToVisita = viewModel._addServicioToVIsita;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
@@ -64,7 +66,11 @@ public partial class VisitView : ContentPage
 
     private async void AddServicio_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.ServicioList() );
+
+        var btn = sender as Label;
+        var visitaSelected = btn.BindingContext as EN_Visita;
+
+        await MopupService.Instance.PushAsync(new PopUp.ServicioList(_addServicioToVisita,visitaSelected.id) );
     }
 
     private async void RegistrarPadreEHijo_Clicked(object sender, EventArgs e)
@@ -96,7 +102,7 @@ public partial class VisitView : ContentPage
                     await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
                 }catch(Exception ex)
                 {
-                    await DisplayAlert("Error","Ah ocurrido un erro\nDetalle","OK");
+                    await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
                 }
             }
 
@@ -111,14 +117,15 @@ public partial class VisitView : ContentPage
     public static void GenerateTicketPdf(string fileName,EN_Visita visita , double height)
     {
         // Ancho del ticket en milímetros
-        double width = 80;
+        double width = 70;
+        double initialHeight = 200; // Altura inicial, se ajustará dinámicamente según el contenido
 
         PdfDocument document = new PdfDocument();
         document.Info.Title = "Ticket de Compra";
 
         PdfPage page = document.AddPage();
         page.Width = XUnit.FromMillimeter(width);
-        page.Height = XUnit.FromMillimeter(height);
+        page.Height = XUnit.FromMillimeter(initialHeight);
 
         XGraphics gfx = XGraphics.FromPdfPage(page);
         XFont titleFont = new XFont("Arial", 8, XFontStyle.Bold);
@@ -130,18 +137,19 @@ public partial class VisitView : ContentPage
         // Encabezado centrado
         string titulo = "La Casita de Molly";
         double tituloWidth = gfx.MeasureString(titulo, titleFont).Width;
-        double tituloX = (width - tituloWidth) / 2;
+        double tituloX = x;
         gfx.DrawString(titulo, titleFont, XBrushes.Black, new XRect(tituloX, y, width, height), XStringFormats.TopCenter);
         y += lineHeight * 2;
+
         foreach (var hijo in visita.Hijos)
         {
-            gfx.DrawString("Nombre: "+hijo.NombreHijo, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
+            gfx.DrawString("Nombre: " + hijo.NombreHijo, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
             y += lineHeight;
         }
-        
+
         gfx.DrawString("Hora de entrada: " + visita.HoraEntrada, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
-        gfx.DrawString("Hora de salida: " + DateTime.Now , regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
+        gfx.DrawString("Hora de salida: " + DateTime.Now, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
         gfx.DrawString("Gafete: " + visita.NumeroGafete, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
@@ -149,35 +157,53 @@ public partial class VisitView : ContentPage
         y += lineHeight;
 
         y += 5;
-        gfx.DrawLine(XPens.Black, x, y, width, y);
+        gfx.DrawLine(XPens.Black, x, y, width - 20, y); // Línea horizontal ajustada
         y += 5;
+
+        // Dibujar encabezado de productos y servicios
+        gfx.DrawString("Productos y Servicios", titleFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft);
+
+        // Ajuste de las posiciones de las columnas
+        double precioX = x + 100; // Posición ajustada más cerca y un poco a la izquierda
+        gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
+
+        double totalX = precioX + 30; // Posición ajustada para que "Total" esté cerca de "Precio"
+        gfx.DrawString("Total", titleFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
+        y += lineHeight;
 
         foreach (var servicio in visita.Servicios)
         {
-
-            gfx.DrawString(servicio.ServicioName, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-            double precioX = width + gfx.MeasureString(servicio.Servicio_Precio.ToString("0.00"), regularFont).Width;
-            gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, width, height), XStringFormats.TopRight);
-
+            gfx.DrawString(servicio.ServicioName, regularFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft); // Ajuste ancho de la primera columna
+            gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
+            gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
             y += lineHeight;
+
+            // Ajuste dinámico de la altura de la página
+            if (y > page.Height.Point - 20)
+            {
+                page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
+            }
         }
 
         foreach (var producto in visita.Productos)
         {
-
-            gfx.DrawString(producto.ProductoName, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-            double precioX = width + gfx.MeasureString(producto.precioProductoVisita.ToString("0.00"), regularFont).Width;
-            gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, width, height), XStringFormats.TopRight);
-
+            gfx.DrawString(producto.CantidadProducto, regularFont, XBrushes.Black, new XRect(x, y, 110, height), XStringFormats.TopLeft); // Ajuste ancho de la primera columna
+            gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
+            gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
             y += lineHeight;
+
+            // Ajuste dinámico de la altura de la página
+            if (y > page.Height.Point - 20)
+            {
+                page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
+            }
         }
 
-
         y += 5;
-        gfx.DrawLine(XPens.Black, x, y, width, y);
+        gfx.DrawLine(XPens.Black, x, y, width - 20, y);
         y += 5;
 
-        gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft); ;
+        gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft); ;
 
         document.Save(fileName);
     }
