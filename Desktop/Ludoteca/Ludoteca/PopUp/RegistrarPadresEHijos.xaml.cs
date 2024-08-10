@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Alerts;
 using Entidad;
 using Mopups.Services;
 using Negocio;
+using Resources.Properties;
 
 namespace Ludoteca.PopUp;
 
@@ -98,6 +99,13 @@ public partial class RegistrarPadresEHijos
             return true;
         }
         return false;
+    }
+    private bool ValidarEdad(DateTime fechaNacimiento)
+    {
+        int edad = DateTime.Now.Year - fechaNacimiento.Year;
+        if (fechaNacimiento.Date > DateTime.Now.AddYears(-edad)) edad--;
+
+        return edad >= ApplicationProperties.edadMinima && edad <= ApplicationProperties.edadMaxima;
     }
 
 }

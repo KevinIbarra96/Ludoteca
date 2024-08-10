@@ -16,11 +16,37 @@
         </Grid.RowDefinitions>
 
         <Frame Grid.Row="0" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
-            <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Background="White">
-                <Label Text="Precio por minuto:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
-                <Entry Placeholder="Precio" x:Name="EntryPrecioxMinuto" WidthRequest="100" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"  />
-            </HorizontalStackLayout>
+            <Grid>
+                <!-- Definir dos columnas: una para las edades y otra para el precio -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <!-- Columna para las edades -->
+                    <ColumnDefinition Width="Auto" />
+                    <!-- Columna para el precio -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Stack para Edad mínima y máxima a la izquierda -->
+                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
+                    <Label Text="Edad mínima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Edad" x:Name="EntryEdadMinima" WidthRequest="55" VerticalOptions="Center" TextChanged="EntryEdadMinima_event"/>
+                    <Label Text="Edad máxima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Edad" x:Name="EntryEdadMaxima" WidthRequest="55" VerticalOptions="Center" TextChanged="EntryEdadMaxima_event"/>
+                </HorizontalStackLayout>
+
+                <!-- Stack para Precio por minuto a la derecha -->
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0">
+                    <Label Text="Precio por minuto:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioxMinuto" WidthRequest="100" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"/>
+                </HorizontalStackLayout>
+            </Grid>
         </Frame>
+
+
+
+
+
+
+
 
         <StackLayout Grid.Row="1" BackgroundColor="White">
             <material:TabView>

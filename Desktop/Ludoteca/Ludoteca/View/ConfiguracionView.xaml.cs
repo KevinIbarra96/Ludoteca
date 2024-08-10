@@ -10,7 +10,7 @@ namespace Ludoteca.View;
 public partial class ConfiguracionView : ContentPage
 {
 
-	private EN_Configuracion precioConfiguracion = null;
+	private EN_Configuracion precioConfiguracion = null, edadminimaConfiguration = null, edadMaximaConfiguration = null;
 
 	public ConfiguracionView()
 	{
@@ -19,6 +19,8 @@ public partial class ConfiguracionView : ContentPage
 		InitializeComponent();
 
 		EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ToString();
+		EntryEdadMinima.Text = ApplicationProperties.edadMinima.ToString();
+		EntryEdadMaxima.Text = ApplicationProperties.edadMaxima.ToString();
         
     }
 
@@ -36,11 +38,43 @@ public partial class ConfiguracionView : ContentPage
 			EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(1);
 			precioConfiguracion = responseConfig.Rbody[0];
 			precioConfiguracion.ConfigDecimalValue = double.Parse(EntryPrecioxMinuto.Text);
-			EN_Response<EN_Configuracion> response = await RN_Configuracion.updatePrecioConfiguration(precioConfiguracion);
+			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioConfiguracion);
 
 		}catch (Exception ex)
 		{
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+	private async void EntryEdadMinima_event(object sender,TextChangedEventArgs e)
+	{
+		try
+		{
+            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(2);
+            edadminimaConfiguration = responseConfig.Rbody[0];
+            edadminimaConfiguration.ConfigIntValue = int.Parse(EntryEdadMinima.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadminimaConfiguration);
+        } catch (Exception ex)
+		{
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+
+        }
+
+
+
+    }
+	private async void EntryEdadMaxima_event(object sender, TextChangedEventArgs e)
+	{
+        try
+        {
+            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(3);
+            edadMaximaConfiguration = responseConfig.Rbody[0];
+            edadMaximaConfiguration.ConfigIntValue = int.Parse(EntryEdadMaxima.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadMaximaConfiguration);
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+
         }
     }
 }

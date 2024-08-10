@@ -33,7 +33,6 @@ public partial class Login : ContentPage
                 {
                     // Obtener los datos del usuario de la respuesta
 
-                   
                     var userData = response.Rbody.FirstOrDefault();
                     if (userData != null)
                     {
@@ -50,12 +49,16 @@ public partial class Login : ContentPage
                     }
                     else
                     {
-                        await DisplayAlert("Error", response.Rmessage, "OK");
+                        await DisplayAlert("Error", "No se encontro informacion del usuario", "OK");
                     }
 
-                    
+
                 }
-                
+                else {
+                    await DisplayAlert("Error", response.Rmessage, "OK");
+
+                }
+
             }
             catch (Exception ex)
             {
