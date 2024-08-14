@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             x:Class="Ludoteca.View.ConfiguracionView"
+             xmlns:views="clr-namespace:Ludoteca.View.Configuracion"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
+             xmlns:models="clr-namespace:Ludoteca.Resources.Models"
+             x:Class="Ludoteca.View.ConfiguracionView"             
              Title="Configuracion" BackgroundColor="{StaticResource FrameBackground }">
 
     <Grid Margin="10">
@@ -15,41 +18,94 @@
             <!-- Fila para el Frame inferior -->
         </Grid.RowDefinitions>
 
-        <Frame Grid.Row="0" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
             <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Background="White">
                 <Label Text="Precio por minuto:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                 <Entry Placeholder="Precio" x:Name="EntryPrecioxMinuto" WidthRequest="100" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"  />
             </HorizontalStackLayout>
         </Frame>
 
-        <StackLayout Grid.Row="1" BackgroundColor="White">
+        <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="White">
             <material:TabView>
 
-                <material:TabItem Title="Tab One">
+                <material:TabItem Title="Usuarios Y Roles">
                     <material:TabItem.ContentTemplate>
                         <DataTemplate>
-                            <Label Text="First Tab" />
+                            <views:UsuarioRol />
                         </DataTemplate>
                     </material:TabItem.ContentTemplate>
                 </material:TabItem>
 
-
-                <material:TabItem Title="Tab Two">
+                <material:TabItem Title="Roles y Menu">
                     <material:TabItem.ContentTemplate>
                         <DataTemplate>
-                            <Label Text="Second Tab" />
+                            <views:RolMenu />
                         </DataTemplate>
                     </material:TabItem.ContentTemplate>
                 </material:TabItem>
-
-                <material:TabItem Title="Tab Three">
-                    <material:TabItem.ContentTemplate>
-                        <DataTemplate>
-                            <Label Text="Third Tab" />
-                        </DataTemplate>
-                    </material:TabItem.ContentTemplate>
-                </material:TabItem>
+                                
             </material:TabView>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" Grid.Column="3" BackgroundColor="White" Margin="20,0,0,0">
+            <Grid Padding="5" BackgroundColor="{StaticResource FrameBackground}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Gafete" />
+                    <Label Grid.Column="1" HorizontalOptions="Center" FontAttributes="Bold" Text="Asignado" />
+                    <Label Grid.Column="2" HorizontalOptions="Center" FontAttributes="Bold" Text="Estatus" />
+                
+                    <Label Grid.Column="3" HorizontalOptions="Start" FontAttributes="Bold" Text="Acciones" />
+                    <Label Grid.Column="3" HorizontalOptions="End" Text="{x:Static models:Icons.AddIcon}" Style="{StaticResource MaterialIcon}" TextColor="DarkSeaGreen" >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="AgregarGafete_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <CollectionView SelectionMode="Single" ItemsSource="{Binding Gafetes}" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5" BackgroundColor="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                           
+                            <Label Grid.Column="0" HorizontalOptions="Center" Text="{Binding Numero}" />
+                            <Label Grid.Column="1" HorizontalOptions="Center" Text="{Binding AsignadoString}" />
+
+                            <Label Grid.Column="2" HorizontalOptions="Center" Text="{Binding StatusString}" />
+
+                            <StackLayout Grid.Column="3" Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="Habilitar | DesHabilitar" ToolTipProperties.Text="Habilitar o Deshabilitar Gafete" TextColor="DarkSeaGreen" FontSize="Caption" HeightRequest="20">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="HabilitarYDesHabilitarGafete_Tapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
 
     </Grid>
