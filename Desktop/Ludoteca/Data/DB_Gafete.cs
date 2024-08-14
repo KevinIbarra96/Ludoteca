@@ -33,7 +33,7 @@ namespace Data
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                EN_Response<EN_Gafete> GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(content);
+                GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(content);
             }
 
             return GafeteResponse;
