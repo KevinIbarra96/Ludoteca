@@ -1,7 +1,7 @@
 using Entidad;
 using Negocio;
 using Resources.Properties;
-using CommunityToolkit.Maui.Core;
+using Ludoteca.ViewModel;
 //using CommunityToolkit.Maui.Markup;
 
 
@@ -11,6 +11,7 @@ public partial class ConfiguracionView : ContentPage
 {
 
 	private EN_Configuracion precioConfiguracion = null;
+	private ConfiguracionViewModel viewModel;
 
 	public ConfiguracionView()
 	{
@@ -18,8 +19,11 @@ public partial class ConfiguracionView : ContentPage
 		//Considerar que cuando hay visitas activas no sea posible realizar cambios en el precio por minuto
 		InitializeComponent();
 
+		viewModel = new ConfiguracionViewModel();
+		BindingContext = viewModel;	
+
 		EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ToString();
-        
+		
     }
 
     // Método para manejar el evento de clic
@@ -42,5 +46,15 @@ public partial class ConfiguracionView : ContentPage
 		{
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
+    }
+
+    private void AgregarGafete_Tapped(object sender, TappedEventArgs e)
+    {
+
+    }
+
+    private void HabilitarYDesHabilitarGafete_Tapped(object sender, TappedEventArgs e)
+    {
+
     }
 }
