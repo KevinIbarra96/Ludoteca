@@ -12,7 +12,7 @@ namespace Ludoteca
         public AppShell()
         {            
             InitializeComponent();
-            loadMenu();                                             
+            loadMenu();
         }
 
         private async void loadMenu()
