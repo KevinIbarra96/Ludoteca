@@ -17,14 +17,14 @@ namespace Ludoteca.ViewModel
         public ConfiguracionViewModel() {
 
             Gafetes = new ObservableCollection<EN_Gafete>();
-            getAllGafetes();
+            getAllActiveGafetes();
 
         }
 
-        private async void getAllGafetes()
+        private async void getAllActiveGafetes()
         {
 
-            var gafeteResponse = await RN_Gafete.getAllGafete();
+            var gafeteResponse = await RN_Gafete.getAllActiveGafete();
 
             foreach (EN_Gafete en in gafeteResponse.Rbody)
             {

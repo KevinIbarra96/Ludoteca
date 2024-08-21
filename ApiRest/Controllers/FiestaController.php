@@ -6,26 +6,26 @@
     //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
-    require_once($ProjectPath.'/Services/RolService.php');
+    require_once($ProjectPath.'/Services/FiestaService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
 
-    class RolController{
+    class FiestaController{
 
         function home(){
-            echo 'Rol Controller Home';
+            echo 'Fiesta Controller Home';
         }
 
-        function getAllRol(){
+        function getAllFiesta(){
 
             $Response = new ResponseModel();
 
             try{            
                 $database = new Connection();
-                $RolSvc = new RolService();
-                $Response->Rbody = $RolSvc->getAll();
+                $FiestaSvc = new FiestaService();
+                $Response->Rbody = $FiestaSvc->getAll();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "All Rol listed";
+                $Response->Rmessage = "All Fiesta listed";
                                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -36,20 +36,20 @@
                 echo json_encode($Response);
             }
             /*echo '<prev>';
-                var_dump($Rol);
+                var_dump($Fiesta);
             echo '</prev>';*/
 
-            function getAllActiveRol(){
+            function getAllActiveFiesta(){
 
                 $Response = new ResponseModel();
     
                 try{            
                     $database = new Connection();
-                    $RolSvc = new RolService();
-                    $Response->Rbody = $RolSvc->getAllActive();
+                    $FiestaSvc = new FiestaService();
+                    $Response->Rbody = $FiestaSvc->getAllActive();
     
                     $Response->Rcode = 200;
-                    $Response->Rmessage = "All Rol listed";
+                    $Response->Rmessage = "All Fiesta listed";
                                     
                 }catch(Exception $ex){
                     $Response->Rcode = 402;
@@ -60,23 +60,23 @@
                     echo json_encode($Response);
                 }
                 /*echo '<prev>';
-                    var_dump($Rol);
+                    var_dump($Fiesta);
                 echo '</prev>';*/
             }
         }
 
-        function getRolById(){
+        function getFiestaById(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $RolSvc = new RolService();
-                $Response->Rbody = $RolSvc->getById($BodyRequest['id']);
+                $FiestaSvc = new FiestaService();
+                $Response->Rbody = $FiestaSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Rol Founded";
+                $Response->Rmessage = "Fiesta Founded";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -86,24 +86,24 @@
                 echo json_encode($Response);
             }
         }
-        function addNewRol(){
+        function addNewFiesta(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'RolName' =>$BodyRequest['RolName'],
+                    'FiestaName' =>$BodyRequest['FiestaName'],
                     'status' =>$BodyRequest['status'],
                 ];
 
                 $database = new Connection();
-                $RolSvc = new RolService();
-                $RolSvc->new($dataBody);
+                $FiestaSvc = new FiestaService();
+                $FiestaSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Rol created";
+                $Response->Rmessage = "Fiesta created";
 
                 
             }catch(Exception $ex){
@@ -114,24 +114,24 @@
                 echo json_encode($Response);
             }
         }
-        function editRol(){
+        function editFiesta(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'RolName' =>$BodyRequest['RolName'],
+                    'FiestaName' =>$BodyRequest['FiestaName'],
                     'status' =>$BodyRequest['status'],
                 ];
 
                 $database = new Connection();
-                $RolSvc = new RolService();
-                $RolSvc->update($BodyRequest['id'],$dataBody);
+                $FiestaSvc = new FiestaService();
+                $FiestaSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Rol Updated";
+                $Response->Rmessage = "Fiesta Updated";
 
                 
             }catch(Exception $ex){
@@ -142,17 +142,17 @@
                 echo json_encode($Response);
             }
         }
-        function deleteRol(){
+        function deleteFiesta(){
             $Response = new ResponseModel();
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $RolSvc = new RolService();
-                $RolSvc->delete($BodyRequest['id']);
+                $FiestaSvc = new FiestaService();
+                $FiestaSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Rol Deleted";
+                $Response->Rmessage = "Fiesta Deleted";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;

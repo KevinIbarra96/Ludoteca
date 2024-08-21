@@ -14,6 +14,10 @@ namespace Negocio
         {
             return await DB_Users.getAllUsers();
         }
+        public static async Task<List<EN_User>> RN_GetAllActiveUsers()
+        {
+            return await DB_Users.getAllActiveUsers();
+        }
         public static async Task<List<EN_User>> RN_GetUserByID(int _id)
         {
             return await DB_Users.getUserByID(_id);

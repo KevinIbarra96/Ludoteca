@@ -1,9 +1,9 @@
 <?php
 
 $pt = explode('\\',__DIR__);
-//$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+//$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
 require_once($ProjectPath.'/Database/conexion.php');
 require_once($ProjectPath.'/Services/PadreService.php');
@@ -43,6 +43,27 @@ class PadresController {
             $database = new Connection();
             $padreSvc = new PadreService();
             $Response->Rbody = $padreSvc->getAll();
+            $database->closeConection();
+
+            $Response->Rcode = 200;
+            $Response->Rmessage = "All Padres listed correctly";
+        }catch(Exception $ex){
+            $Response->Rcode = 402;
+            $Response->Rmessage= $ex->getMessage();
+            $Response->RerrorCode = $ex->getCode();
+
+        } finally{
+            echo json_encode($Response);
+        }
+
+    }
+
+    function getAllActivePadres(){
+        $Response = new ResponseModel();
+        try{
+            $database = new Connection();
+            $padreSvc = new PadreService();
+            $Response->Rbody = $padreSvc->getAllActive();
             $database->closeConection();
 
             $Response->Rcode = 200;

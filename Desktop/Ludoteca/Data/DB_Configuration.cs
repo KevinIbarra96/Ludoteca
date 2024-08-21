@@ -24,6 +24,21 @@ namespace Data
 
             return ConfiguracionResponse;
         }
+        public static async Task<EN_Response<EN_Configuracion>> getAllActiveConfiguracion()
+        {
+            ConfiguracionResponse = null;
+            string _endPoint = _apiPath + "/getAllActiveConfiguracion";
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                EN_Response<EN_Configuracion> ConfiguracionResponse = JsonConvert.DeserializeObject<EN_Response<EN_Configuracion>>(content);
+            }
+
+            return ConfiguracionResponse;
+        }
 
         public static async Task<EN_Response<EN_Configuracion>> getConfigurationById(int _id)
         {

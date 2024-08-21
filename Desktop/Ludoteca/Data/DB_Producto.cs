@@ -58,6 +58,25 @@ namespace Data
             return ProductosResponse;
         }
 
+        public static async Task<List<EN_Producto>> getAllActiveProductos()
+        {
+            ProductosResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveProductos"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Producto> ProductoRes = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(content);
+
+                ProductosResponse = ProductoRes.Rbody;
+
+            }
+            return ProductosResponse;
+        }
+
         public static async Task<List<EN_Producto>> getProductoById(int _id)
         {
 

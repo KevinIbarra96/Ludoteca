@@ -44,7 +44,7 @@ namespace Ludoteca.ViewModel
         {
             SsrviciosInmutble.Clear();
             servicios.Clear();
-            foreach (var servicio in await RN_Servicio.RN_GetAllServicios())
+            foreach (var servicio in await RN_Servicio.RN_GetAllActiveServicios())
             {
                 addServiciosToCollection(servicio);
             }

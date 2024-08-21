@@ -61,6 +61,31 @@
             echo '</prev>';*/
         }
 
+        function getAllActiveGafete(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $GafeteSvc = new GafeteService();
+                $Response->Rbody = $GafeteSvc->getAllActive();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Gafete listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Gafete);
+            echo '</prev>';*/
+        }
+
         function getGafeteById(){
             $Response = new ResponseModel();
 

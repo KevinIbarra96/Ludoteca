@@ -12,10 +12,17 @@
         }
 
         public function getAll(){
+            $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} ");
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllActive(){
             $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} where status = 1");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
+
         public function getById($idget){
             $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} where status = 1 and id = $idget");
             $stm->execute();

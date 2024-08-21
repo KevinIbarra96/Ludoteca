@@ -36,6 +36,17 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
 INSERT INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStringValue`, `ConfigBoolValue`, `ConfigIntValue`, `ConfigDecimalValue`, `status`) VALUES
 	(1, 'PrecioMinuto', 'Precio de cada minuto', NULL, NULL, NULL, 1.12, 1);
 
+-- Volcando estructura para tabla ludotecadb.fiestas
+CREATE TABLE IF NOT EXISTS `fiestas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `FiestaName` varchar(45) DEFAULT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  `Precio` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla ludotecadb.fiestas: ~0 rows (aproximadamente)
+
 -- Volcando estructura para tabla ludotecadb.gafetes
 CREATE TABLE IF NOT EXISTS `gafetes` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -119,13 +130,14 @@ CREATE TABLE IF NOT EXISTS `ofertas` (
   `OfertaName` varchar(45) DEFAULT NULL,
   `Descripcion` varchar(250) DEFAULT NULL,
   `Tiempo` int DEFAULT NULL,
+  `totalDescuento` double DEFAULT NULL,
   `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla ludotecadb.ofertas: ~0 rows (aproximadamente)
-INSERT INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `status`) VALUES
-	(1, 'Sin Oferta', 'Opcion de oferta desiganada para no tener ofertas', 0, 1);
+-- Volcando datos para la tabla ludotecadb.ofertas: ~1 rows (aproximadamente)
+INSERT INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescuento`, `status`) VALUES
+	(1, 'Sin Oferta', 'Opcion de oferta desiganada para no tener ofertas', 0, 0, 1);
 
 -- Volcando estructura para tabla ludotecadb.padres
 CREATE TABLE IF NOT EXISTS `padres` (

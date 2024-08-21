@@ -19,6 +19,10 @@ namespace Negocio
         {
             return await DB_Menu.getAllMenu();
         }
+        public static async Task<List<EN_Menu>> getAllActiveMenu()
+        {
+            return await DB_Menu.getAllActiveMenu();
+        }
         public static async Task<List<EN_Menu>> RN_GetMenuByID(int _id)
         {
             return await DB_Menu.getMenuById(_id);

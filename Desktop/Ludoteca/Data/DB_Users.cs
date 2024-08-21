@@ -54,7 +54,26 @@ namespace Data
             }
             return usersResponse;
         }
-    
+
+        public static async Task<List<EN_User>> getAllActiveUsers()
+        {
+            usersResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveUsers"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_User> userRes = JsonConvert.DeserializeObject<EN_Response<EN_User>>(content);
+
+                usersResponse = userRes.Rbody;
+
+            }
+            return usersResponse;
+        }
+
         public static async Task<List<EN_User>> getUserByID(int _id)
         {
             

@@ -18,6 +18,10 @@ namespace Negocio
         {
             return await DB_Servicio.getAllServicios();
         }
+        public static async Task<List<EN_Servicio>> RN_GetAllActiveServicios()
+        {
+            return await DB_Servicio.getAllActiveServicios();
+        }
         public static async Task<List<EN_Servicio>> RN_GetServicioByID(int _id)
         {
             return await DB_Servicio.getServiciosById(_id);

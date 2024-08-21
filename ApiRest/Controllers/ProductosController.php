@@ -1,8 +1,8 @@
 <?php
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/ProductoService.php');
@@ -18,11 +18,18 @@
             $Response = new ResponseModel();
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'id' =>$BodyRequest['id'],
+                    'Cantidad' => $BodyRequest['Cantidad']
+                ];
+
                 $database = new Connection();
                 $productoSvc = new ProductoService();
 
-                $database->closeConection();
+                $productoSvc->increaseCantidadProduct($dataBody["id"], $dataBody["Cantidad"] );
 
+                $database->closeConection();
                 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "Cantidad incrementada correctamente";
@@ -44,6 +51,29 @@
                 $database = new Connection();
                 $productoSvc = new ProductoService();
                 $Response->Rbody = $productoSvc->getAll();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Productos listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            
+        }
+
+        function getAllActiveProductos(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $productoSvc = new ProductoService();
+                $Response->Rbody = $productoSvc->getAllActive();
                 $database->closeConection();
 
                 $Response->Rcode = 200;
