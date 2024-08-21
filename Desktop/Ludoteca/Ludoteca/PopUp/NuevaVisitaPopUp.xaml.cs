@@ -224,8 +224,8 @@ public partial class NuevaVisitaPopUp
     private async void getAllProductos()
     {
         try { 
-            List<EN_Producto> prod= await RN_Producto.RN_GetAllProductos();
-            ProductosCollectionView.ItemsSource = await RN_Producto.RN_GetAllProductos();
+            List<EN_Producto> prod= await RN_Producto.RN_GetAllActiveProductos();
+            ProductosCollectionView.ItemsSource = await RN_Producto.RN_GetAllActiveProductos();
         }
         catch (Exception ex)
         {
@@ -235,8 +235,8 @@ public partial class NuevaVisitaPopUp
     private async void getAllServicios()
     {
         try { 
-            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllServicios();
-            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllServicios();
+            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllActiveServicios();
+            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllActiveServicios();
         }
         catch (Exception ex)
         {

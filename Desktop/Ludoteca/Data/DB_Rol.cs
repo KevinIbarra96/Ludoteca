@@ -32,6 +32,25 @@ namespace Data
             return RolsResponse;
         }
 
+        public static async Task<List<EN_Rol>> getAllActiveRol()
+        {
+            RolsResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveRol"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Rol> RolRes = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);
+
+                RolsResponse = RolRes.Rbody;
+
+            }
+            return RolsResponse;
+        }
+
         public static async Task<List<EN_Rol>> getRolById(int _id)
         {
 

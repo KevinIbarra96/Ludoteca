@@ -26,8 +26,8 @@ public partial class ServicioList
     {
         try
         {
-            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllServicios();
-            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllServicios();
+            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllActiveServicios();
+            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllActiveServicios();
         }
         catch (Exception ex)
         {

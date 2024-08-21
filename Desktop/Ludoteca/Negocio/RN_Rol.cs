@@ -14,6 +14,10 @@ namespace Negocio
         {
             return await DB_Rol.getAllRol();
         }
+        public static async Task<List<EN_Rol>> RN_GetAllActiveRols()
+        {
+            return await DB_Rol.getAllActiveRol();
+        }
         public static async Task<List<EN_Rol>> RN_GetRolByID(int _id)
         {
             return await DB_Rol.getRolById(_id);

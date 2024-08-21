@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -17,6 +12,25 @@ namespace Data
         {
             OfertasResponse = null;
             string _enPoint = _apiPath + "/getAllOfertas"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Oferta> OfertaRes = JsonConvert.DeserializeObject<EN_Response<EN_Oferta>>(content);
+
+                OfertasResponse = OfertaRes.Rbody;
+
+            }
+            return OfertasResponse;
+        }
+
+        public static async Task<List<EN_Oferta>> getAllActiveOfertas()
+        {
+            OfertasResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveOfertas"; //Adding endpoint to path
 
             using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
 

@@ -12,6 +12,7 @@ namespace Entidad
         public string OfertaName { get; set; }
         public string Descripcion { get; set; }
         public int Tiempo { get; set; } //Time in minutes.
+        public double totalDescuento { get; set; }
         public int status { get; set; } 
     }
 }

@@ -58,6 +58,25 @@ namespace Data
             return ServiciosResponse;
         }
 
+        public static async Task<List<EN_Servicio>> getAllActiveServicios()
+        {
+            ServiciosResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveServicios"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Servicio> ServicioRes = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(content);
+
+                ServiciosResponse = ServicioRes.Rbody;
+
+            }
+            return ServiciosResponse;
+        }
+
         public static async Task<List<EN_Servicio>> getServiciosById(int _id)
         {
 

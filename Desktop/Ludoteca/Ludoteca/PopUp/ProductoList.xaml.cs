@@ -27,8 +27,8 @@ public partial class ProductoList
     {
         try
         {
-            List<EN_Producto> prod = await RN_Producto.RN_GetAllProductos();
-            ProductosCollectionView.ItemsSource = await RN_Producto.RN_GetAllProductos();
+            List<EN_Producto> prod = await RN_Producto.RN_GetAllActiveProductos();
+            ProductosCollectionView.ItemsSource = await RN_Producto.RN_GetAllActiveProductos();
         }
         catch (Exception ex)
         {
