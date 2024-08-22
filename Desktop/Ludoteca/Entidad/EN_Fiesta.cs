@@ -13,6 +13,7 @@ namespace Entidad
         private string _fiestaName;
         private string _description;
         private double _precio;
+        private int _status;
 
         public string FiestaName
         {
@@ -37,6 +38,15 @@ namespace Entidad
             {
                 _precio = value;
                 OnPropertyChanged(nameof(Precio));
+            }
+        }
+        public int status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(status));
             }
         }
 
