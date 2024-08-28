@@ -15,6 +15,17 @@
             <Button Text="Agregar" ToolTipProperties.Text="Agrega nueva oferta" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" />
             <!-- Barra de búsqueda -->
             <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
+            <Picker Title="Select a monkey">
+                <Picker.Items>
+                    <x:String>Baboon</x:String>
+                    <x:String>Capuchin Monkey</x:String>
+                    <x:String>Blue Monkey</x:String>
+                    <x:String>Squirrel Monkey</x:String>
+                    <x:String>Golden Lion Tamarin</x:String>
+                    <x:String>Howler Monkey</x:String>
+                    <x:String>Japanese Macaque</x:String>
+                </Picker.Items>
+            </Picker>
         </HorizontalStackLayout>
         <!-- Encabezados fijos -->
         <Grid BackgroundColor="{StaticResource FrameBackground}">

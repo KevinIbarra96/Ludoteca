@@ -13,5 +13,6 @@ namespace Entidad
         public string Path { get; set; }
         public string ClassName { get; set; }
         public int MenuOrder { get; set; }
+        public string IconName { get; set; }
     }
 }

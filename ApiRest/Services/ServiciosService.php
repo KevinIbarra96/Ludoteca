@@ -9,7 +9,7 @@
         public function __construct(){
             $dataBase = new Connection();
             //Las columnas son solo para los methodos get osease los select que traen la info de la base de datos
-            parent::__construct('servicios','id, ServicioName, Descripcion, Precio, Tiempo',$dataBase->getConnection());
+            parent::__construct('servicios','id, ServicioName, Descripcion, Precio, Tiempo,IdTipoServicio',$dataBase->getConnection());
         }
 
         function newVisitaServicios($idVisita,$Servicios){

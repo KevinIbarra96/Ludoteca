@@ -38,8 +38,8 @@
             /*echo '<prev>';
                 var_dump($Fiesta);
             echo '</prev>';*/
-
-            function getAllActiveFiesta(){
+        }
+        function getAllActiveFiesta(){
 
                 $Response = new ResponseModel();
     
@@ -63,7 +63,6 @@
                     var_dump($Fiesta);
                 echo '</prev>';*/
             }
-        }
 
         function getFiestaById(){
             $Response = new ResponseModel();
