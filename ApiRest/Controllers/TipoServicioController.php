@@ -6,51 +6,26 @@
     //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
-    require_once($ProjectPath.'/Services/OfertasService.php');
+    require_once($ProjectPath.'/Services/TipoServicioService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
 
-    class OfertasController{
+    class TipoServicioController{
 
         function home(){
-            echo 'Ofertas Controller Home';
+            echo 'TipoServicio Controller Home';
         }
 
-        function getAllOfertas(){
+        function getAllTipoServicio(){
 
             $Response = new ResponseModel();
 
             try{            
                 $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $Response->Rbody = $OfertasSvc->getAll();
+                $TipoServicioSvc = new TipoServicioService();
+                $Response->Rbody = $TipoServicioSvc->getAll();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "All Ofertas listed";
-                                
-            }catch(Exception $ex){
-                $Response->Rcode = 402;-
-                $Response->Rmessage = $ex->getMessage();
-                $Response->RerrorCode = $ex->getCode();
-            }finally{
-                $database->closeConection();
-                echo json_encode($Response);
-            }
-            /*echo '<prev>';
-                var_dump($Ofertas);
-            echo '</prev>';*/
-        }
-
-        function getAllActiveOfertas(){
-
-            $Response = new ResponseModel();
-
-            try{            
-                $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $Response->Rbody = $OfertasSvc->getAll();
-
-                $Response->Rcode = 200;
-                $Response->Rmessage = "All Ofertas listed";
+                $Response->Rmessage = "All TipoServicio listed";
                                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -61,22 +36,46 @@
                 echo json_encode($Response);
             }
             /*echo '<prev>';
-                var_dump($Ofertas);
+                var_dump($TipoServicio);
             echo '</prev>';*/
         }
+        function getAllActiveTipoServicio(){
 
-        function getOfertasById(){
+                $Response = new ResponseModel();
+    
+                try{            
+                    $database = new Connection();
+                    $TipoServicioSvc = new TipoServicioService();
+                    $Response->Rbody = $TipoServicioSvc->getAllActive();
+    
+                    $Response->Rcode = 200;
+                    $Response->Rmessage = "All TipoServicio listed";
+                                    
+                }catch(Exception $ex){
+                    $Response->Rcode = 402;
+                    $Response->Rmessage = $ex->getMessage();
+                    $Response->RerrorCode = $ex->getCode();
+                }finally{
+                    $database->closeConection();
+                    echo json_encode($Response);
+                }
+                /*echo '<prev>';
+                    var_dump($TipoServicio);
+                echo '</prev>';*/
+            }
+
+        function getTipoServicioById(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $Response->Rbody = $OfertasSvc->getById($BodyRequest['id']);
+                $TipoServicioSvc = new TipoServicioService();
+                $Response->Rbody = $TipoServicioSvc->getById($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Ofertas Founded";
+                $Response->Rmessage = "TipoServicio Founded";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -86,26 +85,24 @@
                 echo json_encode($Response);
             }
         }
-        function addNewOfertas(){
+        function addNewTipoServicio(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'OfertaName' =>$BodyRequest['OfertaName'],
-                    'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'TipoServicioName' =>$BodyRequest['TipoServicioName'],
+                    'status' =>$BodyRequest['status'],
                 ];
 
                 $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $OfertasSvc->new($dataBody);
+                $TipoServicioSvc = new TipoServicioService();
+                $TipoServicioSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Ofertas created";
+                $Response->Rmessage = "TipoServicio created";
 
                 
             }catch(Exception $ex){
@@ -116,26 +113,24 @@
                 echo json_encode($Response);
             }
         }
-        function editOfertas(){
+        function editTipoServicio(){
             $Response = new ResponseModel();
 
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'OfertaName' =>$BodyRequest['OfertaName'],
-                    'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'TipoServicioName' =>$BodyRequest['TipoServicioName'],
+                    'status' =>$BodyRequest['status'],
                 ];
 
                 $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $OfertasSvc->update($BodyRequest['id'],$dataBody);
+                $TipoServicioSvc = new TipoServicioService();
+                $TipoServicioSvc->update($BodyRequest['id'],$dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Ofertas Updated";
+                $Response->Rmessage = "TipoServicio Updated";
 
                 
             }catch(Exception $ex){
@@ -146,17 +141,17 @@
                 echo json_encode($Response);
             }
         }
-        function deleteOfertas(){
+        function deleteTipoServicio(){
             $Response = new ResponseModel();
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
                 $database = new Connection();
-                $OfertasSvc = new OfertasService();
-                $OfertasSvc->delete($BodyRequest['id']);
+                $TipoServicioSvc = new TipoServicioService();
+                $TipoServicioSvc->delete($BodyRequest['id']);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Ofertas Deleted";
+                $Response->Rmessage = "TipoServicio Deleted";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;

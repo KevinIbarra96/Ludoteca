@@ -6,4 +6,14 @@ public partial class OfertasView : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void EditarOferta_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private void Agregar_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }

@@ -24,9 +24,7 @@ namespace Data
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRes = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(content);
-
-                FiestaResponse.Rbody = FiestaRes.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(content);
 
             }
             return FiestaResponse;
@@ -43,9 +41,7 @@ namespace Data
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRes = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(content);
-
-                FiestaResponse.Rbody = FiestaRes.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(content);
 
             }
             return FiestaResponse;
@@ -70,8 +66,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRest = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
-                FiestaResponse.Rbody = FiestaRest.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
             }
 
             return FiestaResponse;
@@ -96,8 +91,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRest = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
-                FiestaResponse.Rbody = FiestaRest.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
             }
 
             return FiestaResponse;
@@ -122,8 +116,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRest = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
-                FiestaResponse.Rbody = FiestaRest.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
             }
 
             return FiestaResponse;
@@ -148,8 +141,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Fiesta> FiestaRest = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
-                FiestaResponse.Rbody = FiestaRest.Rbody;
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<EN_Fiesta>>(result);
             }
 
             return FiestaResponse;

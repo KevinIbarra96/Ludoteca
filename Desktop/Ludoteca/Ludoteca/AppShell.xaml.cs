@@ -3,6 +3,8 @@ using Ludoteca.View;
 using Negocio;
 using System;
 using Ludoteca.Resources;
+using System.Reflection.Metadata;
+using Ludoteca.Resources.Models;
 
 namespace Ludoteca
 {
@@ -23,6 +25,7 @@ namespace Ludoteca
             {
                 ShellContent me = new ShellContent();
                 me.Title = menu.MenuName;
+                me.Icon = menu.IconName;
                 me.ContentTemplate = new DataTemplate(Type.GetType(menu.Path)) ;
                 me.Route = menu.ClassName;
 

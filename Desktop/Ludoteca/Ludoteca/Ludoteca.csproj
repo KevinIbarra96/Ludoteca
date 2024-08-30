@@ -136,4 +136,12 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Iconos\configuracion_icon.JPG" />
+	  <MauiImage Include="Resources\Images\Iconos\fiesta_icon.jpg" />
+	  <MauiImage Include="Resources\Images\Iconos\home_icon.jpg" />
+	  <MauiImage Include="Resources\Images\Iconos\inventario_icon.jpg" />
+	  <MauiImage Include="Resources\Images\Iconos\visitas_icon.JPG" />
+	</ItemGroup>
+
 </Project>

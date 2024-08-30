@@ -15,7 +15,8 @@
                                                         c.MenuName,
                                                         c.ClassName,
                                                         c.Path,
-                                                        c.MenuOrder
+                                                        c.MenuOrder,
+                                                        C.IconName
                                                    from rol_menu as a
                                              inner join rol as b on a.id_Rol = b.id
                                              inner join menu as c on a.id_Menu = c.id

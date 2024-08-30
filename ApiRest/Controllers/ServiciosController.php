@@ -27,7 +27,7 @@
                 $ServiciosSvc->setNewPrecio($BodyRequest['id'],$BodyRequest['Precio']);
                 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Se actualizó el precio correctamente";                        
+                $Response->Rmessage = "Se actualizó el precio correctamente";
 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -120,7 +120,8 @@
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Precio' =>$BodyRequest['Precio']
+                    'Precio' =>$BodyRequest['Precio'],
+                    'IdTipoServicio' =>$BodyRequest['IdTipoServicio']
                 ];
 
                 $database = new Connection();
@@ -150,7 +151,8 @@
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Precio' =>$BodyRequest['Precio']
+                    'Precio' =>$BodyRequest['Precio'],
+                    'IdTipoServicio' =>$BodyRequest['IdTipoServicio']
                 ];
 
                 $database = new Connection();
