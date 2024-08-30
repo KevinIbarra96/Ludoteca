@@ -66,7 +66,7 @@ namespace Data
 
         }
 
-        public static async Task<EN_Response<EN_Configuracion>> updatePrecioConfiguration(EN_Configuracion _configuration)
+        public static async Task<EN_Response<EN_Configuracion>> updateConfigurationValues(EN_Configuracion _configuration)
         {
             ConfiguracionResponse = null;
 

@@ -15,7 +15,6 @@ namespace Ludoteca
         {
 
             InitializeComponent();
-
         }
         public async void OnCerrarSesionClicked(object sender, EventArgs e)
         {
@@ -28,6 +27,7 @@ namespace Ludoteca
             // Redirigir a la página principal de la aplicación
             App.Current.MainPage = new Login();
         }
+
     
 
     

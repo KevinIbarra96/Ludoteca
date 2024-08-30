@@ -26,10 +26,10 @@ public partial class ConfiguracionView : ContentPage
 		
     }
 
-    // Método para manejar el evento de clic
+    // MÃ©todo para manejar el evento de clic
     private void OnButtonClicked(object sender, EventArgs e)
     {
-        DisplayAlert("Alerta", "Botón clicado", "OK");
+        DisplayAlert("Alerta", "BotÃ³n clicado", "OK");
     }
 
     private async void EntryPrecioxMinuto_TextChanged(object sender, TextChangedEventArgs e)
@@ -40,7 +40,7 @@ public partial class ConfiguracionView : ContentPage
 			EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(1);
 			precioConfiguracion = responseConfig.Rbody[0];
 			precioConfiguracion.ConfigDecimalValue = double.Parse(EntryPrecioxMinuto.Text);
-			EN_Response<EN_Configuracion> response = await RN_Configuracion.updatePrecioConfiguration(precioConfiguracion);
+			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioConfiguracion);
 
 		}catch (Exception ex)
 		{

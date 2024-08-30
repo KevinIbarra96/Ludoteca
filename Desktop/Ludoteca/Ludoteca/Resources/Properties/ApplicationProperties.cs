@@ -10,6 +10,8 @@ namespace Resources.Properties
     {
 
         public static double precioXMinute;
+        public static int? edadMinima;
+        public static int? edadMaxima;
 
     }
 }
