@@ -66,6 +66,7 @@ namespace Ludoteca.Resources
             catch (Exception ex)
             {
                 Console.WriteLine("Error al guardar la sesión: " + ex.Message);
+                
             }
         }
 

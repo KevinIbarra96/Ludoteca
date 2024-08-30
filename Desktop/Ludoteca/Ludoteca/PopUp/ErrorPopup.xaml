@@ -1,11 +1,45 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ludoteca.PopUp.ErrorPopup">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
-</ContentView>
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="Ludoteca.PopUp.ErrorPopup"
+             Title="ErrorPopup" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
+
+    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+        <Frame WidthRequest="700" HeightRequest="350" BackgroundColor="White" HorizontalOptions="Center"
+               Padding="20" HasShadow="True" CornerRadius="15" BorderColor="#E0E0E0">
+
+            <VerticalStackLayout Spacing="3" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" Margin="20">
+
+                <Label Text="¡Error!" VerticalOptions="Center" Margin="0,0,0,5" FontSize="25" />
+
+                <Image Source="warning_icon.png" WidthRequest="60" HeightRequest="60" 
+                       HorizontalOptions="Center" />
+
+                <!-- Tipo de Error -->
+                <Label Text="Tipo Error" VerticalOptions="Start" />
+                <Label x:Name="TitleErrorLabel" HorizontalOptions="Start"/>
+
+                <!-- Mensaje de error detallado -->
+                <Label Text="Detalle del Error" VerticalOptions="Start" />
+                <Label x:Name="ErrorDetailLabel" HorizontalOptions="Start"/>
+
+                <!-- Botones -->
+                <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Spacing="5">
+                    <Button x:Name="BtnOk" Text="Aceptar" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"
+                            BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                            CornerRadius="8" Margin="5" Padding="5" FontSize="16" FontFamily="OpenSans" WidthRequest="180" Clicked="BtnOk_Clicked"/>
+
+                    <Button x:Name="BtnIntentarDeNuevo" Text="Reintentar" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"
+                            BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                            CornerRadius="8" Margin="5" Padding="5" FontSize="16" FontFamily="OpenSans" WidthRequest="180" Clicked="BtnIntentarDeNuevo_Clicked"/>
+
+                    <Button x:Name="BtnCancelar" Text="Cancelar" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"
+                            BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                            CornerRadius="8" Margin="5" Padding="5" FontSize="16" FontFamily="OpenSans" WidthRequest="180" Clicked="BtnCancelar_Clicked"/>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
+
+</mopups:PopupPage>
