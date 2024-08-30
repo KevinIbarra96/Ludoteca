@@ -19,6 +19,10 @@ namespace Negocio
         {
             return await DB_Padre.getAllPadres();
         }
+        public static async Task<List<EN_Padre>> getAllActivePadres()
+        {
+            return await DB_Padre.getAllActivePadres();
+        }
         public static async Task<List<EN_Padre>> RN_GetPadreByID(int _id)
         {
             return await DB_Padre.getPadreById(_id);

@@ -9,6 +9,10 @@ namespace Negocio
         {
             return await DB_Oferta.getAllOfertas();
         }
+        public static async Task<List<EN_Oferta>> getAllActiveOfertas()
+        {
+            return await DB_Oferta.getAllActiveOfertas();
+        }
         public static async Task<List<EN_Oferta>> RN_GetOfertaByID(int _id)
         {
             return await DB_Oferta.getOfertasById(_id);

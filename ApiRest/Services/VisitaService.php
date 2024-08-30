@@ -16,19 +16,37 @@
             parent::__construct('visitas','Hijo,Servicio,Productos,HoraEntrada,HoraSalida,Oferta, status',$database->getConnection());
         }
 
-        function cobrarVisitas($idVisita,$total,$idGafete){
-            $stm = $this->DbConection->prepare("update visitas set HoraSalida = NOW(),status =0,Total=:Total where id=:idVisita");
+        function cobrarVisitas($idVisita,$total,$idGafete,$Productos,$TiempoExcedido){
+            $stm = $this->DbConection->prepare("update visitas set HoraSalida = NOW(),status =0,Total=:Total,TiempoExcedido=:TiempoExcedido where id=:idVisita");
             $stm->bindValue(':idVisita', $idVisita, PDO::PARAM_INT);
             $stm->bindValue(':Total', $total, PDO::PARAM_INT);
+            $stm->bindValue(':TiempoExcedido', $TiempoExcedido, PDO::PARAM_INT);
             $stm->execute();
             
             $GS = new GafeteService();
+            $PS = new ProductoService();
+            
             $GS->updateAsNotAsignado($idGafete);
+            $PS->DecreaseCantidadProductCobrado($Productos);
         }
+
+        function addServicioToVisita($idVisita,$servicios){
+
+            $SS = new ServiciosService();
+            $SS->newVisitaServicios($idVisita,$servicios);
+
+        }
+
+        function addProductoToVisita($idVisita,$productos){
+            
+            $PS = new ProductoService();
+            $PS->newVisitaProducto($idVisita,$productos);
+
+        }
+
 
         function ingresarVisita($visita){
             $HS = new HijoService();
-            $PadreS = new PadreService();
             $PS = new ProductoService();
             $SS = new ServiciosService();
             $GS = new GafeteService();
@@ -69,7 +87,8 @@
                                                          a.HoraSalida,
                                                          a.GafeteId,
                                                          A.NumeroGafete,
-                                                         b.OfertaName
+                                                         b.OfertaName,
+                                                         a.TiempoExcedido
                                                     from visitas as a
                                               inner join ofertas as b on b.id = a.Oferta
                                                    where a.status = 1;");

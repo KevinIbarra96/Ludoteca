@@ -33,6 +33,25 @@ namespace Data
             return MenusResponse;
         }
 
+        public static async Task<List<EN_Menu>> getAllActiveMenu()
+        {
+            MenusResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveMenu"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Menu> MenuRes = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(content);
+
+                MenusResponse = MenuRes.Rbody;
+
+            }
+            return MenusResponse;
+        }
+
         public static async Task<List<EN_Menu>> getMenuById(int _id)
         {
 

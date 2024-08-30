@@ -36,7 +36,7 @@
                 $Response->RerrorCode = $ex->getCode();
             }finally{
                 echo json_encode($Response);
-            }            
+            }
         }
 
         function getAllUsers(){
@@ -47,6 +47,31 @@
                 $database = new Connection();
                 $userSvc = new UserService();
                 $Response->Rbody = $userSvc->getAll();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All User listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Users);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveUsers(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $userSvc = new UserService();
+                $Response->Rbody = $userSvc->getAllActive();
                 $database->closeConection();
 
                 $Response->Rcode = 200;

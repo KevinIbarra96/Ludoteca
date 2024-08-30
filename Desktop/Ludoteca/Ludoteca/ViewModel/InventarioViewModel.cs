@@ -46,7 +46,7 @@ namespace Ludoteca.ViewModel
         {
             ProductInmutable.Clear();
             Productos.Clear();
-            foreach(var producto in await RN_Producto.RN_GetAllProductos())
+            foreach(var producto in await RN_Producto.RN_GetAllActiveProductos())
             {
                 addProductToCollection(producto);
             }

@@ -10,6 +10,10 @@ namespace Negocio
         {
             return await DB_Configuracion.getAllConfiguracion();
         }
+        public static async Task<EN_Response<EN_Configuracion>> getAllActiveConfiguracion()
+        {
+            return await DB_Configuracion.getAllActiveConfiguracion();
+        }
         public static async Task<EN_Response<EN_Configuracion>> getConfigurationById(int _id)
         {
             return await DB_Configuracion.getConfigurationById(_id);

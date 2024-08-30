@@ -59,6 +59,25 @@ namespace Data
             return PadresResponse;
         }
 
+        public static async Task<List<EN_Padre>> getAllActivePadres()
+        {
+            PadresResponse = null;
+            string _endPoint = _apiPath + "/getAllActivePadres"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Padre> PadreRes = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(content);
+
+                PadresResponse = PadreRes.Rbody;
+
+            }
+            return PadresResponse;
+        }
+
         public static async Task<List<EN_Padre>> getPadreById(int _id)
         {
 

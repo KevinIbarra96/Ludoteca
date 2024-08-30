@@ -13,8 +13,7 @@ public partial class InventarioView : ContentPage
     int count = 0;
 
     InventarioViewModel viewModel;
-
-    LoadInventarioData _loadInventarioData;
+    
     UpdateInventarioData _updateInventarioData;
 
     public InventarioView()
@@ -23,8 +22,7 @@ public partial class InventarioView : ContentPage
 
         viewModel = new InventarioViewModel();
         BindingContext = viewModel;
-
-        _loadInventarioData = viewModel._loadInventarioData;
+        
         _updateInventarioData = viewModel._UpdateInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;

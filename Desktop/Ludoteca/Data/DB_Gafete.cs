@@ -33,7 +33,23 @@ namespace Data
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                EN_Response<EN_Gafete> GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(content);
+                GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(content);
+            }
+
+            return GafeteResponse;
+        }
+
+        public static async Task<EN_Response<EN_Gafete>> getAllActiveGafete()
+        {
+            GafeteResponse = null;
+            string _endPoint = _apiPath + "/getAllActiveGafete";
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(content);
             }
 
             return GafeteResponse;

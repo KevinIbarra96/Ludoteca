@@ -40,8 +40,15 @@
     }
 
     function increaseCantidadProduct($id,$cantidad){
-        $stm = $this->DbConection->prepare("update productos set Cantidad = $cantidad+Cantidad where id = $id");
+        $stm = $this->DbConection->prepare("update productos set Cantidad = Cantidad + $cantidad where id = $id");
         $stm->execute();
+    }
+
+    function DecreaseCantidadProductCobrado($Productos){
+        foreach($Productos as $_produc){
+            $stm = $this->DbConection->prepare("update productos set Cantidad = Cantidad - ". $_produc["CantidadProductoVisita"] ." where id = ". $_produc["id_Producto"] ." ");
+            $stm->execute();
+        }
     }
 
     function getAllProductsforEachVisit($idVisita){

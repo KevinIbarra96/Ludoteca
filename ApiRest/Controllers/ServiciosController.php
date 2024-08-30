@@ -1,10 +1,10 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-        //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+        $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
 
-        $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+        //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -47,6 +47,31 @@
                 $database = new Connection();
                 $ServiciosSvc = new ServiciosService();
                 $Response->Rbody = $ServiciosSvc->getAll();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Servicios listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Servicios);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveServicios(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $ServiciosSvc = new ServiciosService();
+                $Response->Rbody = $ServiciosSvc->getAllActive();
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "All Servicios listed";
