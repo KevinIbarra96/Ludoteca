@@ -115,12 +115,12 @@
                         <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
                         <ScrollView HeightRequest="300" BackgroundColor="White">
                             <StackLayout>
-                                <Label x:Name="Gafete" TextType="Html" FontSize="18" Margin="20,20,0,0"/>
-                                <Label x:Name="TotalVisita" TextType="Html" FontSize="18" Margin="20,10,20,20"/>
+                                <Picker x:Name="GafetePicker"
+                                        Title="Gafete" SelectedIndexChanged="GafetePicker_SelectedIndexChanged" Margin="20,0,0,0" />
+                                <Picker x:Name="OfertaPicker"
+                                        Title="Oferta" SelectedIndexChanged="OfertaPicker_SelectedIndexChanged" Margin="20,0,0,0" />
 
-                                <Button Text="AsignarGafete" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="White" WidthRequest="150" HeightRequest="10" 
-                                        VerticalOptions="EndAndExpand" HorizontalOptions="Center" Clicked="AsignarGafete_Clicked"/>
-
+                                <Label x:Name="TotalVisita" TextType="Html" FontSize="18" Margin="20,20,20,20"/>
                                 <Button Text="Ingresar" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="White" WidthRequest="150" HeightRequest="10" 
                                         VerticalOptions="EndAndExpand" HorizontalOptions="Center" Clicked="Ingresar_Clicked" Margin="0,0,0,20" />
                             </StackLayout>

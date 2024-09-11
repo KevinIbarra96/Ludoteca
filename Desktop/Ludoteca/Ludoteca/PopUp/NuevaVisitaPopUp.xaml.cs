@@ -2,6 +2,7 @@ namespace Ludoteca.PopUp;
 
 using Entidad;
 using Negocio;
+using System.Linq;
 using Ludoteca.ViewModel;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
@@ -22,6 +23,7 @@ public partial class NuevaVisitaPopUp
     double _totalServicio = 0;
 
     EN_Gafete _Gafete;
+    List<EN_Oferta> _Oferta =  new List<EN_Oferta>();
 
     EN_Padre padre;
 
@@ -33,9 +35,10 @@ public partial class NuevaVisitaPopUp
         
         getAllProductos();
         getAllServicios();
+        getAllOfertas();
 
         calcularTotal();
-        asignarGafete("Sin asignacion");
+        getGafetesActivosNoAsignados();
 
         _updateVisitasTable = updateVisitasTable;
         _calcularTotalVisitas = calcularTotalVisita;
@@ -60,31 +63,23 @@ public partial class NuevaVisitaPopUp
         TotalVisita.Text = "<strong style=\"color:red\"> Total: </strong>" + (_totalProducto + _totalServicio) + "$";
     }
 
-    private void asignarGafete(string _gafete)
-    {
-        Gafete.Text = "";
-        Gafete.Text = "<strong style=\"color:red\"> Gafete: </strong>"+_gafete;
-    }
-
     #region Events
 
-    private async void AsignarGafete_Clicked(object sender, EventArgs e)
+    private async void getGafetesActivosNoAsignados()
     {
         EN_Response<EN_Gafete> responseGafete = await RN_Gafete.getGafeteNoAsignado();
-        string[] Actions = new string[responseGafete.Rbody.Count];
-        int count = 0;
+        
+        GafetePicker.ItemsSource = responseGafete.Rbody;
+        GafetePicker.ItemDisplayBinding = new Binding("Numero");
 
-        foreach (EN_Gafete gafete in responseGafete.Rbody)
-        {
-            
-            Actions[count] = gafete.Numero.ToString();
-            count = count+ 1;
-        }
+    }
 
-        //string action = await DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
-        string action = await Shell.Current.DisplayActionSheet("Selecciona el Gafete", "Cancel", null, Actions);
-        asignarGafete(action);
-        _Gafete = responseGafete.Rbody.Single( s=> s.Numero == int.Parse(action) );
+    private void OfertaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _Oferta.Clear();
+        var pick = (Picker)sender;
+        EN_Oferta ofe = (EN_Oferta)pick.SelectedItem;
+        _Oferta.Add(ofe);
     }
 
     private async void Ingresar_Clicked(object sender, EventArgs e)
@@ -95,18 +90,17 @@ public partial class NuevaVisitaPopUp
         {
             EN_Visita nuevaVisita = new EN_Visita();
             nuevaVisita.Total = (_totalProducto + _totalServicio);
-            nuevaVisita.Oferta = 1;
+            nuevaVisita.Oferta = _Oferta;
             nuevaVisita.GafeteId = _Gafete.id;
             nuevaVisita.NumeroGafete = _Gafete.Numero;
             nuevaVisita.Hijos = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
             nuevaVisita.Padres = lisPadre;
             nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
-            nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());            
+            nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
 
             EN_Response<EN_Visita> response = await RN_Visita.ingresarNuevaVisita(nuevaVisita);
             nuevaVisita.id = response.Rbody[0].id;
             nuevaVisita.HoraEntrada = response.Rbody[0].HoraEntrada;
-            nuevaVisita.OfertaName = "Sin Oferta"; //Por definir que sigue en este caso
             nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 15000);
 
             _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO,nuevaVisita);
@@ -179,6 +173,7 @@ public partial class NuevaVisitaPopUp
         EN_Visita visita = (EN_Visita)state;
 
         double PrecioxMinuto = ApplicationProperties.precioXMinute;
+        double TotalPrecioExcedente = 0;
 
         // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
         DateTime now = DateTime.Now;
@@ -195,12 +190,22 @@ public partial class NuevaVisitaPopUp
         else
         {
             int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+            if (tiempoExcedente > 0 && tiempoExcedente > visita.Oferta.FirstOrDefault().Tiempo)
+                TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente- visita.Oferta.FirstOrDefault().Tiempo);
+
             visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
             visita.Total = 0;
-            visita.Total += (PrecioxMinuto * tiempoExcedente) + _calcularTotalVisitas(visita);
+            visita.Total += TotalPrecioExcedente + _calcularTotalVisitas(visita);
             visita.TiempoExcedido = tiempoExcedente;
         }
 
+    }
+
+    private void GafetePicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var pick = (Picker) sender;
+        EN_Gafete gaf = (EN_Gafete)pick.SelectedItem ;
+        _Gafete = gaf;
     }
     #endregion
 
@@ -235,8 +240,24 @@ public partial class NuevaVisitaPopUp
     private async void getAllServicios()
     {
         try { 
-            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllActiveServicios();
-            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllActiveServicios();
+            EN_Response<EN_Servicio> Serv = await RN_Servicio.RN_GetallServiciosByTipoServicio(1);
+            
+            ServicioCollectionView.ItemsSource = Serv.Rbody;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+    private async void getAllOfertas()
+    {
+        try
+        {
+            EN_Response<EN_Oferta> Ofer = await RN_Oferta.RN_GetAllActiveOfertas();
+
+            OfertaPicker.ItemsSource = Ofer.Rbody;
+            OfertaPicker.ItemDisplayBinding = new Binding("OfertaName");
+
         }
         catch (Exception ex)
         {
@@ -253,7 +274,6 @@ public partial class NuevaVisitaPopUp
             prod.IsEnable = false;
         }
     }
+
     #endregion
-
-
 }

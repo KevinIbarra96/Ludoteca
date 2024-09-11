@@ -49,6 +49,7 @@ namespace Ludoteca.ViewModel
             EN_Visita visita = (EN_Visita)state;
 
             double PrecioxMinuto = ApplicationProperties.precioXMinute;
+            double TotalPrecioExcedente = 0;
 
             // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
             DateTime now = DateTime.Now;
@@ -65,9 +66,12 @@ namespace Ludoteca.ViewModel
             else
             {
                 int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+                if (tiempoExcedente > 0 && tiempoExcedente > visita.Oferta.FirstOrDefault().Tiempo)
+                    TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente - visita.Oferta.FirstOrDefault().Tiempo);
+
                 visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
                 visita.Total =0;
-                visita.Total += (PrecioxMinuto*tiempoExcedente) + calcularTotalVisita(visita);
+                visita.Total += TotalPrecioExcedente + calcularTotalVisita(visita);
                 visita.TiempoExcedido = tiempoExcedente;
             }
         }
@@ -135,6 +139,11 @@ namespace Ludoteca.ViewModel
                 totalVisita += Math.Round(produc.precioProductoVisita * produc.CantidadProductoVisita);
             }
 
+            foreach (EN_Oferta ofer in visita.Oferta)
+            {
+                totalVisita -= Math.Round(ofer.totalDescuento);
+            }
+
             return totalVisita;
         }
 
@@ -175,7 +184,6 @@ namespace Ludoteca.ViewModel
         private EN_Visita getVisitaByID(int visitaId)
         {
            return Visitas.FirstOrDefault(p => p.id == visitaId);
-
         }
 
     }

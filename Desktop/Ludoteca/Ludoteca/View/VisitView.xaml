@@ -129,9 +129,13 @@
                                 </Border>
 
                                 <Border  Grid.Column="5" >
-                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
-                                           Text="{Binding OfertaName}"
-                                    FontAttributes="Italic"/>
+                                    <CollectionView ItemsSource="{Binding Oferta}" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding OfertaName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
                                 </Border>
 
                                 <Border  Grid.Column="6" >

@@ -54,7 +54,23 @@ namespace Entidad
                 }
             }
         }
-        private int _Oferta;
+
+        private List<EN_Oferta> _Oferta;
+
+        public List<EN_Oferta> Oferta
+        {
+            get { return _Oferta; }
+            set
+            {
+                if (_Oferta != value)
+                {
+                    _Oferta = value;
+                    OnPropertyChanged(nameof(Oferta));
+                }
+            }
+        }
+
+        /*private int _Oferta;
         
         public int Oferta
         {
@@ -80,7 +96,9 @@ namespace Entidad
                     OnPropertyChanged(nameof(OfertaName));
                 }
             }
-        }
+        }*/
+
+
         public List<EN_Hijo>? Hijos { get; set; }
 
         private ObservableCollection<EN_ServiciosVisita>? _servicios;
