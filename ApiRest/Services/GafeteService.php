@@ -15,7 +15,7 @@
                                                        Numero,
                                                        Asignado
                                                   from gafetes
-                                                 where Asignado = 0;");
+                                                 where Asignado = 0 and status = 1;");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }

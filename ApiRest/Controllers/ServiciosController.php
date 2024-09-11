@@ -65,7 +65,6 @@
         }
 
         function getAllActiveServicios(){
-
             $Response = new ResponseModel();
 
             try{            
@@ -87,6 +86,32 @@
             /*echo '<prev>';
                 var_dump($Servicios);
             echo '</prev>';*/
+        }
+
+        function getServicioByType(){
+
+        }
+
+        function getallServiciosByTipoServicio(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $ServiciosSvc = new ServiciosService();
+                $Response->Rbody = $ServiciosSvc->getallServiciosByTipoServicio($BodyRequest['IdTipoServicio']);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Servicios Founded";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
 
         function getServiciosById(){

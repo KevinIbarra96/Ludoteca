@@ -42,6 +42,14 @@
             $stm->execute();
         }
 
+        public function getallServiciosByTipoServicio($idTipoServicio){
+            $Query = "Select id, ServicioName, Descripcion, Precio, Tiempo from servicios where status = 1 and IdTipoServicio = :idTipoServicio";
+            $stm = $this->DbConection->prepare($Query);
+            $stm->bindValue(":idTipoServicio", $idTipoServicio, PDO::PARAM_INT);            
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         function getAllServiceByEachVisit($IdVisita){
             $stm = $this->DbConection->prepare("select a.Servicio_Id,
                                                        a.Servicio_Precio,

@@ -8,6 +8,7 @@
     require 'HijoService.php';
     require 'ServiciosService.php';
     require 'GafeteService.php';
+    require 'OfertasService.php';
 
     class VisitaService extends Actions{
 
@@ -63,7 +64,7 @@
                                                                       :Total);");
             $stm->bindValue(':GafeteId', $visita["GafeteId"], PDO::PARAM_INT);
             $stm->bindValue(':NumeroGafete', $visita["NumeroGafete"], PDO::PARAM_INT);
-            $stm->bindValue(':Oferta', $visita["Oferta"], PDO::PARAM_INT);
+            $stm->bindValue(':Oferta', $visita["Oferta"][0]["id"], PDO::PARAM_INT);
             $stm->bindValue(':Total', $visita["Total"], PDO::PARAM_INT);
             $stm->execute();
 
@@ -82,10 +83,12 @@
         }
 
         function getVisitasActivas(){
+
             $stm =  $this-> DbConection->prepare("select a.id,
                                                          a.HoraEntrada,
                                                          a.HoraSalida,
                                                          a.GafeteId,
+                                                         a.Oferta as IdOferta,
                                                          A.NumeroGafete,
                                                          b.OfertaName,
                                                          a.TiempoExcedido
@@ -106,6 +109,7 @@
             $PadreS = new PadreService();
             $PS = new ProductoService();
             $SS = new ServiciosService();
+            $OS = new OfertasService();
 
             foreach($Visitas as $visita){
                 $visita["Hijos"] = $HS->getHijosbyVisita($visita['id']);
@@ -117,6 +121,7 @@
 
                 $visita["Productos"] = $PS->getAllProductsforEachVisit($visita['id']);
                 $visita["Servicios"] = $SS->getAllServiceByEachVisit($visita['id']);
+                $visita["Oferta"] = $OS->getById($visita['IdOferta']);
                 $visita["Timer"] = null;
                 array_push($resultados, $visita); // Agregar la visita con las propiedades adicionales al nuevo array
             }
