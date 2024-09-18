@@ -24,9 +24,6 @@ namespace Ludoteca
             ApiRest_Properties apiRest_Properties = new ApiRest_Properties();
 
             InitializeAppAsync();
-            getPrecioXMinute();
-            getEdadMinima();
-            getEdadMaxima();
         }
         private async void InitializeAppAsync()
         {
@@ -44,45 +41,6 @@ namespace Ludoteca
         private void  VerificarSession()
         {
             AccionesSession.VerificarSession();
-        }
-
-        private async void getPrecioXMinute()
-        {
-            try
-            {
-                //Actualizar el precio
-                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(1);
-                ApplicationProperties.precioXMinute = double.Parse(response.Rbody[0].ConfigDecimalValue.ToString());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message );
-            }
-        }
-        private async void getEdadMinima()
-        {
-            try
-            {
-                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(2);
-                ApplicationProperties.edadMinima = response.Rbody[0].ConfigIntValue;
-            }
-            catch (Exception ex)
-            {
-                
-                Console.WriteLine(ex.Message);
-            }
-        }
-        private async void getEdadMaxima()
-        {
-            try
-            {
-                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(3);
-                ApplicationProperties.edadMaxima = response.Rbody[0].ConfigIntValue;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
 
     }
