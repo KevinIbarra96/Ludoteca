@@ -79,8 +79,9 @@ public partial class ServicioPopup
         {
             var pick = (EN_TipoServicio)picker.SelectedItem;
             var servicio = new EN_Servicio() { ServicioName = ServicioNameEntry.Text, Descripcion = DescripcionEditor.Text, Tiempo = int.Parse(ServicioTiempoEntry.Text), Precio = int.Parse(PrecioServicio.Text), IdTipoServicio = pick.id, TipoServicio = pick.Nombre };
-            await RN_Servicio.RN_AddNewServicio(servicio);
+            EN_Response<EN_Servicio> resp = await RN_Servicio.RN_AddNewServicio(servicio);
 
+            servicio.id = resp.Rbody[0].id;
             //Ejecuta el delegado para agregar el nuevo servicio
             _UpdateServiciosTable(GlobalEnum.Action.CREAR_NUEVO, servicio);
 
