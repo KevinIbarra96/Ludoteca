@@ -1,8 +1,14 @@
+using Ludoteca.ViewModel;
+using Mopups.Services;
+
 namespace Ludoteca.View;
 
 public partial class OfertasView : ContentPage
 {
-	public OfertasView()
+
+    UpdateOfertasTable _UpdateOfertaTable;
+
+    public OfertasView()
 	{
 		InitializeComponent();
 	}
@@ -12,8 +18,8 @@ public partial class OfertasView : ContentPage
 
     }
 
-    private void Agregar_Clicked(object sender, EventArgs e)
+    private async void Agregar_Clicked(object sender, EventArgs e)
     {
-
+        await MopupService.Instance.PushAsync(new PopUp.OfertaPopup(_UpdateOfertaTable));
     }
 }
