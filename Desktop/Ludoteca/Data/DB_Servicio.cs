@@ -77,6 +77,31 @@ namespace Data
             return ServiciosResponse;
         }
 
+        public static async Task<EN_Response<EN_Servicio>> getallServiciosByTipoServicio(int _idTipoServicio)
+        {
+
+            string _endPoint = _apiPath + "/getallServiciosByTipoServicio";
+            EN_Response<EN_Servicio> ServicioRest = null;
+
+            var requestBody = new { IdTipoServicio = _idTipoServicio };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                ServicioRest = JsonConvert.DeserializeObject<EN_Response<EN_Servicio>>(result);
+            }
+
+            return ServicioRest;
+        }
+
         public static async Task<List<EN_Servicio>> getServiciosById(int _id)
         {
 

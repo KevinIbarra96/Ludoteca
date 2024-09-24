@@ -92,6 +92,9 @@
 	  <MauiXaml Update="PopUp\NuevaVisitaPopUp.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="PopUp\OfertaPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="PopUp\ProductoList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
