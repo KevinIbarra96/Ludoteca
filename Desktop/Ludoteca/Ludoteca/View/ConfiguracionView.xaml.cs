@@ -10,7 +10,7 @@ namespace Ludoteca.View;
 public partial class ConfiguracionView : ContentPage
 {
 
-	private EN_Configuracion precioConfiguracion = null;
+	private EN_Configuracion precioConfiguracion = null, edadMinimaConfiguracion, edadMaximaConfiguracion;
 	private ConfiguracionViewModel viewModel;
 
 	public ConfiguracionView()
@@ -23,6 +23,8 @@ public partial class ConfiguracionView : ContentPage
 		BindingContext = viewModel;	
 
 		EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ToString();
+		EntryEdadMinima.Text = ApplicationProperties.edadMinima.ToString();
+		EntryEdadMaxima.Text = ApplicationProperties.edadMaxima.ToString();
 		
     }
 
@@ -36,14 +38,70 @@ public partial class ConfiguracionView : ContentPage
     {
 		try
 		{
-			//Actualizar el precio
-			EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(1);
+            if (string.IsNullOrEmpty(EntryPrecioxMinuto.Text))
+            {
+                return; // No hacer nada si está vacío
+            }
+            if (!double.TryParse(EntryPrecioxMinuto.Text, out double precioxminuto))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            //Actualizar el precio
+            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(1);
 			precioConfiguracion = responseConfig.Rbody[0];
 			precioConfiguracion.ConfigDecimalValue = double.Parse(EntryPrecioxMinuto.Text);
 			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioConfiguracion);
-
+            
 		}catch (Exception ex)
 		{
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+    private async void EntryEdadMinima_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EntryEdadMinima.Text))
+            {
+                return; // No hacer nada si está vacío
+            }
+            if (!int.TryParse(EntryEdadMinima.Text, out int edadMinima))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(2);
+            edadMinimaConfiguracion = responseConfig.Rbody[0];
+            edadMinimaConfiguracion.ConfigIntValue = int.Parse(EntryEdadMinima.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadMinimaConfiguracion);
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+    private async void EntryEdadMaxima_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EntryEdadMaxima.Text))
+            {
+                return; // No hacer nada si está vacío
+            }
+            if (!int.TryParse(EntryEdadMaxima.Text, out int edadMaxima))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(3);
+            edadMaximaConfiguracion = responseConfig.Rbody[0];
+            edadMaximaConfiguracion.ConfigIntValue = int.Parse(EntryEdadMaxima.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadMaximaConfiguracion);
+        }
+        catch (Exception ex)
+        {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
