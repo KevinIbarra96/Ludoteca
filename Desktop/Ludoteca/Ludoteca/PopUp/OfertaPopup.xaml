@@ -6,32 +6,29 @@
              Title="OfertaPopup" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
     
     <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
-        <Border WidthRequest="480" HeightRequest="750" BackgroundColor="White" HorizontalOptions="Center" >
+        <Border WidthRequest="480" HeightRequest="550" BackgroundColor="White" HorizontalOptions="Center" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="10" />
             </Border.StrokeShape>
 
             <VerticalStackLayout Spacing="3" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" Margin="20" >
 
-                <Label x:Name="ServicioNamelbl" VerticalOptions="Start" Margin="0,0,0,5" FontSize="25" />
+                <Label x:Name="OfertaNamelbl" VerticalOptions="Start" Margin="0,0,0,5" FontSize="25" />
 
-                <Label Text="Identificador del servicio" VerticalOptions="Start" />
-                <Entry x:Name="IdServicioEntry" IsEnabled="False" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Identificador del servicio"  WidthRequest="400"/>
+                <Label Text="Identificador del oferta" VerticalOptions="Start" />
+                <Entry x:Name="IdOfertaEntry" IsEnabled="False" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Identificador del oferta"  WidthRequest="400"/>
 
-                <Label Text="Nombre del servicio" VerticalOptions="Start" />
-                <Entry x:Name="ServicioNameEntry" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Placeholder=" Nombre del servicio" HeightRequest="5" WidthRequest="400" />
+                <Label Text="Nombre del oferta" VerticalOptions="Start" />
+                <Entry x:Name="OfertaNameEntry" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Placeholder=" Nombre del oferta" HeightRequest="5" WidthRequest="400" />
 
-                <Label Text="Descripcion del servicio" VerticalOptions="Start" />
+                <Label Text="Descripcion del oferta" VerticalOptions="Start" />
                 <Editor x:Name="DescripcionEditor" Placeholder="Descripcion del producto" HeightRequest="90" HorizontalOptions="Start"  VerticalOptions="Center" WidthRequest="400" AutoSize="TextChanges"/>
 
-                <Label Text="Precio del servicio" VerticalOptions="Start" />
-                <Entry x:Name="PrecioServicio" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Precio del servicio" WidthRequest="400" />
+                <Label Text="Oferta en tiempo(Min)" VerticalOptions="Start" />
+                <Entry x:Name="OfertaTiempoEntry" HorizontalOptions="Start" VerticalOptions="Center" Placeholder="Precio del oferta" WidthRequest="400" />
 
-                <Label Text="Tiempo del servicio(Min)" VerticalOptions="Start" />
-                <Entry x:Name="ServicioTiempoEntry" IsVisible="True" />
-
-                <Picker x:Name="picker"
-                    Title="Tipo de Servicio" />
+                <Label Text="Oferta en precio(Pesos)" VerticalOptions="Start" />
+                <Entry x:Name="PrecioOferta" IsVisible="True" />
 
 
                 <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
@@ -41,7 +38,7 @@
 
                     <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
                             BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
-                            CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200"  />
+                            CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200" Clicked="Cancelar_Clicked" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </Border>
