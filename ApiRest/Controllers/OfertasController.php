@@ -96,12 +96,12 @@
                     'OfertaName' =>$BodyRequest['OfertaName'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'totalDescuento' =>$BodyRequest['totalDescuento'],
                 ];
 
                 $database = new Connection();
                 $OfertasSvc = new OfertasService();
-                $OfertasSvc->new($dataBody);
+                $Response->Rbody =$OfertasSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -126,7 +126,7 @@
                     'OfertaName' =>$BodyRequest['OfertaName'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'totalDescuento' =>$BodyRequest['totalDescuento'],
                 ];
 
                 $database = new Connection();
