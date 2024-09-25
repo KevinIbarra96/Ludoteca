@@ -74,7 +74,7 @@ namespace Data
             OfertasResponse = null;
             string endpointpath = _apiPath + "/addNewOfertas";
 
-            EN_Oferta RequestBody = new EN_Oferta();
+            EN_Oferta RequestBody = _Oferta;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -100,7 +100,7 @@ namespace Data
             OfertasResponse = null;
             string endpointpath = _apiPath + "/editOfertas";
 
-            EN_Oferta RequestBody = new EN_Oferta();
+            EN_Oferta RequestBody = _Oferta;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
