@@ -105,7 +105,7 @@ public partial class RegistrarPadresEHijos
         int edad = DateTime.Now.Year - fechaNacimiento.Year;
         if (fechaNacimiento.Date > DateTime.Now.AddYears(-edad)) edad--;
 
-        return edad >= ApplicationProperties.edadMinima && edad <= ApplicationProperties.edadMaxima;
+        return edad >= ApplicationProperties.edadMinima.ConfigIntValue && edad <= ApplicationProperties.edadMaxima.ConfigIntValue;
     }
 
 }

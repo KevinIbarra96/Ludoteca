@@ -172,7 +172,7 @@ public partial class NuevaVisitaPopUp
     {
         EN_Visita visita = (EN_Visita)state;
 
-        double PrecioxMinuto = ApplicationProperties.precioXMinute;
+        double PrecioxMinuto = (double)ApplicationProperties.precioXMinute.ConfigDecimalValue;
         double TotalPrecioExcedente = 0;
 
         // Actualiza el tiempo restante y realiza otras operaciones según sea necesario

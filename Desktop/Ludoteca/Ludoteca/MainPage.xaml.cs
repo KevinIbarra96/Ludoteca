@@ -6,6 +6,10 @@ using Mopups.Services;
 using Ludoteca.Resources;
 using CommunityToolkit.Maui.Alerts;
 using Resources.Properties;
+#if WINDOWS
+using Windows.Storage.Pickers;
+using Microsoft.UI.Xaml.Controls;
+#endif
 
 namespace Ludoteca
 {
@@ -19,6 +23,7 @@ namespace Ludoteca
             getPrecioXMinute();
             getEdadMinima();
             getEdadMaxima();
+            GetRutaAsync();
         }
         public async void OnCerrarSesionClicked(object sender, EventArgs e)
         {
@@ -38,7 +43,7 @@ namespace Ludoteca
             {
                 //Actualizar el precio
                 EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(1);
-                ApplicationProperties.precioXMinute = double.Parse(response.Rbody[0].ConfigDecimalValue.ToString());
+                ApplicationProperties.precioXMinute = response.Rbody[0];
             }
             catch (Exception ex)
             {
@@ -51,7 +56,7 @@ namespace Ludoteca
             try
             {
                 EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(2);
-                ApplicationProperties.edadMinima = response.Rbody[0].ConfigIntValue;
+                ApplicationProperties.edadMinima = response.Rbody[0];
             }
             catch (Exception ex)
             {
@@ -64,15 +69,30 @@ namespace Ludoteca
             try
             {
                 EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(3);
-                ApplicationProperties.edadMaxima = response.Rbody[0].ConfigIntValue;
+                ApplicationProperties.edadMaxima = response.Rbody[0];
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
             }
         }
+        private async Task GetRutaAsync()
+        {
+            try
+            {
+                // Obtener la configuración con id = 4 que contiene la ruta
+                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(4);
+                ApplicationProperties.rutaTickets = response.Rbody[0];
 
-
+                
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Ha ocurrido un error\nDetalle: {ex.Message}", "OK");
+            }
+        }
+        
+      
 
     }
 }

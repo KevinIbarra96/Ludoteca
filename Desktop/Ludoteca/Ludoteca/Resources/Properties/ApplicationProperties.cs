@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidad;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,10 @@ namespace Resources.Properties
     public class ApplicationProperties
     {
 
-        public static double precioXMinute;
-        public static int? edadMinima;
-        public static int? edadMaxima;
+        public static EN_Configuracion precioXMinute;
+        public static EN_Configuracion edadMinima;
+        public static EN_Configuracion edadMaxima;
+        public static EN_Configuracion rutaTickets;
 
     }
 }
