@@ -10,9 +10,6 @@ using Negocio;
 using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
-using System.ComponentModel;
-using System.Diagnostics;
-
 public partial class VisitView : ContentPage
 {
 
@@ -121,26 +118,25 @@ public partial class VisitView : ContentPage
         // Obtener la fecha actual
         DateTime fechaActual = DateTime.Today;
         int year = fechaActual.Year;
-        int month = fechaActual.Month;
         int day = fechaActual.Day;
+        var nameMonth = fechaActual.ToString("MMMM");
 
         // Obtener nuevo folio desde la base de datos
         var folioResponse = await RN_Tickets.RN_GetNewFolio();       
         var nuevoFolio = folioResponse.Rbody[0].id;
 
         string nombreTicket = $"Ticket_{nuevoFolio}_{visitaSelected.Hijos[0].NombreHijo}{fechaActual:yyyyMMdd}.pdf";
-        string nombreMes = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
 
         // Verificar los valores de la fecha
-        if (year < 1900 || year > DateTime.Now.Year || month < 1 || month > 12 || day < 1 || day > 31)
+        if (year < 1900 || year > DateTime.Now.Year || fechaActual.Month < 1 || fechaActual.Month > 12 || day < 1 || day > 31)
         {
             throw new Exception("Fecha inválida.");
         }
         // Obtener la ruta base desde la configuración de la BD
-        string rutaBase = ApplicationProperties.rutaTickets.ConfigStringValue.ToString();
+        string rutaBase = ApplicationProperties.rutaTickets.ConfigStringValue;
 
         // Definir la ruta del directorio (año, mes, día)
-        string rutaDirectorio = Path.Combine(rutaBase, year.ToString(), nombreMes, day.ToString());
+        string rutaDirectorio = Path.Combine(rutaBase, year.ToString(), nameMonth, day.ToString());
 
         // Verificar si el directorio existe y crear si no existe
         if (!Directory.Exists(rutaDirectorio))

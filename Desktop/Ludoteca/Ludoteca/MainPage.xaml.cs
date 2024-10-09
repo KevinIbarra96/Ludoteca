@@ -6,10 +6,6 @@ using Mopups.Services;
 using Ludoteca.Resources;
 using CommunityToolkit.Maui.Alerts;
 using Resources.Properties;
-#if WINDOWS
-using Windows.Storage.Pickers;
-using Microsoft.UI.Xaml.Controls;
-#endif
 
 namespace Ludoteca
 {
