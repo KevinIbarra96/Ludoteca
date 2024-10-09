@@ -46,7 +46,7 @@
                 try{            
                     $database = new Connection();
                     $FiestaSvc = new FiestaService();
-                    $Response->Rbody = $FiestaSvc->getAllActive();
+                    $Response->Rbody = $FiestaSvc->getallFiestasActive();
     
                     $Response->Rcode = 200;
                     $Response->Rmessage = "All Fiesta listed";
@@ -63,6 +63,33 @@
                     var_dump($Fiesta);
                 echo '</prev>';*/
             }
+
+
+            function getFechasProgramadas(){
+
+                $Response = new ResponseModel();
+    
+                try{            
+                    $database = new Connection();
+                    $FiestaSvc = new FiestaService();
+                    $Response->Rbody = $FiestaSvc->getFechasProgramadas();
+    
+                    $Response->Rcode = 200;
+                    $Response->Rmessage = "All Fiesta listed";
+                                    
+                }catch(Exception $ex){
+                    $Response->Rcode = 402;
+                    $Response->Rmessage = $ex->getMessage();
+                    $Response->RerrorCode = $ex->getCode();
+                }finally{
+                    $database->closeConection();
+                    echo json_encode($Response);
+                }
+                /*echo '<prev>';
+                    var_dump($Fiesta);
+                echo '</prev>';*/
+            }
+
 
         function getFiestaById(){
             $Response = new ResponseModel();
@@ -92,13 +119,16 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'FiestaName' =>$BodyRequest['FiestaName'],
-                    'status' =>$BodyRequest['status'],
+                    'IdHijo' =>$BodyRequest['IdHijo'],
+                    'IdServicio' =>$BodyRequest['IdServicio'],
+                    'Fecha' =>$BodyRequest['Fecha'],
+                    'Anticipo' =>$BodyRequest['Anticipo'],
+                    'Total' =>$BodyRequest['Total']
                 ];
 
                 $database = new Connection();
                 $FiestaSvc = new FiestaService();
-                $FiestaSvc->new($dataBody);
+                $Response->Rbody = $FiestaSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -120,8 +150,12 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'FiestaName' =>$BodyRequest['FiestaName'],
-                    'status' =>$BodyRequest['status'],
+                    'idHijo' =>$BodyRequest['idHijo'],
+                    'idServicio' =>$BodyRequest['idServicio'],
+                    'Fecha' =>$BodyRequest['Fecha'],
+                    'Anticipo' =>$BodyRequest['Anticipo'],
+                    'Total' =>$BodyRequest['Total'],
+                    'status' =>$BodyRequest['status']
                 ];
 
                 $database = new Connection();

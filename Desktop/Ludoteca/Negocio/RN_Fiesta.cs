@@ -10,6 +10,10 @@ namespace Negocio
 {
     public class RN_Fiesta
     {
+        public static async Task<EN_Response<DateTime>> RN_FechasProgramadas()
+        {
+            return await DB_Fiesta.getFechasProgramadas();
+        }
         public static async Task<EN_Response<EN_Fiesta>> RN_GetAllFiesta()
         {
             return await DB_Fiesta.getAllFiesta();

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="Ludoteca.PopUp.FiestasPopup"
+             Title="ServicioPopup" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
+    
+    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+        <Border WidthRequest="900" HeightRequest="250" HorizontalOptions="Center" BackgroundColor="{StaticResource FrameBackground}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+
+            <StackLayout VerticalOptions="FillAndExpand">
+                <!-- Aquí agregué un StackLayout como contenedor principal -->
+
+                <Frame VerticalOptions="Start" HeightRequest="170" Margin="10" BackgroundColor="White">
+                    <StackLayout >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackLayout Grid.Column="0" >
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Entry x:Name="NumTelefonoEntry" Placeholder="Numero de telefono" HeightRequest="20" WidthRequest="200" VerticalOptions="Start" HorizontalOptions="Start"/>
+                                    <Button Text="Buscar" BackgroundColor="{StaticResource CasitaPrimaryGreen}" WidthRequest="80" VerticalOptions="Start" Clicked="BuscarHijos_Clicked"
+                                            HeightRequest="20" TextColor="White" Margin="10,0,0,0" />   
+                                </StackLayout>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Start" ToolTipProperties.Text="Padres" >
+                                <StackLayout >
+                                    <Label x:Name="Padrelabl" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <ScrollView  Grid.Column="2" >
+                                <CollectionView  x:Name="HijosCollectionView" SelectionMode="Single" SelectionChanged="Hijos_SelectionChanged">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Padding="1" BackgroundColor="{Binding SelectedBackgroundColor}">
+                                                <Label HorizontalOptions="Center" Text="{Binding NombreHijo,StringFormat='- {0}'}" />
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </ScrollView>
+
+                            <StackLayout Grid.Column="0" Grid.Row="1">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Servicio:" VerticalTextAlignment="Center" />
+                                    <Picker x:Name="ServiciosPicker" SelectedIndexChanged="ServiciosPicker_SelectedIndexChanged" WidthRequest="200" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="1" Grid.Row="1">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Fecha:" VerticalTextAlignment="Center"/>
+                                    <DatePicker x:Name="FechaFiesta" DateSelected="FechaFiesta_DateSelected" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="2" Grid.Row="1">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="Anticipo:" VerticalTextAlignment="Center" />
+                                    <Entry WidthRequest="200" x:Name="AnticipoEntry"> </Entry>
+                                </StackLayout>
+                            </StackLayout>
+
+
+                            <StackLayout Grid.Column="0" Grid.Row="2">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label x:Name="TotalFiesta" TextType="Html" FontSize="18" Margin="0,20,20,20"/>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5" Clicked="BtnGuardar_Clicked"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="200"/>
+
+                    <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200" Clicked="Cancelar_Clicked"/>
+                </HorizontalStackLayout>
+
+
+            </StackLayout>
+
+        </Border>
+    </ScrollView>
+    
+</mopups:PopupPage>

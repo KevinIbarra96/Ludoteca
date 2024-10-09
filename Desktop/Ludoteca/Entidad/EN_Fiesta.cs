@@ -10,43 +10,72 @@ namespace Entidad
     public class EN_Fiesta : INotifyPropertyChanged
     {
         public int id { get; set; }
-        private string _fiestaName;
-        private string _description;
-        private double _precio;
+        private int _idHijo;
+        private string _nombrehijo;
+        private int _idServicio;
+        private string _nombreServicio;
+        private DateTime _Fecha;
+        private double _anticipo;
+        private double _total;
         private int _status;
 
-        public string FiestaName
+        public int IdHijo
         {
-            get { return _fiestaName; }
-            set { _fiestaName = value; OnPropertyChanged(nameof(FiestaName)); }
+            get { return _idHijo; }
+            set { _idHijo = value; OnPropertyChanged(nameof(IdHijo)); }
         }
 
-        public string Description
+        public string NombreHijo
         {
-            get { return _description; }
+            get => _nombrehijo;
+            set { _nombrehijo = value; OnPropertyChanged(nameof(NombreHijo)); }
+        }
+
+        public int IdServicio
+        {
+            get { return _idServicio; }
             set
             {
-                _description = value;
-                OnPropertyChanged(nameof(Description));
+                _idServicio = value;
+                OnPropertyChanged(nameof(IdServicio));
             }
         }
 
-        public double Precio
+        public string NombreServicio
         {
-            get { return _precio; }
+            get => _nombreServicio;
+            set { _nombreServicio = value; OnPropertyChanged(nameof(NombreServicio)); }
+        }
+
+        public DateTime Fecha
+        {
+            get { return _Fecha; }
             set
             {
-                _precio = value;
-                OnPropertyChanged(nameof(Precio));
+                _Fecha = value;
+                OnPropertyChanged(nameof(Fecha));
             }
         }
-        public int status
+
+        public double Anticipo
+        {
+            get => _anticipo;
+            set { _anticipo = value; OnPropertyChanged(nameof(Anticipo)); }
+        }
+
+        public double Total
+        {
+            get => _total;
+            set { _total = value; OnPropertyChanged(nameof(Total)); }
+        }
+
+        public int Status
         {
             get { return _status; }
             set
             {
                 _status = value;
-                OnPropertyChanged(nameof(status));
+                OnPropertyChanged(nameof(Status));
             }
         }
 
