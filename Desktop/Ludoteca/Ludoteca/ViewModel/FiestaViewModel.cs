@@ -43,29 +43,29 @@ namespace Ludoteca.ViewModel
             EN_Response<EN_Fiesta> fiestasl = await RN_Fiesta.RN_GetAllActiveFiestas();
 
 
-            foreach (var oferta in fiestasl.Rbody)
+            foreach (var fiesta in fiestasl.Rbody)
             {
-                addFiestaToCollection(oferta);
+                addFiestaToCollection(fiesta);
             }
         }
 
-        private void UpdateFiestaTable(GlobalEnum.Action Action, EN_Fiesta oferta)
+        private void UpdateFiestaTable(GlobalEnum.Action Action, EN_Fiesta fiesta)
         {
             if (Action == GlobalEnum.Action.CREAR_NUEVO)
-                addFiestaToCollection(oferta);
+                addFiestaToCollection(fiesta);
             if (Action == GlobalEnum.Action.ACTUALIZAR)
-                updateFiestaToColection(oferta);
+                updateFiestaToColection(fiesta);
         }
 
-        private void addFiestaToCollection(EN_Fiesta oferta)
+        private void addFiestaToCollection(EN_Fiesta fiesta)
         {
-            fiestas.Add(oferta);
-            fiestasInmutable.Add(oferta);
+            fiestas.Add(fiesta);
+            fiestasInmutable.Add(fiesta);
         }
 
-        private void updateFiestaToColection(EN_Fiesta oferta)
+        private void updateFiestaToColection(EN_Fiesta fiesta)
         {
-            EN_Fiesta Encontrado = fiestas.FirstOrDefault(s => s.id == oferta.id);
+            EN_Fiesta Encontrado = fiestas.FirstOrDefault(s => s.id == fiesta.id);
 
             if (Encontrado != null)
             {

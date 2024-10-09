@@ -44,26 +44,26 @@ public partial class NuevaVisitaPopUp
         _calcularTotalVisitas = calcularTotalVisita;
 	}
 
-    private void Hijos_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-       // Cambiar el color de fondo del elemento seleccionado
-            foreach (EN_Hijo hijo in e.PreviousSelection)
-            {
-                hijo.SelectedBackgroundColor = "White";
-            }
-
-            foreach (EN_Hijo hijo in e.CurrentSelection)
-            {
-                hijo.SelectedBackgroundColor = "LightSkyBlue";
-            }
-    }
-
     private void calcularTotal() {
         TotalVisita.Text = "";
         TotalVisita.Text = "<strong style=\"color:red\"> Total: </strong>" + (_totalProducto + _totalServicio) + "$";
     }
 
     #region Events
+
+    private void Hijos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Cambiar el color de fondo del elemento seleccionado
+        foreach (EN_Hijo hijo in e.PreviousSelection)
+        {
+            hijo.SelectedBackgroundColor = "White";
+        }
+
+        foreach (EN_Hijo hijo in e.CurrentSelection)
+        {
+            hijo.SelectedBackgroundColor = "LightSkyBlue";
+        }
+    }
 
     private async void getGafetesActivosNoAsignados()
     {

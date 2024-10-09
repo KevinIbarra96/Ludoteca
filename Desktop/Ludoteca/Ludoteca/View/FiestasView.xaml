@@ -12,7 +12,7 @@
     <StackLayout Margin="10,10,10,20">
 
         <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
-            <Button Text="Agregar" ToolTipProperties.Text="Agrega nueva oferta" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" />
+            <Button Text="Programar fiesta" ToolTipProperties.Text="Prograar fiesta" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" Clicked="Agregar_Clicked" />
             <!-- Barra de búsqueda -->
             <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
             
@@ -23,12 +23,16 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre de fiesta" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="1" FontAttributes="Bold" Text="Descripcion" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="2" FontAttributes="Bold" Text="Tiempo" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="3" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del hijo" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Nombre del servicio" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="2" FontAttributes="Bold" Text="Fecha" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Anticipo" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="4" FontAttributes="Bold" Text="Total" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="5" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
 
         <!-- Lista de productos -->
@@ -52,14 +56,18 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="200" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Text="{Binding FiestaName}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <Label Grid.Column="1" Text="{Binding Descripcion}" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Grid.Column="2" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="0" Text="{Binding NombreHijo}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="{Binding NombreServicio}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding Fecha,StringFormat='{0:D}' }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="3" Text="{Binding Anticipo }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="4" Text="{Binding Total }" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                            <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Oferta" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                            <Button Grid.Column="5" Text="Editar" ToolTipProperties.Text="Editar Oferta" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
 
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />

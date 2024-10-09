@@ -13,6 +13,24 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Fiesta"; //Adding ControllerName to Path
         private static EN_Response<EN_Fiesta> FiestaResponse = null;
 
+        public static async Task<EN_Response<DateTime>> getFechasProgramadas()
+        {
+            EN_Response<DateTime> FiestaResponse = null;
+
+            string _enPoint = _apiPath + "/getFechasProgramadas"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                FiestaResponse = JsonConvert.DeserializeObject<EN_Response<DateTime>>(content);
+
+            }
+            return FiestaResponse;
+        }
+
         public static async Task<EN_Response<EN_Fiesta>> getAllFiesta()
         {
             FiestaResponse = null;
@@ -78,7 +96,7 @@ namespace Data
             FiestaResponse = null;
             string endpointpath = _apiPath + "/addNewFiesta";
 
-            EN_Fiesta RequestBody = new EN_Fiesta();
+            EN_Fiesta RequestBody = _Fiesta;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -103,7 +121,7 @@ namespace Data
             FiestaResponse = null;
             string endpointpath = _apiPath + "/editFiesta";
 
-            EN_Fiesta RequestBody = new EN_Fiesta();
+            EN_Fiesta RequestBody = _Fiesta;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
