@@ -1,6 +1,8 @@
 namespace Ludoteca.View;
 
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using global::Resources.Properties;
 using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
@@ -8,8 +10,6 @@ using Negocio;
 using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
-using System.Diagnostics;
-
 public partial class VisitView : ContentPage
 {
 
@@ -19,6 +19,7 @@ public partial class VisitView : ContentPage
     CalcularTotalVisita _calcularTotalVisita;
     AddProductoToVisita _addProductoToVisita;
     AddServicioToVisita _addServicioToVisita;
+
 
     public VisitView()
 	{
@@ -96,9 +97,8 @@ public partial class VisitView : ContentPage
                     //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
                     await RN_Visita.cobrarVisitas(visitaSelected);
 
-                    GenerateTicketPdf(@"C:\PDF\PDFPrueba.pdf", visitaSelected, CalcularAlturaDelTicket(visitaSelected.Productos.Count));
-                    _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
-
+                    await CrearTicketPDF(visitaSelected);
+                    
                     await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
                 }catch(Exception ex)
                 {
@@ -111,6 +111,55 @@ public partial class VisitView : ContentPage
         {
             await DisplayAlert("Error", "ah ocurrido un error \nDetalles: " + ex.Message, "OK");
         }
+    }
+    private async Task CrearTicketPDF(EN_Visita visitaSelected)
+    {
+        
+        // Obtener la fecha actual
+        DateTime fechaActual = DateTime.Today;
+        int year = fechaActual.Year;
+        int day = fechaActual.Day;
+        var nameMonth = fechaActual.ToString("MMMM");
+
+        // Obtener nuevo folio desde la base de datos
+        var folioResponse = await RN_Tickets.RN_GetNewFolio();       
+        var nuevoFolio = folioResponse.Rbody[0].id;
+
+        string nombreTicket = $"Ticket_{nuevoFolio}_{visitaSelected.Hijos[0].NombreHijo}{fechaActual:yyyyMMdd}.pdf";
+
+        // Verificar los valores de la fecha
+        if (year < 1900 || year > DateTime.Now.Year || fechaActual.Month < 1 || fechaActual.Month > 12 || day < 1 || day > 31)
+        {
+            throw new Exception("Fecha inválida.");
+        }
+        // Obtener la ruta base desde la configuración de la BD
+        string rutaBase = ApplicationProperties.rutaTickets.ConfigStringValue;
+
+        // Definir la ruta del directorio (año, mes, día)
+        string rutaDirectorio = Path.Combine(rutaBase, year.ToString(), nameMonth, day.ToString());
+
+        // Verificar si el directorio existe y crear si no existe
+        if (!Directory.Exists(rutaDirectorio))
+        {
+            Directory.CreateDirectory(rutaDirectorio);
+        }
+
+        // Definir la ruta del archivo PDF
+        string rutaPDF = Path.Combine(rutaDirectorio, nombreTicket);
+
+
+        GenerateTicketPdf(rutaPDF, visitaSelected, CalcularAlturaDelTicket(visitaSelected.Productos.Count));
+        _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+
+        await RN_Tickets.RN_AddNewTicket(new EN_Tickets
+        {
+            nombre = nombreTicket,
+            idvisita = visitaSelected.id,
+            fecha_creacion = fechaActual.Date,
+            ruta = rutaPDF,
+
+        });
+
     }
 
 
@@ -221,5 +270,5 @@ public partial class VisitView : ContentPage
 
         return totalHeight;
     }
-
+   
 }

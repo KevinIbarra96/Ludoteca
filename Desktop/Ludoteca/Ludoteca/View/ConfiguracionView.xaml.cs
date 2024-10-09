@@ -2,7 +2,15 @@ using Entidad;
 using Negocio;
 using Resources.Properties;
 using Ludoteca.ViewModel;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Windows.System;
+using CommunityToolkit.Maui.Storage;
 //using CommunityToolkit.Maui.Markup;
+using Windows.Storage.Pickers;
+using System.Diagnostics;
+
+
 
 
 namespace Ludoteca.View;
@@ -10,7 +18,7 @@ namespace Ludoteca.View;
 public partial class ConfiguracionView : ContentPage
 {
 
-	private EN_Configuracion precioConfiguracion = null, edadMinimaConfiguracion, edadMaximaConfiguracion;
+	private EN_Configuracion precioConfiguracion, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
 	private ConfiguracionViewModel viewModel;
 
 	public ConfiguracionView()
@@ -22,11 +30,24 @@ public partial class ConfiguracionView : ContentPage
 		viewModel = new ConfiguracionViewModel();
 		BindingContext = viewModel;	
 
-		EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ToString();
-		EntryEdadMinima.Text = ApplicationProperties.edadMinima.ToString();
-		EntryEdadMaxima.Text = ApplicationProperties.edadMaxima.ToString();
-		
+		loadConfiguraciones();
     }
+    private void loadConfiguraciones()
+    {
+        precioConfiguracion = ApplicationProperties.precioXMinute;
+        edadMinimaConfiguracion = ApplicationProperties.edadMinima;
+        edadMaximaConfiguracion = ApplicationProperties.edadMaxima;
+        rutaConfig = ApplicationProperties.rutaTickets;
+
+        loadConfigCampos();
+    }
+    private void loadConfigCampos() {
+        EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ConfigDecimalValue.ToString();
+        EntryEdadMinima.Text = ApplicationProperties.edadMinima.ConfigIntValue.ToString();
+        EntryEdadMaxima.Text = ApplicationProperties.edadMaxima.ConfigIntValue.ToString();
+        labelRutaTickets.Text = ApplicationProperties.rutaTickets.ConfigStringValue.ToString();
+    }
+
 
     // Método para manejar el evento de clic
     private void OnButtonClicked(object sender, EventArgs e)
@@ -48,8 +69,6 @@ public partial class ConfiguracionView : ContentPage
                 return; // Salir si no es un número válido
             }
             //Actualizar el precio
-            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(1);
-			precioConfiguracion = responseConfig.Rbody[0];
 			precioConfiguracion.ConfigDecimalValue = double.Parse(EntryPrecioxMinuto.Text);
 			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioConfiguracion);
             
@@ -71,8 +90,6 @@ public partial class ConfiguracionView : ContentPage
                 await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
                 return; // Salir si no es un número válido
             }
-            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(2);
-            edadMinimaConfiguracion = responseConfig.Rbody[0];
             edadMinimaConfiguracion.ConfigIntValue = int.Parse(EntryEdadMinima.Text);
             EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadMinimaConfiguracion);
 
@@ -95,8 +112,6 @@ public partial class ConfiguracionView : ContentPage
                 await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
                 return; // Salir si no es un número válido
             }
-            EN_Response<EN_Configuracion> responseConfig = await RN_Configuracion.getConfigurationById(3);
-            edadMaximaConfiguracion = responseConfig.Rbody[0];
             edadMaximaConfiguracion.ConfigIntValue = int.Parse(EntryEdadMaxima.Text);
             EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(edadMaximaConfiguracion);
         }
@@ -105,6 +120,60 @@ public partial class ConfiguracionView : ContentPage
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
+
+    private async void AbrirRutaArchivo_Tapped(object sender, TappedEventArgs e)
+    {
+        var folderPicker = new Windows.Storage.Pickers.FolderPicker();
+        var hwnd = ((MauiWinUIWindow)Application.Current.Windows[0].Handler.PlatformView).WindowHandle;
+        WinRT.Interop.InitializeWithWindow.Initialize(folderPicker, hwnd);
+
+        folderPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        folderPicker.FileTypeFilter.Add("*");
+
+        // Abre el picker
+        var folder = await folderPicker.PickSingleFolderAsync();
+        if (folder != null)
+        {
+            string selectedFolderPath = folder.Path;
+            string newFolderPath = Path.Combine(selectedFolderPath, "Casita de Molly");
+
+            if (!Directory.Exists(newFolderPath))
+            {
+                Directory.CreateDirectory(newFolderPath);
+            }
+
+            await GuardarRutaEnBD(newFolderPath);
+
+            labelRutaTickets.Text = newFolderPath;
+            await DisplayAlert("Éxito", "La ruta ha sido actualizada.", "OK");
+
+        }
+        else
+        {
+            DisplayAlert("Error", "No se seleccionó ninguna carpeta", "OK");
+        }
+
+
+    }
+
+
+    private async Task GuardarRutaEnBD(string ruta)
+    {
+        try
+        {
+            rutaConfig.ConfigStringValue = ruta;
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(rutaConfig);
+
+            // Actualizar la propiedad global
+            //ApplicationProperties.rutaTickets = ruta;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Error al actualizar la ruta en la base de datos\nDetalle: " + ex.Message, "OK");
+        }
+    }
+
+
 
     private void AgregarGafete_Tapped(object sender, TappedEventArgs e)
     {
