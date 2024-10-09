@@ -40,6 +40,31 @@
                     <Label Text="Edad máxima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                     <Entry Placeholder="Edad" x:Name="EntryEdadMaxima" WidthRequest="50" VerticalOptions="Center" Margin="0,0,10,0" TextChanged="EntryEdadMaxima_TextChanged"/>
                 </HorizontalStackLayout>
+                
+                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="{x:Static models:Icons.FolderIcon}" 
+                           Style="{x:StaticResource MaterialIcon}" 
+                           ToolTipProperties.Text="Actualizar Ruta Tickets"
+                           VerticalOptions="Center" 
+                           TextColor="#008000" 
+                           FontSize="Large"
+                           Margin="0,0,10,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="AbrirRutaArchivo_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label ToolTipProperties.Text="Ruta" 
+                            x:Name="labelRutaTickets" 
+                            Padding="4" 
+                            TextColor="Black"  
+                            FontAttributes="Bold" 
+                            FontSize="Caption" 
+                            HeightRequest="20" 
+                            VerticalOptions="Center"
+                            BackgroundColor="#EFEFEF"
+                            Margin="0,0,10,0" />
+                </HorizontalStackLayout>
 
 
                 <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Background="White">
