@@ -14,6 +14,10 @@ namespace Negocio
         {
             return await DB_Users.getAllUsers();
         }
+        public static async Task<EN_Response<EN_User>> RN_GetUsersAndRol()
+        {
+            return await DB_Users.getUsersAndRol();
+        }
         public static async Task<List<EN_User>> RN_GetAllActiveUsers()
         {
             return await DB_Users.getAllActiveUsers();

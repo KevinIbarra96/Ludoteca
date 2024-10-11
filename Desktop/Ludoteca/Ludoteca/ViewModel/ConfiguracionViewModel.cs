@@ -13,11 +13,27 @@ namespace Ludoteca.ViewModel
     {
 
         public ObservableCollection<EN_Gafete> Gafetes { get; set; }
+        public ObservableCollection<EN_User> Usuarios { get; set; }
 
         public ConfiguracionViewModel() {
 
             Gafetes = new ObservableCollection<EN_Gafete>();
+            Usuarios = new ObservableCollection<EN_User>();
             getAllActiveGafetes();
+            getAllUsers();
+        }
+
+        private async void getAllUsers()
+        {
+            var UsuariosResponse = await RN_Users.RN_GetUsersAndRol();
+            foreach (EN_User us in UsuariosResponse.Rbody)
+            {
+                if (us.status == 0)
+                    us.statusString = "Inactivo";
+                else
+                    us.statusString = "Activo";
+                addUsuariosToCollection(us);
+            }
 
         }
 
@@ -40,6 +56,11 @@ namespace Ludoteca.ViewModel
 
                 addGafeteToCollection(en);
             }
+        }
+
+        private void addUsuariosToCollection(EN_User usuario)
+        {
+            Usuarios.Add(usuario);
         }
 
         private void addGafeteToCollection(EN_Gafete gafete)
