@@ -27,12 +27,27 @@ namespace Data
 
                 EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
                 usersResponse = userRest;
-                
 
-                
             }
 
             //return usersResponse.Rmessage;
+            return usersResponse;
+        }
+
+        public static async Task<EN_Response<EN_User>> getUsersAndRol()
+        {
+            EN_Response < EN_User > usersResponse = null;
+            string _enPoint = _apiPath + "/getUsersAndRol"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                usersResponse = JsonConvert.DeserializeObject<EN_Response<EN_User>>(content);
+
+            }
             return usersResponse;
         }
 

@@ -1,9 +1,18 @@
+using Ludoteca.ViewModel;
+
 namespace Ludoteca.View.Configuracion;
 
 public partial class UsuarioRol : ContentView
 {
-	public UsuarioRol()
+
+    ConfiguracionViewModel viewModel;
+
+    public UsuarioRol()
 	{
 		InitializeComponent();
-	}
+
+        viewModel = new ConfiguracionViewModel();
+        BindingContext = viewModel;
+
+    }
 }
