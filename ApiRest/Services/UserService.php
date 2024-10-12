@@ -9,6 +9,12 @@
             parent::__construct('users','UserName, Password, idRol, status',$database->getConnection());
         }
 
+        function getUsersAndRol(){
+            $stm = $this->DbConection->prepare("select a.id, a.UserName, a.idRol,b.RolName,a.status from users as a inner join rol as b on a.idRol = b.id; ");
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         function LoginService($userName,$pass){
             try{
                 $Response = new ResponseModel();
