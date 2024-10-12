@@ -10,6 +10,8 @@ using Negocio;
 using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using System.ComponentModel.DataAnnotations;
+
 public partial class VisitView : ContentPage
 {
 
@@ -83,35 +85,33 @@ public partial class VisitView : ContentPage
     {
         //TODO fañta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
         //TODO falta agregarle las actualizaciones para cuando se agrega un nuevo producto o un nuevo servicio a la visita esa misma actualizacion debe realizarce a la base de datos
-
-        try
-        {
             
-            if (await DisplayAlert("Advertencia", "¿Continuar con el proceso de cobro?", "Si", "No"))
-            {
-                try
-                {
-                    var btn = sender as Label;
-                    var visitaSelected = btn.BindingContext as EN_Visita;
-
-                    //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
-                    await RN_Visita.cobrarVisitas(visitaSelected);
-
-                    await CrearTicketPDF(visitaSelected);
-                    
-                    await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
-                }catch(Exception ex)
-                {
-                    await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
-                }
-            }
-
-        }
-        catch(Exception ex)
+        if (await DisplayAlert("Advertencia", "¿Continuar con el proceso de cobro?", "Si", "No"))
         {
-            await DisplayAlert("Error", "ah ocurrido un error \nDetalles: " + ex.Message, "OK");
+            try
+            {
+                    
+                var btn = sender as Label;
+                var visitaSelected = btn.BindingContext as EN_Visita;
+                   
+                //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
+                await RN_Visita.cobrarVisitas(visitaSelected);
+
+                await CrearTicketPDF(visitaSelected);
+                    
+                await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
+                    
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
+            }
         }
+        
     }
+
+
+
     private async Task CrearTicketPDF(EN_Visita visitaSelected)
     {
         
