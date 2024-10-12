@@ -53,7 +53,7 @@ public partial class ServicioPopup
         {
             var pick = (EN_TipoServicio)picker.SelectedItem;
 
-            var servicio = new EN_Servicio() { id = int.Parse(IdServicioEntry.Text), ServicioName = ServicioNameEntry.Text, Descripcion = DescripcionEditor.Text, Tiempo = int.Parse(ServicioTiempoEntry.Text), Precio = int.Parse(PrecioServicio.Text),IdTipoServicio = pick.id,TipoServicio = pick.Nombre };
+            var servicio = new EN_Servicio() { id = int.Parse(IdServicioEntry.Text), ServicioName = ServicioNameEntry.Text, Descripcion = DescripcionEditor.Text, Tiempo = int.Parse(ServicioTiempoEntry.Text), Precio = int.Parse(PrecioServicio.Text), IdTipoServicio = pick.id, TipoServicio = pick.Nombre };
             await RN_Servicio.RN_UpdateServicio(servicio);
 
             //Ejecuta el delegado 
@@ -62,14 +62,16 @@ public partial class ServicioPopup
             var toast = Toast.Make("Actualizacion de " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
 
+            await MopupService.Instance.PopAllAsync();
+
+        }
+        catch (NullReferenceException ex)
+        {
+            await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 
