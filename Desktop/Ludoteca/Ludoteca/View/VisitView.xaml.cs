@@ -99,7 +99,7 @@ public partial class VisitView : ContentPage
 
                     await CrearTicketPDF(visitaSelected);
                     
-                    await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
+                    await DisplayAlert("Felicidades", "Se ah cobrado la visita de " + visitaSelected.Hijos[0].NombreHijo, "OK");
                 }catch(Exception ex)
                 {
                     await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
@@ -205,6 +205,16 @@ public partial class VisitView : ContentPage
         gfx.DrawString("Minutos extendidos: " + visita.TiempoExcedido, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
         y += lineHeight;
 
+        // Mostrar ofertas de tiempo (si existen)
+        foreach (var oferta in visita.Oferta)
+        {
+            if (oferta.Tiempo > 0) // Oferta de tiempo
+            {
+                gfx.DrawString("Oferta: " + oferta.OfertaName, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
+                y += lineHeight;
+            }
+        }
+
         y += 5;
         gfx.DrawLine(XPens.Black, x, y, width - 20, y); // Línea horizontal ajustada
         y += 5;
@@ -234,6 +244,7 @@ public partial class VisitView : ContentPage
             }
         }
 
+        
         foreach (var producto in visita.Productos)
         {
             gfx.DrawString(producto.CantidadProducto, regularFont, XBrushes.Black, new XRect(x, y, 110, height), XStringFormats.TopLeft); // Ajuste ancho de la primera columna
@@ -247,10 +258,50 @@ public partial class VisitView : ContentPage
                 page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
             }
         }
-
         y += 5;
         gfx.DrawLine(XPens.Black, x, y, width - 20, y);
         y += 5;
+
+        bool hayOfertaPrecio = false;
+        foreach (var oferta in visita.Oferta)
+        {
+            if (oferta.totalDescuento > 0)
+            {
+               hayOfertaPrecio = true;
+                break;
+            }
+        }
+        if (hayOfertaPrecio)
+        {
+            double tiempoX = x + 100;
+            double descuentoX = tiempoX + 30;
+
+            gfx.DrawString("Ofertas", titleFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft); // Encabezado para "Ofertas"
+            gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight); // Encabezado para "Precio"
+            y += lineHeight; // Espacio después del encabezado
+        }
+
+
+        // Mostrar ofertas de precio (si existen)
+        foreach (var oferta in visita.Oferta)
+        {
+            if (oferta.totalDescuento > 0) // Oferta de precio
+            {
+                gfx.DrawString(oferta.OfertaName, regularFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft);
+                gfx.DrawString(oferta.totalDescuento.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
+                //gfx.DrawString(oferta.TotalDescuento.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
+                y += lineHeight;
+
+                // Ajuste dinámico de la altura de la página
+                if (y > page.Height.Point - 20)
+                {
+                    page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
+                }
+                y += 5;
+                gfx.DrawLine(XPens.Black, x, y, width - 20, y);
+                y += 5;
+            }
+        }
 
         gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft); ;
 
