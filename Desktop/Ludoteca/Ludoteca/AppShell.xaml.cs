@@ -19,7 +19,8 @@ namespace Ludoteca
 
         private async void loadMenu()
         {
-            List<EN_Menu> menuList = await RN_Menu.RN_GetMenuByRol(Session.RolId);
+            EN_Response<EN_Menu> menuResponse = await RN_Menu.RN_GetMenuByRol(Session.RolId);
+            List<EN_Menu> menuList = menuResponse.Rbody;
 
             foreach (EN_Menu menu in menuList)
             {

@@ -1,8 +1,8 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -39,32 +39,31 @@
             /*echo '<prev>';
                 var_dump($Rol);
             echo '</prev>';*/
-
-            function getAllActiveRol(){
-
-                $Response = new ResponseModel();
-    
-                try{            
-                    $database = new Connection();
-                    $RolSvc = new RolService();
-                    $Response->Rbody = $RolSvc->getAllActive();
-    
-                    $Response->Rcode = 200;
-                    $Response->Rmessage = "All Rol listed";
-                                    
-                }catch(Exception $ex){
-                    $Response->Rcode = 402;
-                    $Response->Rmessage = $ex->getMessage();
-                    $Response->RerrorCode = $ex->getCode();
-                }finally{
-                    $database->closeConection();
-                    echo json_encode($Response);
-                }
-                /*echo '<prev>';
-                    var_dump($Rol);
-                echo '</prev>';*/
-            }
         }
+        function getAllActiveRol(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $RolSvc = new RolService();
+                $Response->Rbody = $RolSvc->getAllActive();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Rol listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Rol);
+            echo '</prev>';*/
+        }        
 
         function getRolById(){
             $Response = new ResponseModel();
@@ -95,12 +94,12 @@
 
                 $dataBody = [
                     'RolName' =>$BodyRequest['RolName'],
-                    'status' =>$BodyRequest['status'],
+                    'MenuList' =>$BodyRequest['MenuList']
                 ];
 
                 $database = new Connection();
                 $RolSvc = new RolService();
-                $RolSvc->new($dataBody);
+                $Response->Rbody = $RolSvc->addNewRol($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -164,4 +163,3 @@
             }
         }
     }
-?>

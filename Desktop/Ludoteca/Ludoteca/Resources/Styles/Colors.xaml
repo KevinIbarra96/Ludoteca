@@ -32,6 +32,7 @@
     <Color x:Key="CasitaPrimaryGreen">#8ECF1D</Color>
     <Color x:Key="CasitaPrimaryBlue">#2F5D9B</Color>
     <Color x:Key="LayoutBackGroundPrimaryColor">white</Color>
+    <Color x:Key="ItemSelectedCollectionView">white</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>

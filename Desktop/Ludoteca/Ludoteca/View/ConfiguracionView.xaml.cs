@@ -3,15 +3,6 @@ using Negocio;
 using Resources.Properties;
 using Ludoteca.ViewModel;
 using Windows.Storage.Pickers;
-using Windows.Storage;
-using Windows.System;
-using CommunityToolkit.Maui.Storage;
-//using CommunityToolkit.Maui.Markup;
-using Windows.Storage.Pickers;
-using System.Diagnostics;
-
-
-
 
 namespace Ludoteca.View;
 
@@ -21,14 +12,14 @@ public partial class ConfiguracionView : ContentPage
 	private EN_Configuracion precioConfiguracion, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
 	private ConfiguracionViewModel viewModel;
 
-	public ConfiguracionView()
+    public ConfiguracionView()
 	{
 		//Agregar inserciones a la base de datos para asegurarce que los identificadores sea el mismo y no traer una configuracion diferemte o buscar una forma para asegurarse
 		//Considerar que cuando hay visitas activas no sea posible realizar cambios en el precio por minuto
 		InitializeComponent();
 
 		viewModel = new ConfiguracionViewModel();
-		BindingContext = viewModel;	
+		BindingContext = viewModel;
 
 		loadConfiguraciones();
     }
@@ -150,7 +141,7 @@ public partial class ConfiguracionView : ContentPage
         }
         else
         {
-            DisplayAlert("Error", "No se seleccionó ninguna carpeta", "OK");
+            await DisplayAlert("Error", "No se seleccionó ninguna carpeta", "OK");
         }
 
 

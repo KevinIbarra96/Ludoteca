@@ -62,7 +62,7 @@ public partial class NuevaVisitaPopUp
 
         foreach (EN_Hijo hijo in e.CurrentSelection)
         {
-            hijo.SelectedBackgroundColor = "LightSkyBlue";
+            hijo.SelectedBackgroundColor = "#40E1E1E1";
         }
     }
 

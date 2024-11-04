@@ -10,7 +10,7 @@
         }
 
         function getUsersAndRol(){
-            $stm = $this->DbConection->prepare("select a.id, a.UserName, a.idRol,b.RolName,a.status from users as a inner join rol as b on a.idRol = b.id; ");
+            $stm = $this->DbConection->prepare("select a.id, a.UserName,a.Password, a.idRol,b.RolName,a.status from users as a inner join rol as b on a.idRol = b.id; ");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }

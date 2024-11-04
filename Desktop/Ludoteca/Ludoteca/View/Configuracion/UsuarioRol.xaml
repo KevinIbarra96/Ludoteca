@@ -8,11 +8,11 @@
         <viewModel:ConfiguracionViewModel />
     </ContentView.BindingContext>
 
-
-    <StackLayout Margin="10,10,10,20" BackgroundColor="{StaticResource FrameBackground}">
-
+    
+    <Grid Padding="10" BackgroundColor="{StaticResource FrameBackground}">
+            <VerticalStackLayout>
         <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" >
-            <Button Text="Agregar" ToolTipProperties.Text="Agrega nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" />
+            <Button Text="Agregar" ToolTipProperties.Text="Agrega nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" Clicked="Nuevo_Clicked"/>
             <!-- Barra de búsqueda -->
             <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
         </HorizontalStackLayout>
@@ -31,7 +31,8 @@
         </Grid>
 
         <!-- Lista de productos -->
-        <ListView ItemsSource="{Binding Usuarios}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47">
+            <ScrollView>
+                <ListView ItemsSource="{Binding Usuarios}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47" VerticalOptions="FillAndExpand">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -58,7 +59,7 @@
                             <Label Grid.Column="1" Text="{Binding RolName}" HorizontalOptions="Center" VerticalOptions="Center" />
                             <Label Grid.Column="2" Text="{Binding statusString}" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                            <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Producto" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                            <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Producto" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80" Clicked="Editar_Clicked"/>
 
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
@@ -71,5 +72,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout >
+            </ScrollView>
+        </VerticalStackLayout>
+        </Grid >
+    
 </ContentView>

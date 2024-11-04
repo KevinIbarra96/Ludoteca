@@ -30,11 +30,11 @@ namespace Negocio
         {
             return await DB_Users.deleteUser(_ide);
         }
-        public static async Task<List<EN_User>> RN_UpdateUser(EN_User eN_User)
+        public static async Task<EN_Response<EN_User>> RN_UpdateUser(EN_User eN_User)
         {
             return await DB_Users.updateUser(eN_User);
         }
-        public static async Task<List<EN_User>> RN_AddNewUser(EN_User eN_User)
+        public static async Task<EN_Response<EN_User>> RN_AddNewUser(EN_User eN_User)
         {
             return await DB_Users.addNewUser(eN_User);
         }

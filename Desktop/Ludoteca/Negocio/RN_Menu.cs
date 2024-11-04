@@ -10,7 +10,7 @@ namespace Negocio
 {
     public class RN_Menu
     {
-        public static async Task<List<EN_Menu>> RN_GetMenuByRol(int _idRol)
+        public static async Task<EN_Response<EN_Menu>> RN_GetMenuByRol(int _idRol)
         {
             return await DB_Menu.getMenuByRol(_idRol);
         }
@@ -19,7 +19,7 @@ namespace Negocio
         {
             return await DB_Menu.getAllMenu();
         }
-        public static async Task<List<EN_Menu>> getAllActiveMenu()
+        public static async Task<EN_Response<EN_Menu>> getAllActiveMenu()
         {
             return await DB_Menu.getAllActiveMenu();
         }
