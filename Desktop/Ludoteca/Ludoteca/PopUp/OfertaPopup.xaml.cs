@@ -66,14 +66,16 @@ public partial class OfertaPopup
             var toast = Toast.Make("Se agregó el " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
 
+            await MopupService.Instance.PopAllAsync();
+
+        }
+        catch (NullReferenceException ex)
+        {
+            await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error en el proceso de guardado\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 

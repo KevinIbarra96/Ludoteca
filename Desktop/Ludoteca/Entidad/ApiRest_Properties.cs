@@ -8,7 +8,7 @@ namespace Entidad
 {
     public class ApiRest_Properties
     {
-        private static string Path = @"http://localhost/LudotecaService";
+        private static string Path = @"http://localhost:8080/LudotecaService";
         protected static HttpClient cliente = new HttpClient();
 
         public ApiRest_Properties() {

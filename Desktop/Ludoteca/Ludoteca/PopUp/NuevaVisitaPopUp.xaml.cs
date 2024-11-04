@@ -10,6 +10,7 @@ using Mopups.Services;
 using Ludoteca.Resources;
 using global::Resources.Properties;
 using PdfSharpCore.Pdf;
+using System.ComponentModel.DataAnnotations;
 
 public partial class NuevaVisitaPopUp
 {
@@ -61,7 +62,7 @@ public partial class NuevaVisitaPopUp
 
         foreach (EN_Hijo hijo in e.CurrentSelection)
         {
-            hijo.SelectedBackgroundColor = "LightSkyBlue";
+            hijo.SelectedBackgroundColor = "#40E1E1E1";
         }
     }
 
@@ -98,26 +99,43 @@ public partial class NuevaVisitaPopUp
             nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
             nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
 
+            
             EN_Response<EN_Visita> response = await RN_Visita.ingresarNuevaVisita(nuevaVisita);
             nuevaVisita.id = response.Rbody[0].id;
             nuevaVisita.HoraEntrada = response.Rbody[0].HoraEntrada;
             nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 15000);
 
-            _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO,nuevaVisita);
+            _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO, nuevaVisita);
 
-            var toast = Toast.Make("Nueva visita registrada correctamente" , CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            var toast = Toast.Make("Nueva visita registrada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
 
             await MopupService.Instance.PopAsync();
 
+
         }
-        catch(InvalidCastException invalidCastException)
+        catch(NullReferenceException invalidCastException)
         {
             await DisplayAlert("Error", "Por favor verifica que todos los datos esten correctos", "OK");
         }catch (Exception ex)
         {
             await DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"OK");
         }
+    }
+    public List<string> Validate(EN_Visita visitaSelected)
+    {
+        List<string> ValidationErrors = new List<string>();
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(visitaSelected);
+
+        bool isValid = Validator.TryValidateObject(visitaSelected, validationContext, validationResults, true);
+
+        if (!isValid)
+        {
+            return ValidationErrors = validationResults.Select(vr => vr.ErrorMessage).ToList();
+        }
+
+        return ValidationErrors;
     }
 
     private void BuscarHijos_Clicked(object sender, EventArgs e)

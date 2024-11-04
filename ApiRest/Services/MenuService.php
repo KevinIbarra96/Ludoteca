@@ -7,7 +7,7 @@
         public function __construct(){
             $dataBase = new Connection();
             //Las columnas son solo para los methodos get osease los select que traen la info de la base de datos
-            parent::__construct('menu','MenuName, Rol, Path',$dataBase->getConnection());
+            parent::__construct('menu','id,MenuName,MenuOrder,Path,IconName, ClassName, Path',$dataBase->getConnection());
         }
 
         public function getMenuByRol($idRol){
@@ -26,5 +26,27 @@
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        function newMenuToRol($idRol,$MenuList){
+            $x =0;
+            $query = "";
+
+            foreach($MenuList as $_menu){
+                $query .= "insert into rol_menu (id_Rol,id_Menu) value (:idRol{$x},:idMenu{$x});";
+                $x += 1;
+            }
+
+            $x = 0;
+            $stm =  $this-> DbConection->prepare($query);
+
+            foreach($MenuList as $_menu){
+                $stm->bindValue(":idRol{$x}", $idRol, PDO::PARAM_INT);
+                $stm->bindValue(":idMenu{$x}", $_menu["id"], PDO::PARAM_INT);
+                $x +=1;
+            }
+            $stm->execute();
+
+        }
+
     }
-?>
+
+?>    

@@ -6,7 +6,7 @@
              Title="ServicioPopup" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
 
     <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
-        <Border WidthRequest="480" HeightRequest="750" BackgroundColor="White" HorizontalOptions="Center" >
+        <Border WidthRequest="480" HeightRequest="650" BackgroundColor="White" HorizontalOptions="Center" >
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="10" />
             </Border.StrokeShape>

@@ -135,8 +135,11 @@ public partial class FiestasPopup
 
             await MopupService.Instance.PopAsync();
 
+        }catch (NullReferenceException ex)
+        {
+            await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }

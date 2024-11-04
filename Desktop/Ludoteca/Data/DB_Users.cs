@@ -27,12 +27,27 @@ namespace Data
 
                 EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
                 usersResponse = userRest;
-                
 
-                
             }
 
             //return usersResponse.Rmessage;
+            return usersResponse;
+        }
+
+        public static async Task<EN_Response<EN_User>> getUsersAndRol()
+        {
+            EN_Response < EN_User > usersResponse = null;
+            string _enPoint = _apiPath + "/getUsersAndRol"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                usersResponse = JsonConvert.DeserializeObject<EN_Response<EN_User>>(content);
+
+            }
             return usersResponse;
         }
 
@@ -100,13 +115,13 @@ namespace Data
             return usersResponse;
         }
 
-        public static async Task<List<EN_User>> addNewUser(EN_User _user)
+        public static async Task<EN_Response<EN_User>> addNewUser(EN_User _user)
         {
 
-            usersResponse = null;
+            EN_Response<EN_User> usersResponse = null;
             string endpointpath = _apiPath + "/addNewUser";
 
-            EN_User RequestBody = new EN_User();
+            EN_User RequestBody = _user;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -119,20 +134,20 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
-                usersResponse = userRest.Rbody;
+                usersResponse = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
+                
             }
 
             return usersResponse;
         }
 
-        public static async Task<List<EN_User>> updateUser(EN_User _user)
+        public static async Task<EN_Response<EN_User>> updateUser(EN_User _user)
         {
 
-            usersResponse = null;
+            EN_Response<EN_User> userRest = null;
             string endpointpath = _apiPath + "/editUser";
 
-            EN_User RequestBody = new EN_User();
+            EN_User RequestBody = _user;
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -145,11 +160,11 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_User> userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
-                usersResponse = userRest.Rbody;
+                userRest = JsonConvert.DeserializeObject<EN_Response<EN_User>>(result);
+
             }
 
-            return usersResponse;
+            return userRest;
         }
 
         public static async Task<List<EN_User>> deleteUser(int _id)

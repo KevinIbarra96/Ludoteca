@@ -63,14 +63,20 @@ public partial class ProductoPopup
 
             var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
+
+            await MopupService.Instance.PopAsync();
         }
-        catch(Exception ex)
+        catch (NullReferenceException ex)
+        {
+            await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
+        }
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "OK");
         }
         finally
         {
-            await MopupService.Instance.PopAsync();
+            
         }
     }
     private async void GuardarNuevo_Clicked(object sender, EventArgs e)

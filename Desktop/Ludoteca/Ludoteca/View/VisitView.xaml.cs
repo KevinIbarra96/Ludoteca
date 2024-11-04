@@ -10,6 +10,8 @@ using Negocio;
 using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using System.ComponentModel.DataAnnotations;
+
 public partial class VisitView : ContentPage
 {
 
@@ -81,37 +83,35 @@ public partial class VisitView : ContentPage
 
     private async void Cobrar_Clicked(object sender, EventArgs e)
     {
-        //TODO fañta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
+        //TODO faÃ±ta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
         //TODO falta agregarle las actualizaciones para cuando se agrega un nuevo producto o un nuevo servicio a la visita esa misma actualizacion debe realizarce a la base de datos
-
-        try
-        {
             
-            if (await DisplayAlert("Advertencia", "¿Continuar con el proceso de cobro?", "Si", "No"))
-            {
-                try
-                {
-                    var btn = sender as Label;
-                    var visitaSelected = btn.BindingContext as EN_Visita;
-
-                    //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
-                    await RN_Visita.cobrarVisitas(visitaSelected);
-
-                    await CrearTicketPDF(visitaSelected);
-                    
-                    await DisplayAlert("Felicidades", "Se ah cobrado la visita de " + visitaSelected.Hijos[0].NombreHijo, "OK");
-                }catch(Exception ex)
-                {
-                    await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
-                }
-            }
-
-        }
-        catch(Exception ex)
+        if (await DisplayAlert("Advertencia", "Â¿Continuar con el proceso de cobro?", "Si", "No"))
         {
-            await DisplayAlert("Error", "ah ocurrido un error \nDetalles: " + ex.Message, "OK");
+            try
+            {
+                    
+                var btn = sender as Label;
+                var visitaSelected = btn.BindingContext as EN_Visita;
+                   
+                //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
+                await RN_Visita.cobrarVisitas(visitaSelected);
+
+                await CrearTicketPDF(visitaSelected);
+                    
+                await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
+
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
+            }
         }
+        
     }
+
+
+
     private async Task CrearTicketPDF(EN_Visita visitaSelected)
     {
         
@@ -130,12 +130,12 @@ public partial class VisitView : ContentPage
         // Verificar los valores de la fecha
         if (year < 1900 || year > DateTime.Now.Year || fechaActual.Month < 1 || fechaActual.Month > 12 || day < 1 || day > 31)
         {
-            throw new Exception("Fecha inválida.");
+            throw new Exception("Fecha invÃ¡lida.");
         }
-        // Obtener la ruta base desde la configuración de la BD
+        // Obtener la ruta base desde la configuraciÃ³n de la BD
         string rutaBase = ApplicationProperties.rutaTickets.ConfigStringValue;
 
-        // Definir la ruta del directorio (año, mes, día)
+        // Definir la ruta del directorio (aÃ±o, mes, dÃ­a)
         string rutaDirectorio = Path.Combine(rutaBase, year.ToString(), nameMonth, day.ToString());
 
         // Verificar si el directorio existe y crear si no existe
@@ -165,9 +165,9 @@ public partial class VisitView : ContentPage
 
     public static void GenerateTicketPdf(string fileName,EN_Visita visita , double height)
     {
-        // Ancho del ticket en milímetros
+        // Ancho del ticket en milÃ­metros
         double width = 70;
-        double initialHeight = 200; // Altura inicial, se ajustará dinámicamente según el contenido
+        double initialHeight = 200; // Altura inicial, se ajustarÃ¡ dinÃ¡micamente segÃºn el contenido
 
         PdfDocument document = new PdfDocument();
         document.Info.Title = "Ticket de Compra";
@@ -216,17 +216,17 @@ public partial class VisitView : ContentPage
         }
 
         y += 5;
-        gfx.DrawLine(XPens.Black, x, y, width - 20, y); // Línea horizontal ajustada
+        gfx.DrawLine(XPens.Black, x, y, width - 20, y); // LÃ­nea horizontal ajustada
         y += 5;
 
         // Dibujar encabezado de productos y servicios
         gfx.DrawString("Productos y Servicios", titleFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft);
 
         // Ajuste de las posiciones de las columnas
-        double precioX = x + 100; // Posición ajustada más cerca y un poco a la izquierda
+        double precioX = x + 100; // PosiciÃ³n ajustada mÃ¡s cerca y un poco a la izquierda
         gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
 
-        double totalX = precioX + 30; // Posición ajustada para que "Total" esté cerca de "Precio"
+        double totalX = precioX + 30; // PosiciÃ³n ajustada para que "Total" estÃ© cerca de "Precio"
         gfx.DrawString("Total", titleFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
         y += lineHeight;
 
@@ -237,7 +237,7 @@ public partial class VisitView : ContentPage
             gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
             y += lineHeight;
 
-            // Ajuste dinámico de la altura de la página
+            // Ajuste dinÃ¡mico de la altura de la pÃ¡gina
             if (y > page.Height.Point - 20)
             {
                 page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
@@ -252,7 +252,7 @@ public partial class VisitView : ContentPage
             gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
             y += lineHeight;
 
-            // Ajuste dinámico de la altura de la página
+            // Ajuste dinÃ¡mico de la altura de la pÃ¡gina
             if (y > page.Height.Point - 20)
             {
                 page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
@@ -278,7 +278,7 @@ public partial class VisitView : ContentPage
 
             gfx.DrawString("Ofertas", titleFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft); // Encabezado para "Ofertas"
             gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight); // Encabezado para "Precio"
-            y += lineHeight; // Espacio después del encabezado
+            y += lineHeight; // Espacio despuÃ©s del encabezado
         }
 
 
@@ -292,7 +292,7 @@ public partial class VisitView : ContentPage
                 //gfx.DrawString(oferta.TotalDescuento.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
                 y += lineHeight;
 
-                // Ajuste dinámico de la altura de la página
+                // Ajuste dinÃ¡mico de la altura de la pÃ¡gina
                 if (y > page.Height.Point - 20)
                 {
                     page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
@@ -310,12 +310,12 @@ public partial class VisitView : ContentPage
 
     public static double CalcularAlturaDelTicket(int numServicios)
     {
-        // Calcular la altura del ticket en función del número de servicios y otros elementos
-        double titleHeight = 20; // Altura del título
-        double footerHeight = 20; // Altura del pie de página
-        double lineHeight = 12; // Altura de línea de texto
+        // Calcular la altura del ticket en funciÃ³n del nÃºmero de servicios y otros elementos
+        double titleHeight = 20; // Altura del tÃ­tulo
+        double footerHeight = 20; // Altura del pie de pÃ¡gina
+        double lineHeight = 12; // Altura de lÃ­nea de texto
 
-        // Calcular la altura total en función del número de servicios
+        // Calcular la altura total en funciÃ³n del nÃºmero de servicios
         double serviciosHeight = lineHeight * numServicios; // Altura de los servicios
         double totalHeight = titleHeight + footerHeight + serviciosHeight;
 

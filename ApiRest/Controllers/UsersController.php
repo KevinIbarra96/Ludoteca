@@ -1,9 +1,9 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -30,6 +30,27 @@
                 $Response = $userSvc->LoginService($userName, $password);
                 
                 $Response->Rcode = 200;
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
+        function getUsersAndRol(){
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $userSvc = new UserService();
+                $Response->Rbody = $userSvc->getUsersAndRol();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All User listed";
+                
             }catch(Exception $ex){
                 $Response->Rcode = 402;
                 $Response->Rmessage = $ex->getMessage();
