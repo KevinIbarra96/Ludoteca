@@ -17,7 +17,7 @@ public partial class FiestasView : ContentPage
         viewModel = new FiestaViewModel();
         BindingContext = viewModel;
 
-        _updateFiestasTable = viewModel._UpdateFiestasTable;
+        _updateFiestasTable = viewModel._UpdateFiestasTable;        
 
         InitializeComponent();
 	}
@@ -25,5 +25,12 @@ public partial class FiestasView : ContentPage
     private void Agregar_Clicked(object sender, EventArgs e)
     {
 		MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable) );
+    }
+
+    private void Edicion_Clicked(object sender, EventArgs e)
+    {
+        var button = sender as Button;
+
+        MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable, (EN_Fiesta) button.CommandParameter));
     }
 }
