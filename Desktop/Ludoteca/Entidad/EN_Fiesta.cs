@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,25 +11,31 @@ namespace Entidad
     public class EN_Fiesta : INotifyPropertyChanged
     {
         public int id { get; set; }
-        private int _idHijo;
-        private string _nombrehijo;
+        private List<EN_Padre> _padre;
+        private List<EN_Hijo> _hijo;
         private int _idServicio;
-        private string _nombreServicio;
+        private EN_Servicio _Servicio;
+        private int _idTurno;
+        private string _turno;
         private DateTime _Fecha;
+        private string _tematica;
+        private int _EdadACumplir;
+        private string _TipoComida;
+        private int _ninosAdicionales;
         private double _anticipo;
         private double _total;
         private int _status;
 
-        public int IdHijo
+        public List<EN_Padre> Padre
         {
-            get { return _idHijo; }
-            set { _idHijo = value; OnPropertyChanged(nameof(IdHijo)); }
+            get => _padre;
+            set { _padre = value; OnPropertyChanged(nameof(Padre)); }
         }
 
-        public string NombreHijo
+        public List<EN_Hijo> Hijo
         {
-            get => _nombrehijo;
-            set { _nombrehijo = value; OnPropertyChanged(nameof(NombreHijo)); }
+            get => _hijo;
+            set { _hijo = value; OnPropertyChanged(nameof(Hijo)); }
         }
 
         public int IdServicio
@@ -40,11 +47,26 @@ namespace Entidad
                 OnPropertyChanged(nameof(IdServicio));
             }
         }
-
-        public string NombreServicio
+        public EN_Servicio Servicio
         {
-            get => _nombreServicio;
-            set { _nombreServicio = value; OnPropertyChanged(nameof(NombreServicio)); }
+            get => _Servicio;
+            set { _Servicio = value; OnPropertyChanged(nameof(Servicio)); }
+        }
+
+        public int IdTurno
+        {
+            get { return _idTurno; }
+            set
+            {
+                _idTurno = value;
+                OnPropertyChanged(nameof(IdTurno));
+            }
+        }
+
+        public string Turno
+        {
+            get => _turno;
+            set { _turno = value; OnPropertyChanged(nameof(Turno)); }
         }
 
         public DateTime Fecha
@@ -55,6 +77,29 @@ namespace Entidad
                 _Fecha = value;
                 OnPropertyChanged(nameof(Fecha));
             }
+        }
+
+        public string Tematica
+        {
+            get => _tematica;
+            set { _tematica = value; OnPropertyChanged(nameof(Tematica)); }
+        }
+
+        public int EdadACumplir
+        {
+            get => _EdadACumplir;
+            set { _EdadACumplir = value; OnPropertyChanged(nameof(EdadACumplir)); }
+        }
+
+        public string TipoComida
+        {
+            get => _TipoComida;
+            set { _TipoComida = value; OnPropertyChanged(nameof(TipoComida)); }
+        }
+        public int NinosAdicionales
+        {
+            get => _ninosAdicionales;
+            set { _ninosAdicionales = value; OnPropertyChanged(nameof(NinosAdicionales)); }
         }
 
         public double Anticipo
@@ -84,6 +129,7 @@ namespace Entidad
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Debug.WriteLine("OnPropertyChanged Fiestas");
         }
     }
 }

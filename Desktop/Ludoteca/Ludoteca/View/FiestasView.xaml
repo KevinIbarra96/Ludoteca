@@ -25,18 +25,28 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del hijo" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="1" FontAttributes="Bold" Text="Nombre del servicio" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Nombre del servicio" HorizontalOptions="Center" VerticalOptions="Center"/> 
             <Label Grid.Column="2" FontAttributes="Bold" Text="Fecha" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="3" FontAttributes="Bold" Text="Anticipo" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="4" FontAttributes="Bold" Text="Total" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="5" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Turno" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="4" FontAttributes="Bold" Text="Tematica" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="5" FontAttributes="Bold" Text="Edad a Cumplir" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="6" FontAttributes="Bold" Text="Tipo de Comida" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="7" FontAttributes="Bold" Text="Niños Adicionales" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="8" FontAttributes="Bold" Text="Anticipo" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="9" FontAttributes="Bold" Text="Total" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="10" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
 
         <!-- Lista de productos -->
-        <ListView ItemsSource="{Binding fiestas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47">
+        <ListView ItemsSource="{Binding fiestas, Mode=TwoWay}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -58,24 +68,47 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="200" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Text="{Binding NombreHijo}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <Label Grid.Column="1" Text="{Binding NombreServicio}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <CollectionView Grid.Column="0" ItemsSource="{Binding Hijo}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label Text="{Binding NombreHijo, StringFormat=' - {0}'}"></Label>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <Label Grid.Column="1" Text="{Binding Servicio.ServicioName}" HorizontalOptions="Center" VerticalOptions="Center" />
                             <Label Grid.Column="2" Text="{Binding Fecha,StringFormat='{0:D}' }" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <Label Grid.Column="3" Text="{Binding Anticipo }" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <Label Grid.Column="4" Text="{Binding Total }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="3" Text="{Binding Turno}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="4" Text="{Binding Tematica }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="5" Text="{Binding EdadACumplir }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="6" Text="{Binding TipoComida }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="7" Text="{Binding NinosAdicionales }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="8" Text="{Binding Anticipo,StringFormat='{0:C2} $' }" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="9" Text="{Binding Total,StringFormat='{0:C2} $' }" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                            <Button Grid.Column="5" Text="Editar" ToolTipProperties.Text="Editar Oferta" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                            <Button Grid.Column="10" Text="Editar" Clicked="Edicion_Clicked" ToolTipProperties.Text="Editar Oferta" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
 
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
                             <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="4" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="5" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="6" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="7" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="8" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="9" />
                             <!-- Agrega líneas de separación adicionales si es necesario -->
 
                             <!-- Caja de la última columna -->
-                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="4" Margin="0,0,0,1" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="10" Margin="0,0,0,1" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

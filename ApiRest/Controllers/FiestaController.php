@@ -1,8 +1,8 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -120,16 +120,21 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'IdHijo' =>$BodyRequest['IdHijo'],
                     'IdServicio' =>$BodyRequest['IdServicio'],
                     'Fecha' =>$BodyRequest['Fecha'],
                     'Anticipo' =>$BodyRequest['Anticipo'],
+                    'IdTurno' =>$BodyRequest['IdTurno'],
+                    'Hijo' => $BodyRequest['Hijo'],
+                    'TipoComida' =>$BodyRequest['TipoComida'],
+                    'NinosAdicionales' =>$BodyRequest['NinosAdicionales'],
+                    'Tematica' =>$BodyRequest['Tematica'],
+                    'EdadACumplir' =>$BodyRequest['EdadACumplir'],
                     'Total' =>$BodyRequest['Total']
                 ];
 
                 $database = new Connection();
                 $FiestaSvc = new FiestaService();
-                $Response->Rbody = $FiestaSvc->new($dataBody);
+                $Response->Rbody = $FiestaSvc->ProgramarFiesta($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -151,12 +156,15 @@
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
                 $dataBody = [
-                    'idHijo' =>$BodyRequest['idHijo'],
-                    'idServicio' =>$BodyRequest['idServicio'],
+                    'idServicio' =>$BodyRequest['IdServicio'],
                     'Fecha' =>$BodyRequest['Fecha'],
                     'Anticipo' =>$BodyRequest['Anticipo'],
-                    'Total' =>$BodyRequest['Total'],
-                    'status' =>$BodyRequest['status']
+                    'idTurno' =>$BodyRequest['IdTurno'],
+                    'TipoComida' =>$BodyRequest['TipoComida'],
+                    'NinosAdicionales' =>$BodyRequest['NinosAdicionales'],
+                    'Tematica' =>$BodyRequest['Tematica'],
+                    'EdadACumplir' =>$BodyRequest['EdadACumplir'],
+                    'Total' =>$BodyRequest['Total']
                 ];
 
                 $database = new Connection();

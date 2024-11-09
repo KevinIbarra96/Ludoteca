@@ -10,5 +10,5 @@
 
   define('DB_DATABASE', 'ludotecadb');
   
-  define('DB_PORT', '3306');
+  define('DB_PORT', '3307');
 ?>

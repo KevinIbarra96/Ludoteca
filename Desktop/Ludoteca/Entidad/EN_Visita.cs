@@ -18,7 +18,6 @@ namespace Entidad
         private int _tiempoExcedido;
 
 
-        [Required(ErrorMessage = "Selecciona un Gafete")]
         public int GafeteId
         {
             get { return _gafeteId; }
@@ -56,7 +55,6 @@ namespace Entidad
             }
         }
 
-        [Required(ErrorMessage = "Selecciona una Oferta")]
         public List<EN_Oferta> Oferta
         {
             get { return _Oferta; }
@@ -70,10 +68,8 @@ namespace Entidad
             }
         }
 
-        [Required(ErrorMessage = "Selecciona un Hijo")]
         public List<EN_Hijo>? Hijos { get; set; }
 
-        [Required(ErrorMessage = "Selecciona el Servicio")]
         public ObservableCollection<EN_ServiciosVisita>? Servicios 
         {
             get => _servicios;
@@ -84,7 +80,6 @@ namespace Entidad
 
         public ObservableCollection<EN_ProductosVisita>? _productos;
 
-        [Required(ErrorMessage = "Selecciona un producto")]
         public ObservableCollection<EN_ProductosVisita>? Productos 
         { 
             get { return _productos; }
