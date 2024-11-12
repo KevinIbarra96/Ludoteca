@@ -9,7 +9,6 @@ using CommunityToolkit.Maui.Alerts;
 using Mopups.Services;
 using Ludoteca.Resources;
 using global::Resources.Properties;
-using PdfSharpCore.Pdf;
 using System.ComponentModel.DataAnnotations;
 
 public partial class NuevaVisitaPopUp
@@ -22,9 +21,14 @@ public partial class NuevaVisitaPopUp
 
     double _totalProducto = 0;
     double _totalServicio = 0;
+    int _TotalHijos = 0;
+
+    bool _PrimerProductoSelec = true;
 
     EN_Gafete _Gafete;
     List<EN_Oferta> _Oferta =  new List<EN_Oferta>();
+
+    private double _Total = 0;
 
     EN_Padre padre;
 
@@ -46,8 +50,13 @@ public partial class NuevaVisitaPopUp
 	}
 
     private void calcularTotal() {
+
+        _Total = 0;
+        _Total = _totalProducto + (_totalServicio * _TotalHijos);
+
         TotalVisita.Text = "";
-        TotalVisita.Text = "<strong style=\"color:red\"> Total: </strong>" + (_totalProducto + _totalServicio) + "$";
+        TotalVisita.Text = "<strong style=\"color:red\"> Total: </strong>" + _Total + "$";
+
     }
 
     #region Events
@@ -64,6 +73,9 @@ public partial class NuevaVisitaPopUp
         {
             hijo.SelectedBackgroundColor = "#40E1E1E1";
         }
+
+        _TotalHijos = HijosCollectionView.SelectedItems.Count;
+        calcularTotal();
     }
 
     private async void getGafetesActivosNoAsignados()
@@ -89,8 +101,13 @@ public partial class NuevaVisitaPopUp
         lisPadre.Add(padre);
         try
         {
+
+            string respValidar = await ValidarCampos();
+            if (respValidar != null)
+                throw new Exception(respValidar);
+
             EN_Visita nuevaVisita = new EN_Visita();
-            nuevaVisita.Total = (_totalProducto + _totalServicio);
+            nuevaVisita.Total = _Total;
             nuevaVisita.Oferta = _Oferta;
             nuevaVisita.GafeteId = _Gafete.id;
             nuevaVisita.NumeroGafete = _Gafete.Numero;
@@ -122,20 +139,27 @@ public partial class NuevaVisitaPopUp
             await DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"OK");
         }
     }
-    public List<string> Validate(EN_Visita visitaSelected)
+
+    public async Task<string> ValidarCampos()
     {
-        List<string> ValidationErrors = new List<string>();
-        var validationResults = new List<ValidationResult>();
-        var validationContext = new ValidationContext(visitaSelected);
+        string resp = null;
 
-        bool isValid = Validator.TryValidateObject(visitaSelected, validationContext, validationResults, true);
+        if (ProductosCollectionView.SelectedItems.Count == 0)
+            resp = "Porfavor Selecciona un producto";
 
-        if (!isValid)
-        {
-            return ValidationErrors = validationResults.Select(vr => vr.ErrorMessage).ToList();
-        }
+        if(ServicioCollectionView.SelectedItem == null )
+            resp = "Porfavor Selecciona un servicio";
 
-        return ValidationErrors;
+        if(HijosCollectionView.SelectedItems.Count == 0)
+            resp = "Porfavor Selecciona un hijo";
+
+        if (_Oferta.Count == 0)
+            resp = "Porfavor Selecciona una oferta";
+
+        if (_Gafete == null )
+            resp = "Porfavor Selecciona un Gafete";
+
+        return resp;
     }
 
     private void BuscarHijos_Clicked(object sender, EventArgs e)
@@ -150,11 +174,20 @@ public partial class NuevaVisitaPopUp
         //foreach (EN_Producto prod in e.CurrentSelection)
         foreach (EN_Producto prod in ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList())
         {
+
             if (prod.CantidadVisita == 0 || prod.CantidadVisita == null)
-                    prod.CantidadVisita = 1;
-                
-            double total = prod.Precio * prod.CantidadVisita;
-            _totalProducto += Math.Round(total, 2);
+            {
+                prod.CantidadVisita = 1; _PrimerProductoSelec = false;
+            }
+            else
+                _PrimerProductoSelec = true;
+
+            if (_PrimerProductoSelec)
+            {
+                double total = prod.Precio * prod.CantidadVisita;
+                _totalProducto += Math.Round(total, 2);
+            }
+
             prod.IsEnable = true;
         }
         calcularTotal();
@@ -163,7 +196,7 @@ public partial class NuevaVisitaPopUp
     private void EntryCantidadProducto_TextChanged(object sender, TextChangedEventArgs e)
     {
         
-        _totalProducto = 0;        
+        _totalProducto = 0;
         foreach (EN_Producto prod in ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList())
         {
             int cantidadV = prod.CantidadVisita;
@@ -190,33 +223,53 @@ public partial class NuevaVisitaPopUp
     {
         EN_Visita visita = (EN_Visita)state;
 
-        double PrecioxMinuto = (double)ApplicationProperties.precioXMinute.ConfigDecimalValue;
+        double PrecioxMinuto = (double)ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue;
         double TotalPrecioExcedente = 0;
 
         // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
         DateTime now = DateTime.Now;
         TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-        int totalTiempo = visita.Servicios.Sum(servicio => servicio.Tiempo);
+        int totalTiempoServicios = visita.Servicios.Sum(servicio => servicio.Tiempo);
 
         //Validar si el tiempo transcurrido es menor al tiempo acordado
-        if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempo)
+        if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempoServicios)
         {
             visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
             Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
         }
         else
         {
-            int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+            int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempoServicios;
+
+            //Considerar el numero de hijos para los tiemposExcedentes
+            tiempoExcedente *= visita.Hijos.Count;
+
+            /*TODO Calculo para manejar el tiempo de las ofertas cuando se habla por tiempo.
             if (tiempoExcedente > 0 && tiempoExcedente > visita.Oferta.FirstOrDefault().Tiempo)
-                TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente- visita.Oferta.FirstOrDefault().Tiempo);
+                TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente - visita.Oferta.FirstOrDefault().Tiempo);*/
+
+            //Cuando no tiene un servicio se maneja el servicio por defalut "Sin Servicio que se configura en ApplicationProperties"
 
             visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
             visita.Total = 0;
-            visita.Total += TotalPrecioExcedente + _calcularTotalVisitas(visita);
-            visita.TiempoExcedido = tiempoExcedente;
-        }
+            visita.Total += TotalPrecioExcedente + _CalcularTotalVisita(visita);
 
+            if (ApplicationProperties.IdTiempoLibreServicio == visita.Servicios.First().Servicio_Id)
+            {
+                if (visita.TiempoTranscurrido <= 35)
+                    visita.Total += (double)(ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue * (visita.TiempoTranscurrido * visita.Hijos.Count));
+                else
+                    visita.Total += (double)(ApplicationProperties.PrecioMinutoSesentaMin.ConfigDecimalValue * (visita.TiempoTranscurrido * visita.Hijos.Count));
+            }
+            else
+            {
+                visita.Total += (double)(ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue * tiempoExcedente);
+            }
+
+            visita.TiempoExcedido = tiempoExcedente;
+
+        }
     }
 
     private void GafetePicker_SelectedIndexChanged(object sender, EventArgs e)

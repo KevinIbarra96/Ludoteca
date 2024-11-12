@@ -9,7 +9,7 @@ namespace Ludoteca.View;
 public partial class ConfiguracionView : ContentPage
 {
 
-	private EN_Configuracion precioConfiguracion, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
+	private EN_Configuracion precioTreintaMin, precioSesentaMin, precioDespuesServicio,PrecioNiñoAdicional, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
 	private ConfiguracionViewModel viewModel;
 
     public ConfiguracionView()
@@ -25,7 +25,10 @@ public partial class ConfiguracionView : ContentPage
     }
     private void loadConfiguraciones()
     {
-        precioConfiguracion = ApplicationProperties.precioXMinute;
+        precioTreintaMin = ApplicationProperties.PrecioMinutoTreintaMin;
+        precioSesentaMin = ApplicationProperties.PrecioMinutoSesentaMin;
+        precioDespuesServicio = ApplicationProperties.PrecioMinutoDespuesServicio;
+        PrecioNiñoAdicional = ApplicationProperties.PrecioNiñoAdicional;
         edadMinimaConfiguracion = ApplicationProperties.edadMinima;
         edadMaximaConfiguracion = ApplicationProperties.edadMaxima;
         rutaConfig = ApplicationProperties.rutaTickets;
@@ -33,10 +36,13 @@ public partial class ConfiguracionView : ContentPage
         loadConfigCampos();
     }
     private void loadConfigCampos() {
-        EntryPrecioxMinuto.Text = ApplicationProperties.precioXMinute.ConfigDecimalValue.ToString();
+        EntryPrecioMinutoTreintaMin.Text = ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue.ToString();
+        EntryPrecioMinutoSesentaMin.Text = ApplicationProperties.PrecioMinutoSesentaMin.ConfigDecimalValue.ToString();
+        EntryPrecioMinutoDespuesServicio.Text = ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue.ToString();
+        EntryPrecioNiñoAdicional.Text = ApplicationProperties.PrecioNiñoAdicional.ConfigDecimalValue.ToString();
         EntryEdadMinima.Text = ApplicationProperties.edadMinima.ConfigIntValue.ToString();
         EntryEdadMaxima.Text = ApplicationProperties.edadMaxima.ConfigIntValue.ToString();
-        labelRutaTickets.Text = ApplicationProperties.rutaTickets.ConfigStringValue.ToString();
+        //labelRutaTickets.Text = ApplicationProperties.rutaTickets.ConfigStringValue.ToString();
     }
 
 
@@ -50,18 +56,17 @@ public partial class ConfiguracionView : ContentPage
     {
 		try
 		{
-            if (string.IsNullOrEmpty(EntryPrecioxMinuto.Text))
-            {
-                return; // No hacer nada si está vacío
-            }
-            if (!double.TryParse(EntryPrecioxMinuto.Text, out double precioxminuto))
+            if (string.IsNullOrEmpty(EntryPrecioMinutoTreintaMin.Text))
+               return; // No hacer nada si está vacío
+
+            if (!double.TryParse(EntryPrecioMinutoTreintaMin.Text, out double precioxminuto))
             {
                 await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
                 return; // Salir si no es un número válido
             }
             //Actualizar el precio
-			precioConfiguracion.ConfigDecimalValue = double.Parse(EntryPrecioxMinuto.Text);
-			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioConfiguracion);
+            precioTreintaMin.ConfigDecimalValue = double.Parse(EntryPrecioMinutoTreintaMin.Text);
+			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioTreintaMin);
             
 		}catch (Exception ex)
 		{
@@ -90,6 +95,73 @@ public partial class ConfiguracionView : ContentPage
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
+
+    private async void EntryPrecioMinutoSesentaMin_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EntryPrecioMinutoSesentaMin.Text))
+                return; // No hacer nada si está vacío
+                                    // 
+            if (!double.TryParse(EntryPrecioMinutoSesentaMin.Text, out double precioSesentaMins))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            precioSesentaMin.ConfigDecimalValue = double.Parse(EntryPrecioMinutoSesentaMin.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioSesentaMin);
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+
+    private async void EntryPrecioNiñoAdicional_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EntryPrecioNiñoAdicional.Text))
+                return; // No hacer nada si está vacío
+                        // 
+            if (!double.TryParse(EntryPrecioNiñoAdicional.Text, out double precioSesentaMins))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            PrecioNiñoAdicional.ConfigDecimalValue = double.Parse(EntryPrecioNiñoAdicional.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(PrecioNiñoAdicional);
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+
+    private async void EntryPrecioMinutoDespuesServicio_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EntryPrecioMinutoDespuesServicio.Text))
+                return; // No hacer nada si está vacío
+                        // 
+            if (!double.TryParse(EntryPrecioMinutoDespuesServicio.Text, out double PrecioMinDespServicio))
+            {
+                await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");
+                return; // Salir si no es un número válido
+            }
+            precioDespuesServicio.ConfigDecimalValue = double.Parse(EntryPrecioMinutoDespuesServicio.Text);
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioDespuesServicio);
+
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+        }
+    }
+
     private async void EntryEdadMaxima_TextChanged(object sender, TextChangedEventArgs e)
     {
         try
@@ -135,7 +207,7 @@ public partial class ConfiguracionView : ContentPage
 
             await GuardarRutaEnBD(newFolderPath);
 
-            labelRutaTickets.Text = newFolderPath;
+            //labelRutaTickets.Text = newFolderPath;
             await DisplayAlert("Éxito", "La ruta ha sido actualizada.", "OK");
 
         }

@@ -17,6 +17,7 @@ namespace Entidad
         private int _tiempoTranscurrido;
         private int _tiempoExcedido;
 
+        public bool GafeteEntregado = true;
 
         public int GafeteId
         {

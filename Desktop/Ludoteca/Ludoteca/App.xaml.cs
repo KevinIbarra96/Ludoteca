@@ -11,15 +11,6 @@ namespace Ludoteca
         {
             InitializeComponent();
 
-            //string rutaProyecto = Configuracion.ObtenerRutaProyecto();
-            //if(string.IsNullOrEmpty(rutaProyecto))
-            //{
-                string rutaProyecto = @"C:\MiProyecto";
-            Configuracion.CreateSubKey();
-                //Configuracion.GuardarRutaProyecto(rutaProyecto);
-            //}
-
-
             //Initialize the application properties
             ApiRest_Properties apiRest_Properties = new ApiRest_Properties();
 

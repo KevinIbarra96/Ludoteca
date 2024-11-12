@@ -1,16 +1,13 @@
 namespace Ludoteca.View;
 
-using CommunityToolkit.Maui.Alerts;
 using Entidad;
 using global::Resources.Properties;
 using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using PdfSharpCore;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
-using System.ComponentModel.DataAnnotations;
 
 public partial class VisitView : ContentPage
 {
@@ -21,7 +18,6 @@ public partial class VisitView : ContentPage
     CalcularTotalVisita _calcularTotalVisita;
     AddProductoToVisita _addProductoToVisita;
     AddServicioToVisita _addServicioToVisita;
-
 
     public VisitView()
 	{
@@ -90,10 +86,16 @@ public partial class VisitView : ContentPage
         {
             try
             {
-                    
+                
                 var btn = sender as Label;
                 var visitaSelected = btn.BindingContext as EN_Visita;
-                   
+
+                if (!await DisplayAlert("Información", "¿Entregó Gafete?", "Si", "No"))
+                {
+                    visitaSelected.Total += 50.00;
+                    visitaSelected.GafeteEntregado = false;
+                }
+        
                 //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
                 await RN_Visita.cobrarVisitas(visitaSelected);
 
@@ -111,6 +113,13 @@ public partial class VisitView : ContentPage
     }
 
 
+    private async Task<bool> ValidacionGafete()
+    {
+
+        bool answer = await DisplayAlert("Información", "¿Entregó Gafete?", "Si", "No");
+        return answer;
+
+    }
 
     private async Task CrearTicketPDF(EN_Visita visitaSelected)
     {
@@ -163,7 +172,7 @@ public partial class VisitView : ContentPage
     }
 
 
-    public static void GenerateTicketPdf(string fileName,EN_Visita visita , double height)
+    public void GenerateTicketPdf(string fileName,EN_Visita visita , double height)
     {
         // Ancho del ticket en milímetros
         double width = 70;
@@ -258,6 +267,16 @@ public partial class VisitView : ContentPage
                 page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
             }
         }
+
+        if (!visita.GafeteEntregado)
+        {
+            gfx.DrawString("Gafete", regularFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft);
+            gfx.DrawString(50.00.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
+            gfx.DrawString(50.00.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
+            y += lineHeight;
+        }
+
+
         y += 5;
         gfx.DrawLine(XPens.Black, x, y, width - 20, y);
         y += 5;
@@ -267,7 +286,7 @@ public partial class VisitView : ContentPage
         {
             if (oferta.totalDescuento > 0)
             {
-               hayOfertaPrecio = true;
+                hayOfertaPrecio = true;
                 break;
             }
         }
@@ -280,7 +299,6 @@ public partial class VisitView : ContentPage
             gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight); // Encabezado para "Precio"
             y += lineHeight; // Espacio después del encabezado
         }
-
 
         // Mostrar ofertas de precio (si existen)
         foreach (var oferta in visita.Oferta)
@@ -303,7 +321,7 @@ public partial class VisitView : ContentPage
             }
         }
 
-        gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft); ;
+        gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft);
 
         document.Save(fileName);
     }

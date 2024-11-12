@@ -16,7 +16,10 @@ namespace Ludoteca
         {
 
             InitializeComponent();
-            getPrecioXMinute();
+            getPrecioTreintaMin();
+            getPrecioSesentaMin();
+            getPrecioDespuesServicioMin();
+            getPrecioNiñoAdicional();
             getEdadMinima();
             getEdadMaxima();
             GetRutaAsync();
@@ -33,13 +36,55 @@ namespace Ludoteca
             App.Current.MainPage = new Login();
         }
 
-        private async void getPrecioXMinute()
+        private async void getPrecioTreintaMin()
         {
             try
             {
                 //Actualizar el precio
                 EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(1);
-                ApplicationProperties.precioXMinute = response.Rbody[0];
+                ApplicationProperties.PrecioMinutoTreintaMin = response.Rbody[0];
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+
+            }
+        }
+        private async void getPrecioNiñoAdicional()
+        {
+            try
+            {
+                //Actualizar el precio
+                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(5);
+                ApplicationProperties.PrecioNiñoAdicional = response.Rbody[0];
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+
+            }
+        }
+        private async void getPrecioSesentaMin()
+        {
+            try
+            {
+                //Actualizar el precio
+                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(6);
+                ApplicationProperties.PrecioMinutoSesentaMin = response.Rbody[0];
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
+
+            }
+        }
+        private async void getPrecioDespuesServicioMin()
+        {
+            try
+            {
+                //Actualizar el precio
+                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(7);
+                ApplicationProperties.PrecioMinutoDespuesServicio = response.Rbody[0];
             }
             catch (Exception ex)
             {
