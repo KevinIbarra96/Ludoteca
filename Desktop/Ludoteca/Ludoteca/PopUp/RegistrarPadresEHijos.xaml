@@ -24,16 +24,16 @@
                         <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
                         <ScrollView HeightRequest="380" BackgroundColor="White">
                             <VerticalStackLayout Margin="10">
-                                <Label Text="Nombre del papa" VerticalOptions="Start" />
+                                <Label Text="Nombre del Papá" VerticalOptions="Start" />
                                 <Entry x:Name="EntryNombrePapa" HorizontalOptions="Start" WidthRequest="350" />
 
-                                <Label Text="Numero telefono Papa" VerticalOptions="Start" />
+                                <Label Text="Numero telefono Papá" VerticalOptions="Start" />
                                 <Entry x:Name="EntryNumeroPapa" HorizontalOptions="Start" WidthRequest="350" />
 
-                                <Label Text="Nombre de Mama" VerticalOptions="Start" />
+                                <Label Text="Nombre de Mamá" VerticalOptions="Start" />
                                 <Entry x:Name="EntryNombreMama" HorizontalOptions="Start" WidthRequest="350" />
 
-                                <Label Text="Numero telefono Mama" VerticalOptions="Start" />
+                                <Label Text="Numero telefono Mamá" VerticalOptions="Start" />
                                 <Entry x:Name="EntryNumeroMama" HorizontalOptions="Start" WidthRequest="350" />
 
                                 <Label Text="Direccion" VerticalOptions="Start" />
@@ -43,17 +43,18 @@
                         </ScrollView>
                     </StackLayout>
 
-                    <StackLayout Grid.Column="1" Margin="10">
+                    <StackLayout x:Name="HijosContainer" Grid.Column="1" Margin="10">
                         <Label Text="Hijos" HorizontalOptions="Center" FontAttributes="Bold"/>
                         <BoxView HeightRequest="1" Color="{StaticResource FrameBackground}"/>
                         <ScrollView HeightRequest="380" BackgroundColor="White" >
-                            <VerticalStackLayout Margin="10">
-                                
+                            <VerticalStackLayout  x:Name="HijosStackLayout" Margin="10">
                                 <Label Text="Nombre del hijo" VerticalOptions="Start" />
-                                <Entry x:Name="EntryNombreHijo" HorizontalOptions="Start" WidthRequest="350" />
-
-                                <DatePicker x:Name="DateFechaNacimientoHijo" />
-
+                                <Entry x:Name="EntryNombreHijo" HorizontalOptions="Start" WidthRequest="350" Placeholder = "Ingrese nombre del hijo" />
+                                <Label Text="Fecha de Nacimiento"/>
+                                <HorizontalStackLayout HorizontalOptions="Fill" VerticalOptions="Start">
+                                    <DatePicker x:Name="DateFechaNacimientoHijo" HorizontalOptions="StartAndExpand" DateSelected="OnDateSelected"/>
+                                    <Button Text="+" Clicked="OnAddHijoClicked" HorizontalOptions="End" Margin="5" Background="LawnGreen" TextColor="White"/>
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </ScrollView>
                     </StackLayout>
