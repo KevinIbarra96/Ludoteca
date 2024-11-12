@@ -6,10 +6,7 @@ using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
 using Ludoteca.Resources;
-using static Microsoft.Maui.ApplicationModel.Permissions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Collections.ObjectModel;
-using Ludoteca.View;
 
 public partial class FiestasPopup
 {
@@ -184,7 +181,7 @@ public partial class FiestasPopup
 
         foreach (EN_Hijo hijo in e.CurrentSelection)
         {
-            hijo.SelectedBackgroundColor = "LightSkyBlue";
+            hijo.SelectedBackgroundColor = "#40E1E1E1";
         }
     }
 

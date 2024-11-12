@@ -39,6 +39,7 @@ namespace Ludoteca.ViewModel
 
             _AddProductoToVisita = addProductoToVisita;
             _addServicioToVIsita = addServicioToVisita;
+            
 
             loadVisitasTable();
 
@@ -48,30 +49,50 @@ namespace Ludoteca.ViewModel
         {
             EN_Visita visita = (EN_Visita)state;
 
-            double PrecioxMinuto = (double)ApplicationProperties.precioXMinute.ConfigDecimalValue;
+            double PrecioxMinuto = (double)ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue;
             double TotalPrecioExcedente = 0;
 
             // Actualiza el tiempo restante y realiza otras operaciones según sea necesario
             DateTime now = DateTime.Now;
             TimeSpan TiempoTranscurrido = now - visita.HoraEntrada;
 
-            int totalTiempo = visita.Servicios.Sum(servicio => servicio.Tiempo);
+            int totalTiempoServicios = visita.Servicios.Sum(servicio => servicio.Tiempo);
 
             //Validar si el tiempo transcurrido es menor al tiempo acordado
-            if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempo)
+            if ((int)TiempoTranscurrido.TotalMinutes <= totalTiempoServicios)
             {
                 visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
                 Console.WriteLine($"Tiempo restante para el elemento {visita.id}: {visita.TiempoTranscurrido} Minutos");
             }
             else
             {
-                int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempo;
+                int tiempoExcedente = (int)TiempoTranscurrido.TotalMinutes - totalTiempoServicios;
+
+                //Considerar el numero de hijos para los tiemposExcedentes
+                tiempoExcedente *= visita.Hijos.Count;
+
+                /*TODO Calculo para manejar el tiempo de las ofertas cuando se habla por tiempo.
                 if (tiempoExcedente > 0 && tiempoExcedente > visita.Oferta.FirstOrDefault().Tiempo)
-                    TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente - visita.Oferta.FirstOrDefault().Tiempo);
+                    TotalPrecioExcedente = PrecioxMinuto * (tiempoExcedente - visita.Oferta.FirstOrDefault().Tiempo);*/
+
+                //Cuando no tiene un servicio se maneja el servicio por defalut "Sin Servicio que se configura en ApplicationProperties"
 
                 visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
-                visita.Total =0;
+                visita.Total = 0;
                 visita.Total += TotalPrecioExcedente + calcularTotalVisita(visita);
+
+                if (ApplicationProperties.IdTiempoLibreServicio == visita.Servicios.First().Servicio_Id)
+                {
+                    if (visita.TiempoTranscurrido <= 35)
+                        visita.Total += (double)(ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue * (visita.TiempoTranscurrido * visita.Hijos.Count));
+                    else
+                        visita.Total += (double)(ApplicationProperties.PrecioMinutoSesentaMin.ConfigDecimalValue * (visita.TiempoTranscurrido * visita.Hijos.Count));
+                }
+                else
+                {
+                    visita.Total += (double)(ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue * tiempoExcedente);
+                }
+
                 visita.TiempoExcedido = tiempoExcedente;
             }
         }
@@ -131,7 +152,8 @@ namespace Ludoteca.ViewModel
             
             foreach (EN_ServiciosVisita servicio in visita.Servicios)
             {
-                totalVisita += Math.Round(servicio.Servicio_Precio);
+                //totalVisita += Math.Round(servicio.Servicio_Precio);
+                totalVisita += (Math.Round(servicio.Servicio_Precio) * visita.Hijos.Count);
             }
 
             foreach (EN_ProductosVisita produc in visita.Productos)
@@ -139,10 +161,10 @@ namespace Ludoteca.ViewModel
                 totalVisita += Math.Round(produc.precioProductoVisita * produc.CantidadProductoVisita);
             }
 
-            foreach (EN_Oferta ofer in visita.Oferta)
+            /*foreach (EN_Oferta ofer in visita.Oferta)
             {
                 totalVisita -= Math.Round(ofer.totalDescuento);
-            }
+            }*/
 
             return totalVisita;
         }

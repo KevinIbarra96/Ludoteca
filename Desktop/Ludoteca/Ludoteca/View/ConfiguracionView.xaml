@@ -29,19 +29,32 @@
                 <!-- Definir dos columnas: una para las edades y otra para el precio -->
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <!-- Columna para las edades -->
                     <ColumnDefinition Width="Auto" />
-                    <!-- Columna para el precio -->
                 </Grid.ColumnDefinitions>
 
                 <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
                     <Label Text="Edad mínima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                     <Entry Placeholder="Edad" x:Name="EntryEdadMinima" WidthRequest="50" VerticalOptions="Center" Margin="0,0,10,0" TextChanged="EntryEdadMinima_TextChanged"/>
+                    
                     <Label Text="Edad máxima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                     <Entry Placeholder="Edad" x:Name="EntryEdadMaxima" WidthRequest="50" VerticalOptions="Center" Margin="0,0,10,0" TextChanged="EntryEdadMaxima_TextChanged"/>
+                    
+                    <Label Text="Precio por 30 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoTreintaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"/>
+
+                    <Label Text="Precio por 30 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoSesentaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioMinutoSesentaMin_TextChanged"/>
+
+                    <Label Text="Precio por minuto despues de un servicio:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoDespuesServicio" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioMinutoDespuesServicio_TextChanged" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                    <Label Text="Precio por cada niño adicional:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioNiñoAdicional" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioNiñoAdicional_TextChanged"/>
                 </HorizontalStackLayout>
                 
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <!--<HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
                     <Label Text="{x:Static models:Icons.FolderIcon}" 
                            Style="{x:StaticResource MaterialIcon}" 
                            ToolTipProperties.Text="Actualizar Ruta Tickets"
@@ -64,13 +77,8 @@
                             VerticalOptions="Center"
                             BackgroundColor="#EFEFEF"
                             Margin="0,0,10,0" />
-                </HorizontalStackLayout>
+                </HorizontalStackLayout>-->
 
-
-                <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Background="White">
-                    <Label Text="Precio por minuto:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
-                    <Entry Placeholder="Precio" x:Name="EntryPrecioxMinuto" WidthRequest="100" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"/>
-                </HorizontalStackLayout>
             </Grid>
         </Frame>
 
