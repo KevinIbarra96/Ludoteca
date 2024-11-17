@@ -140,6 +140,9 @@
 	  <MauiXaml Update="View\OfertasView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\ReporteVisitasView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\ServiciosView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

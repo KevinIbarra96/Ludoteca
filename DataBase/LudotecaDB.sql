@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         8.0.29 - MySQL Community Server - GPL
+-- Versión del servidor:         10.4.32-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             12.8.0.6908
 -- --------------------------------------------------------
@@ -16,24 +16,24 @@
 
 
 -- Volcando estructura de base de datos para ludotecadb
-CREATE DATABASE IF NOT EXISTS `ludotecadb` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `ludotecadb` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
 USE `ludotecadb`;
 
 -- Volcando estructura para tabla ludotecadb.configuracion
 CREATE TABLE IF NOT EXISTS `configuracion` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ConfigName` varchar(45) DEFAULT NULL,
   `ConfigDescripcion` varchar(100) DEFAULT NULL,
   `ConfigStringValue` varchar(300) DEFAULT NULL,
-  `ConfigBoolValue` tinyint DEFAULT NULL,
-  `ConfigIntValue` int DEFAULT NULL,
+  `ConfigBoolValue` tinyint(4) DEFAULT NULL,
+  `ConfigIntValue` int(11) DEFAULT NULL,
   `ConfigDecimalValue` decimal(5,2) DEFAULT NULL,
-  `status` int NOT NULL DEFAULT '1',
+  `status` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.configuracion: ~7 rows (aproximadamente)
-INSERT INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStringValue`, `ConfigBoolValue`, `ConfigIntValue`, `ConfigDecimalValue`, `status`) VALUES
+INSERT IGNORE INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStringValue`, `ConfigBoolValue`, `ConfigIntValue`, `ConfigDecimalValue`, `status`) VALUES
 	(1, 'PrecioMinutoTreintaMin', 'Precio de minuto de la primera media hora de 0 - 35 mins', NULL, NULL, NULL, 2.60, 1),
 	(2, 'EdadMinima', 'Edad minima del niño(a)', NULL, NULL, 1, NULL, 1),
 	(3, 'EdadMaxima', 'Edad maxima del niño(a)', NULL, NULL, 15, NULL, 1),
@@ -44,26 +44,26 @@ INSERT INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStr
 
 -- Volcando estructura para tabla ludotecadb.fiestas
 CREATE TABLE IF NOT EXISTS `fiestas` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `idServicio` int DEFAULT NULL,
-  `idTurno` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idServicio` int(11) DEFAULT NULL,
+  `idTurno` int(11) DEFAULT NULL,
   `Fecha` date DEFAULT NULL,
   `Tematica` varchar(45) DEFAULT NULL,
-  `EdadACumplir` int DEFAULT NULL,
+  `EdadACumplir` int(11) DEFAULT NULL,
   `TipoComida` varchar(45) DEFAULT NULL,
-  `NinosAdicionales` int DEFAULT NULL,
-  `Anticipo` decimal(8,0) DEFAULT '0',
-  `Total` decimal(8,0) DEFAULT '0',
-  `status` smallint DEFAULT '1',
+  `NinosAdicionales` int(11) DEFAULT NULL,
+  `Anticipo` decimal(8,0) DEFAULT 0,
+  `Total` decimal(8,0) DEFAULT 0,
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `fk_Fiesta_Servicio_idx` (`idServicio`),
   KEY `fk_Fiesta_Turno_idx` (`idTurno`),
   CONSTRAINT `fk_Fiesta_Servicio` FOREIGN KEY (`idServicio`) REFERENCES `servicios` (`id`),
   CONSTRAINT `fk_Fiesta_Turno` FOREIGN KEY (`idTurno`) REFERENCES `turnos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.fiestas: ~14 rows (aproximadamente)
-INSERT INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`, `EdadACumplir`, `TipoComida`, `NinosAdicionales`, `Anticipo`, `Total`, `status`) VALUES
+INSERT IGNORE INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`, `EdadACumplir`, `TipoComida`, `NinosAdicionales`, `Anticipo`, `Total`, `status`) VALUES
 	(24, 8, 2, '2024-11-12', 'Harry Poter', 12, 'Pizza Peperoni', 2, 1000, 9800, 1),
 	(25, 9, 3, '2024-11-12', 'Spiderman', 12, 'Pizza', 1, 2000, 12400, 1),
 	(26, 10, 2, '2024-11-14', 'Batman', 12, 'Tacos al vapor', 2, 1500, 5800, 1),
@@ -81,18 +81,18 @@ INSERT INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`, `Edad
 
 -- Volcando estructura para tabla ludotecadb.fiesta_hijo
 CREATE TABLE IF NOT EXISTS `fiesta_hijo` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_Fiesta` int DEFAULT NULL,
-  `id_Hijo` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_Fiesta` int(11) DEFAULT NULL,
+  `id_Hijo` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Fiesta_Fiesta_idx` (`id_Fiesta`),
   KEY `fk_Fiesta_Hijo_idx` (`id_Hijo`),
   CONSTRAINT `fk_Fiesta_Fiesta` FOREIGN KEY (`id_Fiesta`) REFERENCES `fiestas` (`id`),
   CONSTRAINT `fk_Fiesta_Hijo` FOREIGN KEY (`id_Hijo`) REFERENCES `hijos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla ludotecadb.fiesta_hijo: ~19 rows (aproximadamente)
-INSERT INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
+-- Volcando datos para la tabla ludotecadb.fiesta_hijo: ~22 rows (aproximadamente)
+INSERT IGNORE INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
 	(1, 24, 1),
 	(2, 24, 3),
 	(3, 25, 1),
@@ -118,12 +118,12 @@ INSERT INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.gafetes
 CREATE TABLE IF NOT EXISTS `gafetes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `Numero` int NOT NULL,
-  `Asignado` smallint NOT NULL DEFAULT '0',
-  `status` smallint NOT NULL DEFAULT '1',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Numero` int(11) NOT NULL,
+  `Asignado` smallint(6) NOT NULL DEFAULT 0,
+  `status` smallint(6) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.gafetes: ~21 rows (aproximadamente)
 INSERT INTO `gafetes` (`id`, `Numero`, `Asignado`, `status`) VALUES
@@ -151,12 +151,12 @@ INSERT INTO `gafetes` (`id`, `Numero`, `Asignado`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.hijos
 CREATE TABLE IF NOT EXISTS `hijos` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `NombreHijo` varchar(45) DEFAULT NULL,
-  `Papa` int DEFAULT NULL,
-  `Mama` int DEFAULT NULL,
+  `Papa` int(11) DEFAULT NULL,
+  `Mama` int(11) DEFAULT NULL,
   `fechaNac` varchar(45) DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `fk_Hijo_Papa_idx` (`Papa`),
   KEY `fk_Hijo_Mama_idx` (`Mama`),
@@ -198,38 +198,39 @@ INSERT INTO `hijos` (`id`, `NombreHijo`, `Papa`, `Mama`, `fechaNac`, `status`) V
 
 -- Volcando estructura para tabla ludotecadb.menu
 CREATE TABLE IF NOT EXISTS `menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `MenuName` varchar(45) DEFAULT NULL,
   `ClassName` varchar(45) DEFAULT NULL,
-  `MenuOrder` smallint DEFAULT NULL,
+  `MenuOrder` smallint(6) DEFAULT NULL,
   `Path` varchar(45) DEFAULT NULL,
   `IconName` varchar(45) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla ludotecadb.menu: ~6 rows (aproximadamente)
-INSERT INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `IconName`, `status`) VALUES
+-- Volcando datos para la tabla ludotecadb.menu: ~7 rows (aproximadamente)
+INSERT IGNORE INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `IconName`, `status`) VALUES
 	(1, 'Inventario', 'InventarioView', 3, 'Ludoteca.View.InventarioView', 'inventario_icon.jpg', 1),
 	(2, 'Visitas', 'VisitView', 2, 'Ludoteca.View.VisitView', 'visitas_icon.jpg', 1),
 	(3, 'Servicios', 'ServiciosView', 4, 'Ludoteca.View.ServiciosView', 'inventario_icon.jpg', 1),
 	(4, 'Configuracion', 'ConfiguracionView', 6, 'Ludoteca.View.ConfiguracionView', 'configuracion_icon.jpg', 1),
 	(5, 'Ofertas', 'OfertasView', 5, 'Ludoteca.View.OfertasView', 'inventario_icon.jpg', 1),
-	(6, 'Fiestas', 'FiestasView', 2, 'Ludoteca.View.FiestasView', 'fiesta_icon.jpg', 1);
+	(6, 'Fiestas', 'FiestasView', 2, 'Ludoteca.View.FiestasView', 'fiesta_icon.jpg', 1),
+	(7, 'Reporte Visitas', 'ReporteVisitasView', 7, 'Ludoteca.View.ReporteVisitasView', 'report_icon.jpg', 1);
 
 -- Volcando estructura para tabla ludotecadb.ofertas
 CREATE TABLE IF NOT EXISTS `ofertas` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `OfertaName` varchar(45) DEFAULT NULL,
   `Descripcion` varchar(250) DEFAULT NULL,
-  `Tiempo` int DEFAULT NULL,
+  `Tiempo` int(11) DEFAULT NULL,
   `totalDescuento` double DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.ofertas: ~4 rows (aproximadamente)
-INSERT INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescuento`, `status`) VALUES
+INSERT IGNORE INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescuento`, `status`) VALUES
 	(1, 'Sin Oferta', 'Opcion de oferta desiganada para no tener ofertas', 0, 0, 1),
 	(2, 'treinta minutos', 'Oferta para dar 30 minutos de descuento', 30, 0, 1),
 	(3, '10 pesos', 'Descuento de diez pesos', 0, 10, 1),
@@ -237,11 +238,11 @@ INSERT INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescue
 
 -- Volcando estructura para tabla ludotecadb.padres
 CREATE TABLE IF NOT EXISTS `padres` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `PadreName` varchar(45) DEFAULT NULL,
   `Address` varchar(105) DEFAULT NULL,
   `Telefono` varchar(45) DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb3;
 
@@ -284,13 +285,14 @@ INSERT INTO `padres` (`id`, `PadreName`, `Address`, `Telefono`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.productos
 CREATE TABLE IF NOT EXISTS `productos` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ProductoName` varchar(45) DEFAULT NULL,
-  `Cantidad` int DEFAULT '0',
+  `Cantidad` int(11) DEFAULT 0,
   `Precio` decimal(8,2) DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 -- Volcando datos para la tabla ludotecadb.productos: ~11 rows (aproximadamente)
 INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) VALUES
@@ -305,18 +307,18 @@ INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) V
 	(17, 'PruebaProducto', 12, 23.00, 1),
 	(18, 'Calcetas nina', 0, 25.00, 1),
 	(19, 'sdasd', 0, 121.00, 1),
-	(20, 'Sin Producto', 99999973, 0.00, 1);
-
+	(20, 'Sin Producto', 99999998, 0.00, 1);
+  
 -- Volcando estructura para tabla ludotecadb.rol
 CREATE TABLE IF NOT EXISTS `rol` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `RolName` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COMMENT='		';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='		';
 
--- Volcando datos para la tabla ludotecadb.rol: ~2 rows (aproximadamente)
-INSERT INTO `rol` (`id`, `RolName`, `status`) VALUES
+-- Volcando datos para la tabla ludotecadb.rol: ~5 rows (aproximadamente)
+INSERT IGNORE INTO `rol` (`id`, `RolName`, `status`) VALUES
 	(1, 'Administrador', '1'),
 	(2, 'Cajera', '1'),
 	(17, 'RolTest', '1'),
@@ -325,18 +327,18 @@ INSERT INTO `rol` (`id`, `RolName`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.rol_menu
 CREATE TABLE IF NOT EXISTS `rol_menu` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_Rol` int NOT NULL,
-  `id_Menu` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_Rol` int(11) NOT NULL,
+  `id_Menu` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Rol_Menu_Rol_idx` (`id_Rol`),
   KEY `FK_Rol_Menu_Menu_idx` (`id_Menu`),
   CONSTRAINT `FK_Rol_Menu_Menu` FOREIGN KEY (`id_Menu`) REFERENCES `menu` (`id`),
   CONSTRAINT `FK_Rol_Menu_Rol` FOREIGN KEY (`id_Rol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla ludotecadb.rol_menu: ~10 rows (aproximadamente)
-INSERT INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
+-- Volcando datos para la tabla ludotecadb.rol_menu: ~13 rows (aproximadamente)
+INSERT IGNORE INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
 	(13, 1, 1),
 	(14, 1, 2),
 	(15, 1, 3),
@@ -350,24 +352,24 @@ INSERT INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
 	(34, 17, 3),
 	(35, 19, 2),
 	(36, 19, 3),
-	(37, 2, 1);
+	(37, 1, 7);
 
 -- Volcando estructura para tabla ludotecadb.servicios
 CREATE TABLE IF NOT EXISTS `servicios` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ServicioName` varchar(400) DEFAULT NULL,
-  `Descripcion` text,
+  `Descripcion` text DEFAULT NULL,
   `Precio` decimal(8,2) DEFAULT NULL,
-  `Tiempo` int DEFAULT NULL,
-  `IdTipoServicio` int DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `Tiempo` int(11) DEFAULT NULL,
+  `IdTipoServicio` int(11) DEFAULT NULL,
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `fk_Servicio_TipoServicio_idx` (`IdTipoServicio`),
   CONSTRAINT `fk_Servicio_TipoServicio` FOREIGN KEY (`IdTipoServicio`) REFERENCES `tiposervicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.servicios: ~12 rows (aproximadamente)
-INSERT INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`, `IdTipoServicio`, `status`) VALUES
+INSERT IGNORE INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`, `IdTipoServicio`, `status`) VALUES
 	(1, 'Media Hora', 'Servicio destinado con precio por minuto especial para 30 minutos', 15.00, 35, 1, 1),
 	(2, 'Una Hora', 'Servicio destinado a una hora con descuento ', 14.00, 65, 1, 1),
 	(3, 'Plan Cine', 'Para que se vallan al cine los jefes', 185.00, 130, 1, 1),
@@ -383,12 +385,12 @@ INSERT INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`
 
 -- Volcando estructura para tabla ludotecadb.tickets
 CREATE TABLE IF NOT EXISTS `tickets` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) DEFAULT NULL,
-  `idvisita` int DEFAULT NULL,
+  `idvisita` int(11) DEFAULT NULL,
   `fecha_creacion` varchar(50) DEFAULT NULL,
   `ruta` varchar(300) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `status` int(11) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `FK_tickets_visitas` (`idvisita`),
   CONSTRAINT `FK_tickets_visitas` FOREIGN KEY (`idvisita`) REFERENCES `visitas` (`id`)
@@ -442,114 +444,48 @@ INSERT INTO `tickets` (`id`, `nombre`, `idvisita`, `fecha_creacion`, `ruta`, `st
 	(49, 'Ticket_49_Lia Alejandra Ibarra Vazquez20241111.pdf', 141, '2024-11-11T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\11\\Ticket_49_Lia Alejandra Ibarra Vazquez20241111.pdf', 1),
 	(50, 'Ticket_50_Alejandrina Ibarra Vazquez20241112.pdf', 142, '2024-11-12T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\12\\Ticket_50_Alejandrina Ibarra Vazquez20241112.pdf', 1),
 	(51, 'Ticket_51_Alejandrina Ibarra Vazquez20241112.pdf', 143, '2024-11-12T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\12\\Ticket_51_Alejandrina Ibarra Vazquez20241112.pdf', 1),
-	(52, 'Ticket_52_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_52_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(53, 'Ticket_53_Alejandrina Ibarra Vazquez20241114.pdf', 145, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_53_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(54, 'Ticket_54_Lia Alejandra Ibarra Vazquez20241114.pdf', 146, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_54_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(55, 'Ticket_55_Lia Alejandra Ibarra Vazquez20241114.pdf', 147, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_55_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(56, 'Ticket_56_Alejandrina Ibarra Vazquez20241114.pdf', 49, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_56_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(57, 'Ticket_57_Lia Alejandra Ibarra Vazquez20241114.pdf', 50, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_57_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(58, 'Ticket_58_Minu Federrico20241114.pdf', 53, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_58_Minu Federrico20241114.pdf', 1),
-	(59, 'Ticket_59_Mini Federrica tercera20241114.pdf', 57, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_59_Mini Federrica tercera20241114.pdf', 1),
-	(60, 'Ticket_60_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_60_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(61, 'Ticket_61_Alejandrina Ibarra Vazquez20241114.pdf', 145, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_61_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(62, 'Ticket_62_Lia Alejandra Ibarra Vazquez20241114.pdf', 146, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_62_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(63, 'Ticket_63_Lia Alejandra Ibarra Vazquez20241114.pdf', 147, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_63_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(64, 'Ticket_64_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_64_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(65, 'Ticket_65_Alejandrina Ibarra Vazquez20241114.pdf', 145, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_65_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(66, 'Ticket_66_Lia Alejandra Ibarra Vazquez20241114.pdf', 138, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_66_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(67, 'Ticket_67_Alejandrina Ibarra Vazquez20241114.pdf', 139, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_67_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(68, 'Ticket_68_Lia Alejandra Ibarra Vazquez20241114.pdf', 140, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_68_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(69, 'Ticket_69_Alejandrina Ibarra Vazquez20241114.pdf', 143, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_69_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(70, 'Ticket_70_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_70_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(71, 'Ticket_71_Alejandrina Ibarra Vazquez20241114.pdf', 145, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_71_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(72, 'Ticket_72_Lia Alejandra Ibarra Vazquez20241114.pdf', 146, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_72_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(73, 'Ticket_73_Lia Alejandra Ibarra Vazquez20241114.pdf', 147, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_73_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(74, 'Ticket_74_Alejandrina Ibarra Vazquez20241114.pdf', 131, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_74_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(75, 'Ticket_75_Lia Alejandra Ibarra Vazquez20241114.pdf', 132, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_75_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(76, 'Ticket_76_Alejandrina Ibarra Vazquez20241114.pdf', 133, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_76_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(77, 'Ticket_77_Alejandrina Ibarra Vazquez20241114.pdf', 134, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_77_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(78, 'Ticket_78_Lia Alejandra Ibarra Vazquez20241114.pdf', 135, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_78_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(79, 'Ticket_79_Alejandrina Ibarra Vazquez20241114.pdf', 136, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_79_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(80, 'Ticket_80_Alejandrina Ibarra Vazquez20241114.pdf', 137, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_80_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(81, 'Ticket_81_Lia Alejandra Ibarra Vazquez20241114.pdf', 138, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_81_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(82, 'Ticket_82_Alejandrina Ibarra Vazquez20241114.pdf', 139, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_82_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(83, 'Ticket_83_Lia Alejandra Ibarra Vazquez20241114.pdf', 140, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_83_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(84, 'Ticket_84_Lia Alejandra Ibarra Vazquez20241114.pdf', 141, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_84_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(85, 'Ticket_85_Alejandrina Ibarra Vazquez20241114.pdf', 142, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_85_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(86, 'Ticket_86_Alejandrina Ibarra Vazquez20241114.pdf', 143, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_86_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(87, 'Ticket_87_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_87_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(88, 'Ticket_88_Alejandrina Ibarra Vazquez20241114.pdf', 145, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_88_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(89, 'Ticket_89_Lia Alejandra Ibarra Vazquez20241114.pdf', 146, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_89_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(90, 'Ticket_90_Lia Alejandra Ibarra Vazquez20241114.pdf', 147, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_90_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(91, 'Ticket_91_Alejandrina Ibarra Vazquez20241114.pdf', 131, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_91_Alejandrina Ibarra Vazquez20241114.pdf', 1),
-	(92, 'Ticket_92_Lia Alejandra Ibarra Vazquez20241114.pdf', 132, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_92_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(93, 'Ticket_93_Lia Alejandra Ibarra Vazquez20241114.pdf', 116, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_93_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(94, 'Ticket_94_Lia Alejandra Ibarra Vazquez20241114.pdf', 97, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_94_Lia Alejandra Ibarra Vazquez20241114.pdf', 1),
-	(95, 'Ticket_95_Mini Federrica tercera20241115.pdf', 91, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_95_Mini Federrica tercera20241115.pdf', 1),
-	(96, 'Ticket_96_Mini Federrica segunda20241115.pdf', 92, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_96_Mini Federrica segunda20241115.pdf', 1),
-	(97, 'Ticket_97_Mini Federrica tercera20241115.pdf', 93, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_97_Mini Federrica tercera20241115.pdf', 1),
-	(98, 'Ticket_98_Alejandrina Ibarra Vazquez20241115.pdf', 134, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_98_Alejandrina Ibarra Vazquez20241115.pdf', 1),
-	(99, 'Ticket_99_Lia Alejandra Ibarra Vazquez20241115.pdf', 148, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_99_Lia Alejandra Ibarra Vazquez20241115.pdf', 1),
-	(100, 'Ticket_100_Alejandrina Ibarra Vazquez20241115.pdf', 136, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_100_Alejandrina Ibarra Vazquez20241115.pdf', 1),
-	(101, 'Ticket_101_Alejandrina Ibarra Vazquez20241115.pdf', 137, '2024-11-15T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\15\\Ticket_101_Alejandrina Ibarra Vazquez20241115.pdf', 1),
-	(102, 'Ticket_102_Alejandrina Ibarra Vazquez20241116.pdf', 123, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_102_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(103, 'Ticket_103_Alejandrina Ibarra Vazquez20241116.pdf', 125, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_103_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(104, 'Ticket_104_Alejandrina Ibarra Vazquez20241116.pdf', 126, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_104_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(105, 'Ticket_105_Alejandrina Ibarra Vazquez20241116.pdf', 128, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_105_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(106, 'Ticket_106_Alejandrina Ibarra Vazquez20241116.pdf', 129, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_106_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(107, 'Ticket_107_Alejandrina Ibarra Vazquez20241116.pdf', 131, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_107_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(108, 'Ticket_108_Alejandrina Ibarra Vazquez20241116.pdf', 133, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_108_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(109, 'Ticket_109_Alejandrina Ibarra Vazquez20241116.pdf', 134, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_109_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(110, 'Ticket_110_Alejandrina Ibarra Vazquez20241116.pdf', 136, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_110_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(111, 'Ticket_111_Alejandrina Ibarra Vazquez20241116.pdf', 137, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_111_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(112, 'Ticket_112_Alejandrina Ibarra Vazquez20241116.pdf', 142, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_112_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(113, 'Ticket_113_Alejandrina Ibarra Vazquez20241116.pdf', 139, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_113_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(114, 'Ticket_114_Alejandrina Ibarra Vazquez20241116.pdf', 145, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_114_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(115, 'Ticket_115_Alejandrina Ibarra Vazquez20241116.pdf', 123, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_115_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(116, 'Ticket_116_Alejandrina Ibarra Vazquez20241116.pdf', 125, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_116_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(117, 'Ticket_117_Alejandrina Ibarra Vazquez20241116.pdf', 126, '2024-11-16T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\16\\Ticket_117_Alejandrina Ibarra Vazquez20241116.pdf', 1),
-	(118, 'Ticket_118_Alejandrina Ibarra Vazquez20241117.pdf', 150, '2024-11-17T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\17\\Ticket_118_Alejandrina Ibarra Vazquez20241117.pdf', 1);
+	(52, 'Ticket_52_Lia Alejandra Ibarra Vazquez20241114.pdf', 144, '2024-11-14T00:00:00-06:00', 'C:\\Casita de Molly\\2024\\noviembre\\14\\Ticket_52_Lia Alejandra Ibarra Vazquez20241114.pdf', 1);
 
 -- Volcando estructura para tabla ludotecadb.tiposervicio
 CREATE TABLE IF NOT EXISTS `tiposervicio` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.tiposervicio: ~2 rows (aproximadamente)
-INSERT INTO `tiposervicio` (`id`, `nombre`, `status`) VALUES
+INSERT IGNORE INTO `tiposervicio` (`id`, `nombre`, `status`) VALUES
 	(1, 'Visita', 1),
 	(2, 'Fiesta', 1);
 
 -- Volcando estructura para tabla ludotecadb.turnos
 CREATE TABLE IF NOT EXISTS `turnos` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `NombreTurno` varchar(45) DEFAULT NULL,
-  `status` smallint NOT NULL DEFAULT '1',
+  `status` smallint(6) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- Volcando datos para la tabla ludotecadb.turnos: ~2 rows (aproximadamente)
-INSERT INTO `turnos` (`id`, `NombreTurno`, `status`) VALUES
+INSERT IGNORE INTO `turnos` (`id`, `NombreTurno`, `status`) VALUES
 	(2, 'Matutino', 1),
 	(3, 'Vespertino', 1);
 
 -- Volcando estructura para tabla ludotecadb.users
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `UserName` varchar(45) DEFAULT NULL,
   `Password` varchar(45) DEFAULT NULL,
-  `idRol` int DEFAULT NULL,
-  `status` smallint DEFAULT '1',
+  `idRol` int(11) DEFAULT NULL,
+  `status` smallint(6) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `fk_User_Rol_idx` (`idRol`),
   CONSTRAINT `fk_User_Rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
--- Volcando datos para la tabla ludotecadb.users: ~9 rows (aproximadamente)
-INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
+-- Volcando datos para la tabla ludotecadb.users: ~10 rows (aproximadamente)
+INSERT IGNORE INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 	(1, 'Kevin Ibarra', 'Test1', 1, 1),
 	(2, 'Gerardo Valente', 'Test', 1, 1),
 	(3, 'Perla Anaya', 'Prueba', 1, 1),
@@ -563,7 +499,7 @@ INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.visitas
 CREATE TABLE IF NOT EXISTS `visitas` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `HoraEntrada` datetime NOT NULL,
   `HoraSalida` datetime DEFAULT NULL,
   `Oferta` int NOT NULL,
@@ -698,9 +634,9 @@ INSERT INTO `visitas` (`id`, `HoraEntrada`, `HoraSalida`, `Oferta`, `Total`, `Ga
 
 -- Volcando estructura para tabla ludotecadb.visita_hijo
 CREATE TABLE IF NOT EXISTS `visita_hijo` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_Visita` int NOT NULL,
-  `id_Hijo` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_Visita` int(11) NOT NULL,
+  `id_Hijo` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Visita_Hijo_Visita_idx` (`id_Visita`),
   KEY `FK_Visita_Hijo_Hijo_idx` (`id_Hijo`),
@@ -837,11 +773,11 @@ INSERT INTO `visita_hijo` (`id`, `id_Visita`, `id_Hijo`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.visita_producto
 CREATE TABLE IF NOT EXISTS `visita_producto` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_Visita` int NOT NULL,
-  `id_Producto` int NOT NULL,
-  `precioProductoVisita` int DEFAULT NULL,
-  `CantidadProductoVisita` int DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_Visita` int(11) NOT NULL,
+  `id_Producto` int(11) NOT NULL,
+  `precioProductoVisita` int(11) DEFAULT NULL,
+  `CantidadProductoVisita` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Visita_Producto_Visita_idx` (`id_Visita`),
   KEY `FK_Visita_Producto_Producto_idx` (`id_Producto`),
@@ -1122,10 +1058,10 @@ INSERT INTO `visita_producto` (`id`, `id_Visita`, `id_Producto`, `precioProducto
 
 -- Volcando estructura para tabla ludotecadb.visita_servicios
 CREATE TABLE IF NOT EXISTS `visita_servicios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `Visita_Id` int DEFAULT NULL,
-  `Servicio_Id` int DEFAULT NULL,
-  `Servicio_Precio` int DEFAULT '0',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Visita_Id` int(11) DEFAULT NULL,
+  `Servicio_Id` int(11) DEFAULT NULL,
+  `Servicio_Precio` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `fk_visita_Servicio_Visita_idx` (`Visita_Id`),
   KEY `fk_visita_Servicio_Servicio_idx` (`Servicio_Id`),

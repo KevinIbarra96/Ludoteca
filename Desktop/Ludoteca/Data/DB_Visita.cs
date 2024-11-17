@@ -250,6 +250,48 @@ namespace Data
 
             return VisitasResponse;
         }
+        public static async Task<EN_Response<EN_Visita>> getAllVisitasCompleted()
+        {
+            EN_Response<EN_Visita> response = null;
+
+            string _endPoint = _apiPath + "/getAllCompletedVisitas"; //Adding endpoint to path
+
+            using HttpResponseMessage responsevisit = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (responsevisit.IsSuccessStatusCode)
+            {
+                var content = await responsevisit.Content.ReadAsStringAsync();
+
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(content);
+            }
+
+            return response;
+        }
+        public static async Task<List<EN_Visita>> getCompletedVisitasByDate(DateTime _date)
+        {
+            string _endPoint = _apiPath + "/getVisitaCompleteByDate";
+            VisitasResponse = null;
+
+            var requestBody = new { HoraEntrada = _date.ToString("yyyy-MM-dd") };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Visita> VisitaRest = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+                VisitasResponse = VisitaRest.Rbody;
+            }
+
+            return VisitasResponse;
+
+        }
 
     }
 }

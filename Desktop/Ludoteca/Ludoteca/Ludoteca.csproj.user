@@ -66,6 +66,9 @@
     <MauiXaml Update="View\OfertasView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="View\ReporteVisitasView.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="View\ServiciosView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

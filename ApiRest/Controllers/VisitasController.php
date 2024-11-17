@@ -2,8 +2,6 @@
     $pt = explode('\\',__DIR__);
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    //rojectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
-
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/VisitaService.php');
     require_once($ProjectPath.'/Models/ResponseModel.php');
@@ -304,6 +302,49 @@
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "Visita Deleted";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+        function getAllCompletedVisitas(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $Response->Rbody = $visitaSvc-> getVisitasCompleted();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All visitas completed listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            
+        }
+        function getVisitaCompleteByDate(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $fecha = date('Y-m-d', strtotime($BodyRequest['HoraEntrada']));
+                $Response->Rbody = $visitaSvc->getVisitasCompletedByDate($fecha);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Visitas completadas listadas por fecha";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
