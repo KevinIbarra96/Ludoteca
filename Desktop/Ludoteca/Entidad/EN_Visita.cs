@@ -16,6 +16,7 @@ namespace Entidad
         private double _Total;
         private int _tiempoTranscurrido;
         private int _tiempoExcedido;
+        private int _tiempoTotal;
 
         public bool GafeteEntregado = true;
 
@@ -112,6 +113,12 @@ namespace Entidad
                 }
             }
         }
+        public int TiempoTotal
+        {
+            get { return _tiempoTotal; }
+            set { _tiempoTotal = value; OnPropertyChanged(nameof(TiempoTotal)); }
+        }
+        
 
         public int TiempoExcedido
         {
