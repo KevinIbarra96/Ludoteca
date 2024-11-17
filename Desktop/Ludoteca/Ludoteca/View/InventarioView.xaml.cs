@@ -4,6 +4,7 @@ using Ludoteca.ViewModel;
 using Mopups.Services;
 using CommunityToolkit.Maui.Alerts;
 using Ludoteca.Resources;
+using Resources.Properties;
 
 namespace Ludoteca.View;
 
@@ -26,7 +27,7 @@ public partial class InventarioView : ContentPage
         _updateInventarioData = viewModel._UpdateInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;
-
+        
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
@@ -87,7 +88,10 @@ public partial class InventarioView : ContentPage
     }
 
     private async void EditarProducto_Clicked(object sender, EventArgs e)
-    {
+    {        
+        if(Session.RolId != ApplicationProperties.IdAdministratorRol)
+            return;
+
         var btn = sender as Button;
         await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto) btn.CommandParameter,_updateInventarioData ));
     }

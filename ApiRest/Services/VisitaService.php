@@ -14,13 +14,15 @@
 
         public function __construct(){
             $database = new Connection();
-            parent::__construct('visitas','Hijo,Servicio,Productos,HoraEntrada,HoraSalida,Oferta, status',$database->getConnection());
+            parent::__construct('visitas','Hijo,Servicio,Productos,HoraEntrada,HoraSalida,Oferta,TiempoTotal, status',$database->getConnection());
         }
 
-        function cobrarVisitas($idVisita,$total,$idGafete,$Productos,$TiempoExcedido){
-            $stm = $this->DbConection->prepare("update visitas set HoraSalida = NOW(),status =0,Total=:Total,TiempoExcedido=:TiempoExcedido where id=:idVisita");
+        function cobrarVisitas($idVisita,$total,$idGafete,$Productos,$TiempoExcedido,$HoraSalida,$TiempoTotal){
+            $stm = $this->DbConection->prepare("update visitas set HoraSalida = :HoraSalida,TiempoTotal = :TiempoTotal,status =2,Total=:Total,TiempoExcedido=:TiempoExcedido where id=:idVisita");
             $stm->bindValue(':idVisita', $idVisita, PDO::PARAM_INT);
+            $stm->bindValue(':HoraSalida', $HoraSalida, PDO::PARAM_STR);
             $stm->bindValue(':Total', $total, PDO::PARAM_INT);
+            $stm->bindValue(':TiempoTotal', $TiempoTotal, PDO::PARAM_INT);
             $stm->bindValue(':TiempoExcedido', $TiempoExcedido, PDO::PARAM_INT);
             $stm->execute();
             
@@ -91,7 +93,8 @@
                                                          a.Oferta as IdOferta,
                                                          A.NumeroGafete,
                                                          b.OfertaName,
-                                                         a.TiempoExcedido
+                                                         a.TiempoExcedido,
+                                                         a.TiempoTotal
                                                     from visitas as a
                                               inner join ofertas as b on b.id = a.Oferta
                                                    where a.status = 1;");

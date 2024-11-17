@@ -13,6 +13,31 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Productos"; //Adding ControllerName to Path
         private static List<EN_Producto> ProductosResponse = null;
 
+
+        public static async Task<EN_Response<EN_Producto>> modificarProductoVisita(int id_Visita, EN_ProductosVisita producto)
+        {
+            string _endPoint = _apiPath + "/modificarProductoVisita";
+            EN_Response<EN_Producto> ProductosResponse = null;
+
+            var requestBody = new { idVisita = id_Visita , idProducto = producto.id_Producto, cantidadProducto = producto.CantidadProductoVisita, precioProducto = producto.precioProductoVisita };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                ProductosResponse = JsonConvert.DeserializeObject<EN_Response<EN_Producto>>(result);
+            }
+
+            return ProductosResponse;
+        }
+
         public static async Task<EN_Response<EN_Producto>> increaseCantidadProducto(int idProducto,int cantidad)
         {
 

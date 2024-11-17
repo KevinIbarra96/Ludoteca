@@ -3,6 +3,7 @@ using Entidad;
 using Mopups.Services;
 using Negocio;
 using Resources.Properties;
+using System.Linq;
 
 namespace Ludoteca.PopUp;
 
@@ -54,6 +55,12 @@ public partial class RegistrarPadresEHijos
                 }
                 if (!string.IsNullOrWhiteSpace(EntryNombreHijo.Text) && DateFechaNacimientoHijo.Date != null)
                 {
+                    if (!ValidarEdad(DateFechaNacimientoHijo.Date))
+                    {
+                        await DisplayAlert("Advertencia", $"La edad no es válida. Debe estar entre el rango permitido.\nEdad mínima: {ApplicationProperties.edadMinima.ConfigIntValue} años\nEdad máxima: {ApplicationProperties.edadMaxima.ConfigIntValue} años", "OK");
+                        return;
+                    }
+
                     EN_Hijo hijo = new EN_Hijo
                     {
                         NombreHijo = EntryNombreHijo.Text,
@@ -64,7 +71,7 @@ public partial class RegistrarPadresEHijos
                     hijos.Add(hijo);
                 }
 
-                foreach (var hijoLayout in HijosStackLayout.Children.Skip(1))
+                foreach (var hijoLayout in HijosStackLayout.Children)
                 {
                     if (hijoLayout is VerticalStackLayout layout)
                         {
@@ -75,6 +82,13 @@ public partial class RegistrarPadresEHijos
 
                         if (nombreEntry != null && !string.IsNullOrWhiteSpace(nombreEntry.Text) && fechaDatePicker != null)
                         {
+                            if (!ValidarEdad(fechaDatePicker.Date))
+                            {
+                                await DisplayAlert("Advertencia", $"La edad no es válida. Debe estar entre el rango permitido.\nEdad mínima: {ApplicationProperties.edadMinima.ConfigIntValue} años\nEdad máxima: {ApplicationProperties.edadMaxima.ConfigIntValue} años", "OK");
+                                return;
+                            }
+                                
+
                                 EN_Hijo hijo = new EN_Hijo
                                 {
                                     NombreHijo = nombreEntry.Text,
@@ -88,13 +102,11 @@ public partial class RegistrarPadresEHijos
                 }
                 
 
-
                 foreach (var hijo in hijos)
                 {
                     EN_Response<EN_Hijo> hijoResponse = await RN_Hijo.RN_AddNewHijo(hijo);
                     if (hijoResponse != null && hijoResponse.Rcode == 200)
                     {
-                        await MopupService.Instance.PopAsync();
                         var toast = Toast.Make("Registro correcto", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
                         await toast.Show();
                     }
@@ -103,6 +115,9 @@ public partial class RegistrarPadresEHijos
                      await DisplayAlert("Error", "Ha ocurrido un error\nDetalle: " + hijoResponse.Rmessage, "OK");
                     }
                 }
+
+                await MopupService.Instance.PopAsync();
+
             }
             else
             {
@@ -212,7 +227,6 @@ public partial class RegistrarPadresEHijos
 
         if (!ValidarEdad(fechaSeleccionada))
         {
-            var edadminima = ApplicationProperties.edadMaxima.ConfigIntValue;
             DisplayAlert("Advertencia", $"La edad no es válida. Debe estar entre el rango permitido.\nEdad mínima: {ApplicationProperties.edadMinima.ConfigIntValue} años\nEdad máxima: {ApplicationProperties.edadMaxima.ConfigIntValue} años", "OK");
         }
     }

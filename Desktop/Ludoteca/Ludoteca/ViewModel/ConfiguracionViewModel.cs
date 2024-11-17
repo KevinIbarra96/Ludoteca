@@ -24,7 +24,7 @@ namespace Ludoteca.ViewModel
             Gafetes = new ObservableCollection<EN_Gafete>();
             Usuarios = new ObservableCollection<EN_User>();
             Rol = new ObservableCollection<EN_Rol>();
-            getAllActiveGafetes();
+            getAllGafetes();
             getAllUsers();
             getAllRol();
 
@@ -76,10 +76,10 @@ namespace Ludoteca.ViewModel
                 updateRolToColection(rol);
         }
 
-        private async void getAllActiveGafetes()
+        private async void getAllGafetes()
         {
 
-            var gafeteResponse = await RN_Gafete.getAllActiveGafete();
+            var gafeteResponse = await RN_Gafete.getAllGafete();
 
             foreach (EN_Gafete en in gafeteResponse.Rbody)
             {
