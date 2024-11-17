@@ -253,7 +253,7 @@ public partial class NuevaVisitaPopUp
 
             visita.TiempoTranscurrido = Math.Abs((int)TiempoTranscurrido.TotalMinutes);
             visita.Total = 0;
-            visita.Total += TotalPrecioExcedente + _CalcularTotalVisita(visita);
+            visita.Total += TotalPrecioExcedente + _calcularTotalVisitas(visita);
 
             if (ApplicationProperties.IdTiempoLibreServicio == visita.Servicios.First().Servicio_Id)
             {

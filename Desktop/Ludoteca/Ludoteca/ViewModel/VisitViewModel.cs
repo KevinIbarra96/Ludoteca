@@ -19,7 +19,7 @@ namespace Ludoteca.ViewModel
     {
         public ObservableCollection<EN_Visita> Visitas { get; set; }
         public ObservableCollection<EN_Visita> VisitasInmutable { get; set; }
-
+        
         //Iniciacion de delegados
         public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
