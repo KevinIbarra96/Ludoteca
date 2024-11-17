@@ -81,7 +81,7 @@ namespace Ludoteca.Resources
                     {
                         // Dibujar la imagen
                         gfx.DrawImage(image, x+40, y+offset, 110, 40); // Ajusta tamaño y posición
-                        offset += (LineSpace*7);
+                        offset += (LineSpace*5);
                     }
                 }
             }
