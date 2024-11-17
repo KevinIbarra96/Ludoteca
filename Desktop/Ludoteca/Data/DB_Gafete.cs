@@ -55,6 +55,30 @@ namespace Data
             return GafeteResponse;
         }
 
+        public static async Task<EN_Response<EN_Gafete>> Delete(int _id)
+        {
+            string _endPoint = _apiPath + "/deleteGafete";
+            GafeteResponse = null;
+
+            var requestBody = new { id = _id };
+
+            var requestData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint,content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                GafeteResponse = JsonConvert.DeserializeObject<EN_Response<EN_Gafete>>(result);
+
+            }
+
+            return GafeteResponse;
+        }
+
 
     }
 }

@@ -19,5 +19,9 @@ namespace Negocio
         {
             return await DB_Gafete.getAllActiveGafete();
         }
+        public static async Task<EN_Response<EN_Gafete>> Delete(int _id)
+        {
+            return await DB_Gafete.Delete(_id);
+        }
     }
 }

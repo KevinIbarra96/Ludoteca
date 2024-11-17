@@ -90,7 +90,7 @@ namespace Ludoteca.ViewModel
                 }
                 else
                 {
-                    visita.Total += (double)(ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue * tiempoExcedente);
+                    visita.Total += (double)(ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue * tiempoExcedente * visita.Hijos.Count);
                 }
 
                 visita.TiempoExcedido = tiempoExcedente;
