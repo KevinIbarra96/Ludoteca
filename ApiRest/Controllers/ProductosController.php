@@ -14,6 +14,37 @@
             echo 'Productos Controller Home';
         }
 
+        //Esta funcion esta exclusivamente para modificar el producto cuando no había antes
+        function modificarProductoVisita(){            
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'idVisita' =>$BodyRequest['idVisita'],
+                    'idProducto'=>$BodyRequest['idProducto'],
+                    'cantidadProducto'=>$BodyRequest['cantidadProducto'],
+                    'precioProducto'=>$BodyRequest['precioProducto']
+                ];
+
+                $database = new Connection();
+                $productoSvc = new ProductoService();                
+                $productoSvc->modificarProductoVisita( $dataBody);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Product Updated";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
         function increaseCantidadProduct(){
             $Response = new ResponseModel();
             try{

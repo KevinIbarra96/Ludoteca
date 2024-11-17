@@ -1,9 +1,10 @@
-using CommunityToolkit.Maui.Alerts;
 using Entidad;
 using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
+using Resources.Properties;
+using System.Collections.ObjectModel;
 
 namespace Ludoteca.PopUp;
 
@@ -12,8 +13,10 @@ public partial class ProductoList
 
     AddProductoToVisita _addProductoToVisita;
     int _visitaId;
+    ObservableCollection<EN_ProductosVisita> productosVisita;
 
-	public ProductoList(AddProductoToVisita addProductoToVisita,int visitaId)
+
+    public ProductoList(AddProductoToVisita addProductoToVisita,int visitaId, ObservableCollection<EN_ProductosVisita> productoVisita)
 	{
 		InitializeComponent();
 
@@ -21,6 +24,7 @@ public partial class ProductoList
 
         _addProductoToVisita = addProductoToVisita;
         _visitaId = visitaId;
+        productosVisita = productoVisita;
     }
 
     private async void getAllProductos()
@@ -45,26 +49,36 @@ public partial class ProductoList
     {
         try
         {
+            List<EN_ProductosVisita> prodList = new List<EN_ProductosVisita>();
+            int count = 0;
 
             var prodVisita = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
 
             foreach (EN_ProductosVisita prod in prodVisita)
             {
-                _addProductoToVisita(prod, _visitaId);               
+                if (productosVisita.First().id_Producto == ApplicationProperties.IdSinProducto && count ==0)
+                {
+                    await RN_Producto.modificarProductoVisita(_visitaId, prod);
+                    _addProductoToVisita(GlobalEnum.Action.ACTUALIZAR, prod, _visitaId);
+                    count += 1;
+                }
+                else
+                {
+                    _addProductoToVisita(GlobalEnum.Action.CREAR_NUEVO, prod, _visitaId);
+                    prodList.Add(prod);
+                }
             }
 
-            EN_Response<EN_Visita> response = await RN_Visita.addProductosToVisita(_visitaId, prodVisita.ToList());
+            if(prodList.Count > 0) { EN_Response<EN_Visita> response = await RN_Visita.addProductosToVisita(_visitaId, prodList); }
 
-            var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            //var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            //await toast.Show();
 
             await MopupService.Instance.PopAsync();
 
-            MopupService.Instance.PopAsync();
-
         }catch (Exception ex)
         {
-            DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"Ok");
+            await DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"Ok");
         }
     }
 

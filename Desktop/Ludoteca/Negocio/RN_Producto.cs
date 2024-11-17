@@ -10,6 +10,10 @@ namespace Negocio
 {
     public class RN_Producto
     {
+        public static async Task<EN_Response<EN_Producto>> modificarProductoVisita(int id_Visita, EN_ProductosVisita producto)
+        {
+            return await DB_Producto.modificarProductoVisita(id_Visita, producto);
+        }
         public static async Task<EN_Response<EN_Producto>> RN_increaseCantidadProducto(int id,int Cantidad)
         {
             return await DB_Producto.increaseCantidadProducto(id, Cantidad);
