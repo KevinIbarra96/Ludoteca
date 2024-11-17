@@ -23,14 +23,16 @@
                 $dataBody = [
                     'id' =>$BodyRequest['id'],
                     'GafeteId' => $BodyRequest['GafeteId'],
+                    'HoraSalida' => $BodyRequest['HoraSalida'],
                     'Productos' => $BodyRequest['Productos'],
                     'Total' => $BodyRequest['Total'],
+                    'TiempoTotal' => $BodyRequest['TiempoTotal'],
                     'TiempoExcedido' => $BodyRequest['TiempoExcedido']
                 ];
-
+                
                 $database = new Connection();
                 $visitaSvc = new VisitaService();                
-                $visitaSvc->cobrarVisitas($dataBody["id"],$dataBody["Total"],$dataBody["GafeteId"],$BodyRequest['Productos'],$BodyRequest['TiempoExcedido']);
+                $visitaSvc->cobrarVisitas($dataBody["id"],$dataBody["Total"],$dataBody["GafeteId"],$BodyRequest['Productos'],$BodyRequest['TiempoExcedido'],$dataBody["HoraSalida"],$dataBody["TiempoTotal"]);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

@@ -10,6 +10,17 @@
 
     }
 
+    function modificarProductoVisita($dataBody){        
+        $stm = $this->DbConection->prepare("update visita_producto set precioProductoVisita = :precioProductoVisita, CantidadProductoVisita = :CantidadProductoVisita, id_Producto =:id_Producto where id_Visita=:id_Visita");
+        
+        $stm->bindValue(':precioProductoVisita', $dataBody["precioProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':CantidadProductoVisita', $dataBody["cantidadProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':id_Producto', $dataBody["idProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':id_Visita', $dataBody["idVisita"], PDO::PARAM_INT);
+        
+        $stm->execute();
+    }
+
     function newVisitaProducto($idVisita,$Productos){
         $x = 0;
         $query = "";
