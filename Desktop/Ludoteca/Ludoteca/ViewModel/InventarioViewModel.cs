@@ -2,6 +2,7 @@
 using Negocio;
 using Entidad;
 using Ludoteca.Resources;
+using Resources.Properties;
 
 namespace Ludoteca.ViewModel
 {
@@ -48,6 +49,8 @@ namespace Ludoteca.ViewModel
             Productos.Clear();
             foreach(var producto in await RN_Producto.RN_GetAllActiveProductos())
             {
+                if (Session.RolId != ApplicationProperties.IdAdministratorRol)
+                    producto.Visble = false;
                 addProductToCollection(producto);
             }
         }

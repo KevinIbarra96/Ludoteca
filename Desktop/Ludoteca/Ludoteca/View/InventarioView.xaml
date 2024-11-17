@@ -62,7 +62,7 @@
                             <StackLayout Grid.Column="3" Orientation="Horizontal" VerticalOptions="Center">
                                 <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
                                     <Button Text="Ingresar" ToolTipProperties.Text="Ingresar producto al inventario" Clicked="IngresarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
-                                    <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                                    <Button Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarProducto_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80" />
                                  </StackLayout>
                             </StackLayout>
 

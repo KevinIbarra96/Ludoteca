@@ -20,5 +20,7 @@ namespace Resources.Properties
 
         public static int IdTiempoLibreServicio = 7;
 
+        public static int IdAdministratorRol = 1;
+
     }
 }
