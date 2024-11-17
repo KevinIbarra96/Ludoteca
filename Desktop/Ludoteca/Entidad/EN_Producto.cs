@@ -12,6 +12,10 @@ namespace Entidad
         private int _cantidadVisita;
         private bool _isEnable;
 
+        //Propiedad para mostrar u ocultar el boton editar en el inventario
+        public bool Visble = true;
+        
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public string ProductoName
