@@ -12,7 +12,7 @@ namespace Ludoteca.ViewModel
     public delegate void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita);
     public delegate double CalcularTotalVisita(EN_Visita visita);
 
-    public delegate void AddProductoToVisita(EN_ProductosVisita producto, int visitaId);
+    public delegate void AddProductoToVisita(GlobalEnum.Action action, EN_ProductosVisita producto, int visitaId);
     public delegate void AddServicioToVisita(EN_ServiciosVisita servicio, int visitaId);
 
     public class VisitViewModel
@@ -130,13 +130,24 @@ namespace Ludoteca.ViewModel
             VisitasInmutable.Add(visita);
         }
 
-        private void addProductoToVisita(EN_ProductosVisita producto,int visitaId)
+        private void addProductoToVisita(GlobalEnum.Action action ,EN_ProductosVisita producto,int visitaId)
         {
+
             EN_Visita Encontrado = getVisitaByID(visitaId);
 
-            Encontrado.Productos.Add(producto);
+            if (GlobalEnum.Action.CREAR_NUEVO == action)
+                Encontrado.Productos.Add(producto);
+            if (GlobalEnum.Action.ACTUALIZAR == action)
+            {
+                Encontrado.Productos.First().id_Producto = producto.id_Producto;
+                Encontrado.Productos.First().ProductoName = producto.ProductoName;
+                Encontrado.Productos.First().CantidadProductoVisita = producto.CantidadProductoVisita;
+                Encontrado.Productos.First().precioProductoVisita = producto.precioProductoVisita;
+                Encontrado.Productos.First().CantidadProducto = $"({producto.CantidadProductoVisita}) {producto.ProductoName}";
+            }
 
         }
+        
 
         private void addServicioToVisita(EN_ServiciosVisita servicio,int visitaId)
         {

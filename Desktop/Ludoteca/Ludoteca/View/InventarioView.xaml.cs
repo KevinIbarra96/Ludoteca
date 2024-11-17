@@ -27,9 +27,7 @@ public partial class InventarioView : ContentPage
         _updateInventarioData = viewModel._UpdateInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;
-               
-
-
+        
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)

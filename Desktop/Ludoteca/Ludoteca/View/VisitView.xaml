@@ -121,6 +121,9 @@
                                 </Border>
 
                                 <Border  Grid.Column="4" >
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="AddProductos_Tapped" CommandParameter="{Binding .}" ></TapGestureRecognizer>
+                                    </Border.GestureRecognizers>
                                     <CollectionView ItemsSource="{Binding Productos}">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>
@@ -131,11 +134,6 @@
                                 </Border>
 
                                 <Border  Grid.Column="5" >
-                                
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="AddProducto_Clicked" CommandParameter="{Binding .}"/>
-                                    </Border.GestureRecognizers>
-
                                     <CollectionView ItemsSource="{Binding Oferta}" HorizontalOptions="Center" VerticalOptions="Center">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate>

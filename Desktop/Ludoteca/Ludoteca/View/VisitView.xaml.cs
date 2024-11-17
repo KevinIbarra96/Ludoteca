@@ -60,14 +60,6 @@ public partial class VisitView : ContentPage
         await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable,_calcularTotalVisita));
     }
 
-    private async void AddProducto_Clicked(object sender, EventArgs e)
-    {
-        var btn = sender as Label;
-        var visitaSelected = btn.BindingContext as EN_Visita;
-
-        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id) );
-    }
-
     private async void AddServicio_Clicked(object sender, EventArgs e)
     {
 
@@ -177,14 +169,14 @@ public partial class VisitView : ContentPage
         string rutaPDF = Path.Combine(rutaDirectorio, nombreTicket);
 
 
-        //await ticket.CreateAndPrintTicket("EC-PM-5890X",visitaSelected, CalcularAlturaDelTicket(visitaSelected.Productos.Count + visitaSelected.Servicios.Count));
-
-        //await GenerateTicketPdf(rutaPDF, visitaSelected, CalcularAlturaDelTicket(visitaSelected.Productos.Count+visitaSelected.Servicios.Count));
         await ticket.PrintTicket(PrintName);
 
-        _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+        bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+        
+        if(answer)
+            await ticket.PrintTicket(PrintName);
 
-        //await ticket.PrintTicket("EC-PM-5890X",rutaPDF);        
+        _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);        
 
         await RN_Tickets.RN_AddNewTicket(new EN_Tickets
         {
@@ -195,5 +187,13 @@ public partial class VisitView : ContentPage
 
         });
 
+    }
+
+    private async void AddProductos_Tapped(object sender, TappedEventArgs e)
+    {
+        var btn = sender as Border;
+        var visitaSelected = btn.BindingContext as EN_Visita;
+
+        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id,visitaSelected.Productos));
     }
 }
