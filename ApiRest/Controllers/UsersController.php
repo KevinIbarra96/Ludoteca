@@ -1,11 +1,11 @@
 <?php
 
     $pt = explode('\\',__DIR__);
+
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
-
-    //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/UserService.php');
