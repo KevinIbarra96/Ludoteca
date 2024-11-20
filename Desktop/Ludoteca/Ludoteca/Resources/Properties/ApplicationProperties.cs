@@ -18,11 +18,11 @@ namespace Resources.Properties
         public static EN_Configuracion edadMaxima;
         public static EN_Configuracion rutaTickets;
 
-        public static int IdTiempoLibreServicio = 7;
+        public static int IdTiempoLibreServicio = 1;
 
         public static int IdAdministratorRol = 1;
 
-        public static int IdSinProducto = 20;
+        public static int IdSinProducto = 1;
 
     }
 }

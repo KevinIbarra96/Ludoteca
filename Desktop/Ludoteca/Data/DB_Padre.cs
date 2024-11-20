@@ -14,11 +14,11 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Padres"; //Adding ControllerName to Path
         private static List<EN_Padre> PadresResponse = null;
 
-        public static async Task<EN_Padre> getPadreByPhone(string _phone)
-        {
-            EN_Padre padreResult=null;
+        public static async Task<EN_Response<EN_Padre>> getPadreByPhone(string _phone)
+        {            
             string _endPoint = _apiPath + "/getPadreByPhone"; //Adding endpoint to path
 
+            EN_Response<EN_Padre> PadreRes = null;
 
             var requestBody = new { phone = _phone };
 
@@ -33,11 +33,10 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Padre> PadreRest = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
-                padreResult = PadreRest.Rbody[0];
+                PadreRes = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
             }
 
-            return padreResult;
+            return PadreRes;
         }
 
         public static async Task<List<EN_Padre>> getAllPadres()

@@ -10,7 +10,7 @@ namespace Negocio
 {
     public class RN_Padre
     {
-        public static async Task<EN_Padre> getPadreByPhone(string _phone)
+        public static async Task<EN_Response<EN_Padre>> getPadreByPhone(string _phone)
         {
             return await DB_Padre.getPadreByPhone(_phone);
         }

@@ -285,8 +285,18 @@ public partial class NuevaVisitaPopUp
     {
         try
         {
-            padre = await RN_Padre.getPadreByPhone(_phone);
+            EN_Response<EN_Padre> PadreResp = await RN_Padre.getPadreByPhone(_phone);
+            var padreList = PadreResp.Rbody;
+
+            if (padreList.Count == 0)
+            {
+                throw new Exception("No se encontró el padre");
+            }
+
+            padre = padreList[0];
+
             List<EN_Hijo> hijo = await RN_Hijo.getHijosByPadresId(padre.id);
+
             Padrelabl.Text = padre.PadreName;
             HijosCollectionView.ItemsSource = hijo;
         }catch (Exception ex)

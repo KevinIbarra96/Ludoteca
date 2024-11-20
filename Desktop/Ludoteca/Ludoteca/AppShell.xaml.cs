@@ -5,6 +5,7 @@ using System;
 using Ludoteca.Resources;
 using System.Reflection.Metadata;
 using Ludoteca.Resources.Models;
+using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca
 {
@@ -34,5 +35,17 @@ namespace Ludoteca
             }
         }
 
+        private async void CerrarSession_Tapped(object sender, TappedEventArgs e)
+        {
+
+            bool answer = await DisplayAlert("Atencion", "¿Estas seguro de cerrar sesison?", "Si", "No");
+            if (!answer)
+                return;
+
+            AccionesSession.CerrarSession();
+
+            // Redirigir a la página principal de la aplicación
+            App.Current.MainPage = new Login();
+        }
     }
 }

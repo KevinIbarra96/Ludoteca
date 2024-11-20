@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.32-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         8.0.29 - MySQL Community Server - GPL
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             12.8.0.6908
 -- --------------------------------------------------------
@@ -16,24 +16,24 @@
 
 
 -- Volcando estructura de base de datos para ludotecadb
-CREATE DATABASE IF NOT EXISTS `ludotecadb` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */;
+CREATE DATABASE IF NOT EXISTS `ludotecadb` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `ludotecadb`;
 
 -- Volcando estructura para tabla ludotecadb.configuracion
 CREATE TABLE IF NOT EXISTS `configuracion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `ConfigName` varchar(45) DEFAULT NULL,
   `ConfigDescripcion` varchar(100) DEFAULT NULL,
   `ConfigStringValue` varchar(300) DEFAULT NULL,
-  `ConfigBoolValue` tinyint(4) DEFAULT NULL,
-  `ConfigIntValue` int(11) DEFAULT NULL,
+  `ConfigBoolValue` tinyint DEFAULT NULL,
+  `ConfigIntValue` int DEFAULT NULL,
   `ConfigDecimalValue` decimal(5,2) DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.configuracion: ~7 rows (aproximadamente)
-INSERT IGNORE INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStringValue`, `ConfigBoolValue`, `ConfigIntValue`, `ConfigDecimalValue`, `status`) VALUES
+INSERT INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `ConfigStringValue`, `ConfigBoolValue`, `ConfigIntValue`, `ConfigDecimalValue`, `status`) VALUES
 	(1, 'PrecioMinutoTreintaMin', 'Precio de minuto de la primera media hora de 0 - 35 mins', NULL, NULL, NULL, 2.60, 1),
 	(2, 'EdadMinima', 'Edad minima del niño(a)', NULL, NULL, 1, NULL, 1),
 	(3, 'EdadMaxima', 'Edad maxima del niño(a)', NULL, NULL, 15, NULL, 1),
@@ -44,26 +44,26 @@ INSERT IGNORE INTO `configuracion` (`id`, `ConfigName`, `ConfigDescripcion`, `Co
 
 -- Volcando estructura para tabla ludotecadb.fiestas
 CREATE TABLE IF NOT EXISTS `fiestas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idServicio` int(11) DEFAULT NULL,
-  `idTurno` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idServicio` int DEFAULT NULL,
+  `idTurno` int DEFAULT NULL,
   `Fecha` date DEFAULT NULL,
   `Tematica` varchar(45) DEFAULT NULL,
-  `EdadACumplir` int(11) DEFAULT NULL,
+  `EdadACumplir` int DEFAULT NULL,
   `TipoComida` varchar(45) DEFAULT NULL,
-  `NinosAdicionales` int(11) DEFAULT NULL,
-  `Anticipo` decimal(8,0) DEFAULT 0,
-  `Total` decimal(8,0) DEFAULT 0,
-  `status` smallint(6) DEFAULT 1,
+  `NinosAdicionales` int DEFAULT NULL,
+  `Anticipo` decimal(8,0) DEFAULT '0',
+  `Total` decimal(8,0) DEFAULT '0',
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_Fiesta_Servicio_idx` (`idServicio`),
   KEY `fk_Fiesta_Turno_idx` (`idTurno`),
   CONSTRAINT `fk_Fiesta_Servicio` FOREIGN KEY (`idServicio`) REFERENCES `servicios` (`id`),
   CONSTRAINT `fk_Fiesta_Turno` FOREIGN KEY (`idTurno`) REFERENCES `turnos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.fiestas: ~14 rows (aproximadamente)
-INSERT IGNORE INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`, `EdadACumplir`, `TipoComida`, `NinosAdicionales`, `Anticipo`, `Total`, `status`) VALUES
+INSERT INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`, `EdadACumplir`, `TipoComida`, `NinosAdicionales`, `Anticipo`, `Total`, `status`) VALUES
 	(24, 8, 2, '2024-11-12', 'Harry Poter', 12, 'Pizza Peperoni', 2, 1000, 9800, 1),
 	(25, 9, 3, '2024-11-12', 'Spiderman', 12, 'Pizza', 1, 2000, 12400, 1),
 	(26, 10, 2, '2024-11-14', 'Batman', 12, 'Tacos al vapor', 2, 1500, 5800, 1),
@@ -81,18 +81,18 @@ INSERT IGNORE INTO `fiestas` (`id`, `idServicio`, `idTurno`, `Fecha`, `Tematica`
 
 -- Volcando estructura para tabla ludotecadb.fiesta_hijo
 CREATE TABLE IF NOT EXISTS `fiesta_hijo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_Fiesta` int(11) DEFAULT NULL,
-  `id_Hijo` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_Fiesta` int DEFAULT NULL,
+  `id_Hijo` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_Fiesta_Fiesta_idx` (`id_Fiesta`),
   KEY `fk_Fiesta_Hijo_idx` (`id_Hijo`),
   CONSTRAINT `fk_Fiesta_Fiesta` FOREIGN KEY (`id_Fiesta`) REFERENCES `fiestas` (`id`),
   CONSTRAINT `fk_Fiesta_Hijo` FOREIGN KEY (`id_Hijo`) REFERENCES `hijos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.fiesta_hijo: ~22 rows (aproximadamente)
-INSERT IGNORE INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
+INSERT INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
 	(1, 24, 1),
 	(2, 24, 3),
 	(3, 25, 1),
@@ -118,12 +118,12 @@ INSERT IGNORE INTO `fiesta_hijo` (`id`, `id_Fiesta`, `id_Hijo`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.gafetes
 CREATE TABLE IF NOT EXISTS `gafetes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `Numero` int(11) NOT NULL,
-  `Asignado` smallint(6) NOT NULL DEFAULT 0,
-  `status` smallint(6) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Numero` int NOT NULL,
+  `Asignado` smallint NOT NULL DEFAULT '0',
+  `status` smallint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.gafetes: ~21 rows (aproximadamente)
 INSERT INTO `gafetes` (`id`, `Numero`, `Asignado`, `status`) VALUES
@@ -151,12 +151,12 @@ INSERT INTO `gafetes` (`id`, `Numero`, `Asignado`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.hijos
 CREATE TABLE IF NOT EXISTS `hijos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `NombreHijo` varchar(45) DEFAULT NULL,
-  `Papa` int(11) DEFAULT NULL,
-  `Mama` int(11) DEFAULT NULL,
+  `Papa` int DEFAULT NULL,
+  `Mama` int DEFAULT NULL,
   `fechaNac` varchar(45) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_Hijo_Papa_idx` (`Papa`),
   KEY `fk_Hijo_Mama_idx` (`Mama`),
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `hijos` (
   CONSTRAINT `fk_Hijo_Papa` FOREIGN KEY (`Papa`) REFERENCES `padres` (`id`) ON UPDATE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla ludotecadb.hijos: ~26 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.hijos: ~29 rows (aproximadamente)
 INSERT INTO `hijos` (`id`, `NombreHijo`, `Papa`, `Mama`, `fechaNac`, `status`) VALUES
 	(1, 'Lia Alejandra Ibarra Vazquez', 1, 2, '2024-03-08 00:10:10', 1),
 	(2, 'Hector Sanchez', 3, 0, '2024-03-08 00:10:10', 1),
@@ -198,18 +198,18 @@ INSERT INTO `hijos` (`id`, `NombreHijo`, `Papa`, `Mama`, `fechaNac`, `status`) V
 
 -- Volcando estructura para tabla ludotecadb.menu
 CREATE TABLE IF NOT EXISTS `menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `MenuName` varchar(45) DEFAULT NULL,
   `ClassName` varchar(45) DEFAULT NULL,
-  `MenuOrder` smallint(6) DEFAULT NULL,
+  `MenuOrder` smallint DEFAULT NULL,
   `Path` varchar(45) DEFAULT NULL,
   `IconName` varchar(45) DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
+  `status` int DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.menu: ~7 rows (aproximadamente)
-INSERT IGNORE INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `IconName`, `status`) VALUES
+INSERT INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `IconName`, `status`) VALUES
 	(1, 'Inventario', 'InventarioView', 3, 'Ludoteca.View.InventarioView', 'inventario_icon.jpg', 1),
 	(2, 'Visitas', 'VisitView', 2, 'Ludoteca.View.VisitView', 'visitas_icon.jpg', 1),
 	(3, 'Servicios', 'ServiciosView', 4, 'Ludoteca.View.ServiciosView', 'inventario_icon.jpg', 1),
@@ -220,17 +220,17 @@ INSERT IGNORE INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `
 
 -- Volcando estructura para tabla ludotecadb.ofertas
 CREATE TABLE IF NOT EXISTS `ofertas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `OfertaName` varchar(45) DEFAULT NULL,
   `Descripcion` varchar(250) DEFAULT NULL,
-  `Tiempo` int(11) DEFAULT NULL,
+  `Tiempo` int DEFAULT NULL,
   `totalDescuento` double DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.ofertas: ~4 rows (aproximadamente)
-INSERT IGNORE INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescuento`, `status`) VALUES
+INSERT INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `totalDescuento`, `status`) VALUES
 	(1, 'Sin Oferta', 'Opcion de oferta desiganada para no tener ofertas', 0, 0, 1),
 	(2, 'treinta minutos', 'Oferta para dar 30 minutos de descuento', 30, 0, 1),
 	(3, '10 pesos', 'Descuento de diez pesos', 0, 10, 1),
@@ -238,15 +238,15 @@ INSERT IGNORE INTO `ofertas` (`id`, `OfertaName`, `Descripcion`, `Tiempo`, `tota
 
 -- Volcando estructura para tabla ludotecadb.padres
 CREATE TABLE IF NOT EXISTS `padres` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `PadreName` varchar(45) DEFAULT NULL,
   `Address` varchar(105) DEFAULT NULL,
   `Telefono` varchar(45) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla ludotecadb.padres: ~31 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.padres: ~34 rows (aproximadamente)
 INSERT INTO `padres` (`id`, `PadreName`, `Address`, `Telefono`, `status`) VALUES
 	(0, 'No padre asignado', 'NA', '0', 1),
 	(1, 'Kevin Daryl Ibarra Sandoval', 'Su casa', '7531420527', 1),
@@ -285,16 +285,15 @@ INSERT INTO `padres` (`id`, `PadreName`, `Address`, `Telefono`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.productos
 CREATE TABLE IF NOT EXISTS `productos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `ProductoName` varchar(45) DEFAULT NULL,
-  `Cantidad` int(11) DEFAULT 0,
+  `Cantidad` int DEFAULT '0',
   `Precio` decimal(8,2) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
-
--- Volcando datos para la tabla ludotecadb.productos: ~11 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.productos: ~12 rows (aproximadamente)
 INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) VALUES
 	(1, 'Calcetas nino', 162, 25.00, 1),
 	(2, 'Agua 200ml', -92, 25.00, 1),
@@ -308,17 +307,17 @@ INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) V
 	(18, 'Calcetas nina', 0, 25.00, 1),
 	(19, 'sdasd', 0, 121.00, 1),
 	(20, 'Sin Producto', 99999998, 0.00, 1);
-  
+
 -- Volcando estructura para tabla ludotecadb.rol
 CREATE TABLE IF NOT EXISTS `rol` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `RolName` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='		';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COMMENT='		';
 
 -- Volcando datos para la tabla ludotecadb.rol: ~5 rows (aproximadamente)
-INSERT IGNORE INTO `rol` (`id`, `RolName`, `status`) VALUES
+INSERT INTO `rol` (`id`, `RolName`, `status`) VALUES
 	(1, 'Administrador', '1'),
 	(2, 'Cajera', '1'),
 	(17, 'RolTest', '1'),
@@ -327,18 +326,18 @@ INSERT IGNORE INTO `rol` (`id`, `RolName`, `status`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.rol_menu
 CREATE TABLE IF NOT EXISTS `rol_menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_Rol` int(11) NOT NULL,
-  `id_Menu` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_Rol` int NOT NULL,
+  `id_Menu` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Rol_Menu_Rol_idx` (`id_Rol`),
   KEY `FK_Rol_Menu_Menu_idx` (`id_Menu`),
   CONSTRAINT `FK_Rol_Menu_Menu` FOREIGN KEY (`id_Menu`) REFERENCES `menu` (`id`),
   CONSTRAINT `FK_Rol_Menu_Rol` FOREIGN KEY (`id_Rol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla ludotecadb.rol_menu: ~13 rows (aproximadamente)
-INSERT IGNORE INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
+-- Volcando datos para la tabla ludotecadb.rol_menu: ~14 rows (aproximadamente)
+INSERT INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
 	(13, 1, 1),
 	(14, 1, 2),
 	(15, 1, 3),
@@ -356,20 +355,20 @@ INSERT IGNORE INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.servicios
 CREATE TABLE IF NOT EXISTS `servicios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `ServicioName` varchar(400) DEFAULT NULL,
-  `Descripcion` text DEFAULT NULL,
+  `Descripcion` text,
   `Precio` decimal(8,2) DEFAULT NULL,
-  `Tiempo` int(11) DEFAULT NULL,
-  `IdTipoServicio` int(11) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `Tiempo` int DEFAULT NULL,
+  `IdTipoServicio` int DEFAULT NULL,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_Servicio_TipoServicio_idx` (`IdTipoServicio`),
   CONSTRAINT `fk_Servicio_TipoServicio` FOREIGN KEY (`IdTipoServicio`) REFERENCES `tiposervicio` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.servicios: ~12 rows (aproximadamente)
-INSERT IGNORE INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`, `IdTipoServicio`, `status`) VALUES
+INSERT INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`, `IdTipoServicio`, `status`) VALUES
 	(1, 'Media Hora', 'Servicio destinado con precio por minuto especial para 30 minutos', 15.00, 35, 1, 1),
 	(2, 'Una Hora', 'Servicio destinado a una hora con descuento ', 14.00, 65, 1, 1),
 	(3, 'Plan Cine', 'Para que se vallan al cine los jefes', 185.00, 130, 1, 1),
@@ -385,18 +384,18 @@ INSERT IGNORE INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `
 
 -- Volcando estructura para tabla ludotecadb.tickets
 CREATE TABLE IF NOT EXISTS `tickets` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) DEFAULT NULL,
-  `idvisita` int(11) DEFAULT NULL,
+  `idvisita` int DEFAULT NULL,
   `fecha_creacion` varchar(50) DEFAULT NULL,
   `ruta` varchar(300) DEFAULT NULL,
-  `status` int(11) DEFAULT 1,
+  `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `FK_tickets_visitas` (`idvisita`),
   CONSTRAINT `FK_tickets_visitas` FOREIGN KEY (`idvisita`) REFERENCES `visitas` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla ludotecadb.tickets: ~108 rows (aproximadamente)
+-- Volcando datos para la tabla ludotecadb.tickets: ~47 rows (aproximadamente)
 INSERT INTO `tickets` (`id`, `nombre`, `idvisita`, `fecha_creacion`, `ruta`, `status`) VALUES
 	(1, 'pdf.pdf', 53, '24/08/2024', 'C:\\casa\\2024\\Septiembre\\24/', 1),
 	(2, 'valenciaortiz.pdf', 59, '01/10/24', 'C:/casa/2024/Octubre/1/', 1),
@@ -448,44 +447,44 @@ INSERT INTO `tickets` (`id`, `nombre`, `idvisita`, `fecha_creacion`, `ruta`, `st
 
 -- Volcando estructura para tabla ludotecadb.tiposervicio
 CREATE TABLE IF NOT EXISTS `tiposervicio` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.tiposervicio: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `tiposervicio` (`id`, `nombre`, `status`) VALUES
+INSERT INTO `tiposervicio` (`id`, `nombre`, `status`) VALUES
 	(1, 'Visita', 1),
 	(2, 'Fiesta', 1);
 
 -- Volcando estructura para tabla ludotecadb.turnos
 CREATE TABLE IF NOT EXISTS `turnos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `NombreTurno` varchar(45) DEFAULT NULL,
-  `status` smallint(6) NOT NULL DEFAULT 1,
+  `status` smallint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.turnos: ~2 rows (aproximadamente)
-INSERT IGNORE INTO `turnos` (`id`, `NombreTurno`, `status`) VALUES
+INSERT INTO `turnos` (`id`, `NombreTurno`, `status`) VALUES
 	(2, 'Matutino', 1),
 	(3, 'Vespertino', 1);
 
 -- Volcando estructura para tabla ludotecadb.users
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `UserName` varchar(45) DEFAULT NULL,
   `Password` varchar(45) DEFAULT NULL,
-  `idRol` int(11) DEFAULT NULL,
-  `status` smallint(6) DEFAULT 1,
+  `idRol` int DEFAULT NULL,
+  `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_User_Rol_idx` (`idRol`),
   CONSTRAINT `fk_User_Rol` FOREIGN KEY (`idRol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla ludotecadb.users: ~10 rows (aproximadamente)
-INSERT IGNORE INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
+INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 	(1, 'Kevin Ibarra', 'Test1', 1, 1),
 	(2, 'Gerardo Valente', 'Test', 1, 1),
 	(3, 'Perla Anaya', 'Prueba', 1, 1),
@@ -499,7 +498,7 @@ INSERT IGNORE INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VAL
 
 -- Volcando estructura para tabla ludotecadb.visitas
 CREATE TABLE IF NOT EXISTS `visitas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `HoraEntrada` datetime NOT NULL,
   `HoraSalida` datetime DEFAULT NULL,
   `Oferta` int NOT NULL,
@@ -634,9 +633,9 @@ INSERT INTO `visitas` (`id`, `HoraEntrada`, `HoraSalida`, `Oferta`, `Total`, `Ga
 
 -- Volcando estructura para tabla ludotecadb.visita_hijo
 CREATE TABLE IF NOT EXISTS `visita_hijo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_Visita` int(11) NOT NULL,
-  `id_Hijo` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_Visita` int NOT NULL,
+  `id_Hijo` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Visita_Hijo_Visita_idx` (`id_Visita`),
   KEY `FK_Visita_Hijo_Hijo_idx` (`id_Hijo`),
@@ -773,11 +772,11 @@ INSERT INTO `visita_hijo` (`id`, `id_Visita`, `id_Hijo`) VALUES
 
 -- Volcando estructura para tabla ludotecadb.visita_producto
 CREATE TABLE IF NOT EXISTS `visita_producto` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_Visita` int(11) NOT NULL,
-  `id_Producto` int(11) NOT NULL,
-  `precioProductoVisita` int(11) DEFAULT NULL,
-  `CantidadProductoVisita` int(11) DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_Visita` int NOT NULL,
+  `id_Producto` int NOT NULL,
+  `precioProductoVisita` int DEFAULT NULL,
+  `CantidadProductoVisita` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Visita_Producto_Visita_idx` (`id_Visita`),
   KEY `FK_Visita_Producto_Producto_idx` (`id_Producto`),
@@ -1058,10 +1057,10 @@ INSERT INTO `visita_producto` (`id`, `id_Visita`, `id_Producto`, `precioProducto
 
 -- Volcando estructura para tabla ludotecadb.visita_servicios
 CREATE TABLE IF NOT EXISTS `visita_servicios` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `Visita_Id` int(11) DEFAULT NULL,
-  `Servicio_Id` int(11) DEFAULT NULL,
-  `Servicio_Precio` int(11) DEFAULT 0,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Visita_Id` int DEFAULT NULL,
+  `Servicio_Id` int DEFAULT NULL,
+  `Servicio_Precio` int DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_visita_Servicio_Visita_idx` (`Visita_Id`),
   KEY `fk_visita_Servicio_Servicio_idx` (`Servicio_Id`),
