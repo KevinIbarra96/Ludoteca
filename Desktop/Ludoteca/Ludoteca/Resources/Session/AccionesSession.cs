@@ -1,6 +1,7 @@
 ﻿using Entidad;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,11 +111,11 @@ namespace Ludoteca.Resources
 
                 SaveSession();
 
-                Console.WriteLine("¡La sesión se ha cerrado correctamente!");
+                Debug.WriteLine("¡La sesión se ha cerrado correctamente!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al cerrar la sesión: " + ex.Message);
+                Debug.WriteLine("Error al cerrar la sesión: " + ex.Message);
             }
         }
         

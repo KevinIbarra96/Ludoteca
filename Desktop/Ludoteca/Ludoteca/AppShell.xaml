@@ -21,4 +21,17 @@
         Route="StringFormatTemplate" 
         />-->
 
+    <Shell.FlyoutFooter >
+        <Border HeightRequest="40">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="CerrarSession_Tapped" />
+            </Border.GestureRecognizers>
+            <Label Text="Cerrar Session"
+                   TextColor="{StaticResource CasitaPrimaryGreen}"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center"/>
+        </Border>
+    </Shell.FlyoutFooter>
+    
 </Shell>
