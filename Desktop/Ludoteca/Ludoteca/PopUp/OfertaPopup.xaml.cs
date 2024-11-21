@@ -59,7 +59,7 @@ public partial class OfertaPopup
 
             EN_Response<EN_Oferta> resp = await RN_Oferta.RN_AddNewOferta(oferta);
 
-            oferta.id = resp.Rbody[0].id;
+            oferta.id = resp.Rbody.First().id;
 
             _UpdateOfertaTable(GlobalEnum.Action.CREAR_NUEVO, oferta);
 

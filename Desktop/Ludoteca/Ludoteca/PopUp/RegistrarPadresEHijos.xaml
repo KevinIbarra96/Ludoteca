@@ -53,7 +53,7 @@
                                 <Label Text="Fecha de Nacimiento"/>
                                 <HorizontalStackLayout HorizontalOptions="Fill" VerticalOptions="Start">
                                     <DatePicker x:Name="DateFechaNacimientoHijo" HorizontalOptions="StartAndExpand" DateSelected="OnDateSelected"/>
-                                    <Button Text="+" Clicked="OnAddHijoClicked" HorizontalOptions="End" Margin="5" Background="LawnGreen" TextColor="White"/>
+                                    <Button Text="+" Clicked="OnAddHijoClicked" HorizontalOptions="End" Margin="5" Background="LawnGreen" TextColor="White" ToolTipProperties.Text="Agregar otro hijo" />
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </ScrollView>

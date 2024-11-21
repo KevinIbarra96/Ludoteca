@@ -115,11 +115,11 @@ public partial class NuevaVisitaPopUp
             nuevaVisita.Padres = lisPadre;
             nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
             nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
+            nuevaVisita.HoraEntrada = DateTime.Now;
 
-            
+
             EN_Response<EN_Visita> response = await RN_Visita.ingresarNuevaVisita(nuevaVisita);
-            nuevaVisita.id = response.Rbody[0].id;
-            nuevaVisita.HoraEntrada = response.Rbody[0].HoraEntrada;
+            nuevaVisita.id = response.Rbody.First().id;
             nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 15000);
 
             _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO, nuevaVisita);
@@ -293,7 +293,7 @@ public partial class NuevaVisitaPopUp
                 throw new Exception("No se encontró el padre");
             }
 
-            padre = padreList[0];
+            padre = padreList.First();
 
             List<EN_Hijo> hijo = await RN_Hijo.getHijosByPadresId(padre.id);
 
