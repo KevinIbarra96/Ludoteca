@@ -59,5 +59,18 @@ namespace Ludoteca.ViewModel
                 addVisitaToCollection(visita);
             }
         }
-}
+        public async Task LoadReporteVisitasByDateRange(DateTime fechaInicio, DateTime fechaFin)
+        {
+            Visitas.Clear();
+            VisitasInmutable.Clear();
+
+            var visitasPorRango = await RN_Visita.RN_getVisitasCompleteByDateRange(fechaInicio, fechaFin);
+
+            foreach (var visita in visitasPorRango)
+            {
+                addVisitaToCollection(visita);
+            }
+        }
+
+    }
 }

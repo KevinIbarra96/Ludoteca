@@ -19,11 +19,53 @@
             <!-- Fila para el Frame inferior -->
         </Grid.RowDefinitions>
 
-        <Frame Grid.Row="0" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
-            <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Start">
-                <DatePicker x:Name="DateFechaSelected" DateSelected="OnDateSelected" HorizontalOptions="StartAndExpand"/>
+        <Frame Grid.Row="0" 
+       BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" 
+       Margin="0,0,0,10">
+
+            <HorizontalStackLayout Spacing="10">
+                <!-- Filtro por fecha -->
+                <VerticalStackLayout>
+                    <Label Text="Filtrar por fecha"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   Margin="0,0,0,5">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowDateFilterTapped" CommandParameter="Fecha" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <DatePicker x:Name="DateFechaSelected" 
+                        DateSelected="OnDateSelected" 
+                        HorizontalOptions="FillAndExpand" IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Filtro por rango de fechas -->
+                <VerticalStackLayout>
+
+                    <Label Text="Filtrar por rango de fechas"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   Margin="0,0,0,5">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowDateFilterTapped" CommandParameter="Rango" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <HorizontalStackLayout x:Name="RangoFechasContainer" Spacing="10" IsVisible="False">
+                        <Label Text="Fecha Inicio" FontSize="Small" Margin="0,5,0,0" />
+                        <DatePicker x:Name="FechaInicioPicker" DateSelected="OnDateInicioSelected"/>
+
+                        <Label Text="Fecha Fin" FontSize="Small" Margin="0,5,0,0" />
+                        <DatePicker x:Name="FechaFinPicker" DateSelected="OnDateFinSelected"/>
+
+                        <Button Text="Filtrar por rango" Clicked="OnFilterByDateRangeClicked" Margin="0,10,0,0" HorizontalOptions="Fill" BackgroundColor="{StaticResource CasitaPrimaryGreen}" />
+                    </HorizontalStackLayout>
+
+                    
+                </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
+
 
         <StackLayout Grid.Row="1">
             <Grid IsVisible="True" BackgroundColor="{StaticResource FrameBackground}">

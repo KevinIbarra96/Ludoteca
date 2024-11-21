@@ -354,5 +354,28 @@
                 echo json_encode($Response);
             }
         }
+        function getVisitaCompleteByDateRange(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $fecha1 = date('Y-m-d', strtotime($BodyRequest['HoraEntrada']));
+                $fecha2 = date('Y-m-d', strtotime($BodyRequest['HoraSalida']));
+                $Response->Rbody = $visitaSvc->getVisitasCompletedByDateRange($fecha1,$fecha2);
+                //$Response->Rbody = $visitaSvc->getVisitasCompletedByDateRange($BodyRequest['HoraEntrada'], $BodyRequest['HoraSalida']);
+                $database-> closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Visitas completadas listadas por rango de fechas";
+            } catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            } finally{
+                echo json_encode($Response);
+            }
+
+        }
     }
 ?>

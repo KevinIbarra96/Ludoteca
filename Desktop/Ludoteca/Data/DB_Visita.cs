@@ -292,6 +292,33 @@ namespace Data
             return VisitasResponse;
 
         }
+        public static async Task<List<EN_Visita>> getCompletedVisitasByDateRange(DateTime fechaInicio, DateTime fechaFin)
+        {
+            string _endPoint = _apiPath + "/getVisitaCompleteByDateRange";
+            VisitasResponse = null;
+
+            var requestBody = new
+            {
+                HoraEntrada = fechaInicio.ToString("yyyy-MM-dd"),
+                HoraSalida = fechaFin.ToString("yyyy-MM-dd")
+            };
+
+            var requestData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+                EN_Response<EN_Visita> VisitaRest = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+                VisitasResponse = VisitaRest.Rbody;
+            }
+
+            return VisitasResponse;
+        }
+
 
     }
 }
