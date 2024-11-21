@@ -61,11 +61,12 @@
                                                                       Total)
                                                                 value (:GafeteId,
                                                                       :NumeroGafete,
-                                                                      NOW(),
+                                                                      :HoraEntrada,
                                                                       :Oferta,
                                                                       :Total);");
             $stm->bindValue(':GafeteId', $visita["GafeteId"], PDO::PARAM_INT);
             $stm->bindValue(':NumeroGafete', $visita["NumeroGafete"], PDO::PARAM_INT);
+            $stm->bindValue(':HoraEntrada', $visita["HoraEntrada"], PDO::PARAM_STR);
             $stm->bindValue(':Oferta', $visita["Oferta"][0]["id"], PDO::PARAM_INT);
             $stm->bindValue(':Total', $visita["Total"], PDO::PARAM_INT);
             $stm->execute();
@@ -91,7 +92,7 @@
                                                          a.HoraSalida,
                                                          a.GafeteId,
                                                          a.Oferta as IdOferta,
-                                                         A.NumeroGafete,
+                                                         a.NumeroGafete,
                                                          b.OfertaName,
                                                          a.TiempoExcedido,
                                                          a.TiempoTotal

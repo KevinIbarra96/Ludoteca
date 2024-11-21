@@ -197,7 +197,7 @@ public partial class FiestasPopup
                 throw new Exception("No se encontró el padre");
             }
 
-            padre = padreList[0];
+            padre = padreList.First();
 
             List<EN_Hijo> hijo = await RN_Hijo.getHijosByPadresId(padre.id);
 
@@ -245,7 +245,7 @@ public partial class FiestasPopup
             if (Response.Rcode != 200)
                 throw new Exception("Ah ocurrido un error\nDetalle: " + Response.Rmessage);
 
-            nuevaFiesta.id = Response.Rbody[0].id;
+            nuevaFiesta.id = Response.Rbody.First().id;
             _updateFiestaTable(GlobalEnum.Action.CREAR_NUEVO, nuevaFiesta);
 
             var toast = Toast.Make("Nueva fiesta programada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);

@@ -86,7 +86,7 @@ public partial class ProductoPopup
             var producto = new EN_Producto() { ProductoName = ProductNameEntry.Text, Precio = int.Parse(PrecioProduct.Text) };
             EN_Response<EN_Producto> resp = await RN_Producto.RN_AddNewProducto(producto);
 
-            producto.id = resp.Rbody[0].id;
+            producto.id = resp.Rbody.First().id;
 
             //Excecute the delegate to load the data on inventory
             _updateInventarioData(GlobalEnum.Action.CREAR_NUEVO, producto);

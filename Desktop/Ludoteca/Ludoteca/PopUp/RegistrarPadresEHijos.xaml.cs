@@ -40,7 +40,7 @@ public partial class RegistrarPadresEHijos
                     padre.Address = EditorDireccion.Text;
 
                     response = await RN_Padre.RN_AddNewPadre(padre);
-                    idPapa = response.Rbody[0].id;
+                    idPapa = response.Rbody.First().id;
                 }
 
                 if (ValidarEntry(EntryNombreMama) && ValidarEntry(EntryNumeroMama))
@@ -51,8 +51,10 @@ public partial class RegistrarPadresEHijos
                     madre.Address = EditorDireccion.Text;
 
                     response = await RN_Padre.RN_AddNewPadre(madre);
-                    idMama = response.Rbody[0].id;
+                    idMama = response.Rbody.First().id;
                 }
+
+
                 if (!string.IsNullOrWhiteSpace(EntryNombreHijo.Text) && DateFechaNacimientoHijo.Date != null)
                 {
                     if (!ValidarEdad(DateFechaNacimientoHijo.Date))
