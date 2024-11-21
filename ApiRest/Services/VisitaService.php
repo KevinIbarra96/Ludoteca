@@ -244,6 +244,61 @@
         
             return $resultados;
         }
+        function getVisitasCompletedByDateRange($horaEntrada, $HoraSalida) {
+            $stm = $this->DbConection->prepare("
+                SELECT a.id,
+                    a.HoraEntrada,
+                    a.HoraSalida,
+                    a.GafeteId,
+                    a.Oferta AS IdOferta,
+                    a.NumeroGafete,
+                    b.OfertaName,
+                    a.TiempoExcedido,
+                    a.Total
+                FROM visitas AS a
+                INNER JOIN ofertas AS b ON b.id = a.Oferta
+                WHERE a.status = 2
+                AND DATE(a.HoraEntrada) BETWEEN :horaEntrada AND :HoraSalida
+                ORDER BY a.HoraEntrada ASC;
+            ");
+            $stm->bindParam(':horaEntrada', $horaEntrada);
+            $stm->bindParam(':HoraSalida', $HoraSalida);
+            $stm->execute();
+
+            $Visitas = $stm->fetchAll(PDO::FETCH_ASSOC);
+            $errorInfo = $stm->errorInfo();
+            if ($errorInfo[0] !== '00000') {
+                throw new Exception("Ocurrió un error: " . $errorInfo[2]);
+            }
+            $resultados = [];
+        
+            $HS = new HijoService();
+            $PadreS = new PadreService();
+            $PS = new ProductoService();
+            $SS = new ServiciosService();
+            $OS = new OfertasService();
+        
+            foreach ($Visitas as $visita) {
+                $visita["Hijos"] = $HS->getHijosbyVisita($visita['id']);
+                
+                foreach ($visita["Hijos"] as $hijos) {
+                    $visita["Padres"] = $PadreS->getPadresbyidfromHijos($hijos['mama'], $hijos['papa']);
+                    break;
+                }
+        
+                $visita["Productos"] = $PS->getAllProductsforEachVisit($visita['id']);
+                $visita["Servicios"] = $SS->getAllServiceByEachVisit($visita['id']);
+                $visita["Oferta"] = $OS->getById($visita['IdOferta']);
+                $visita["Timer"] = null;
+        
+                array_push($resultados, $visita);
+            }
+        
+            unset($visita);
+        
+            return $resultados;
+
+        }
         
     }
 ?>

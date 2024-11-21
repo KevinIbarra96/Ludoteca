@@ -53,5 +53,10 @@ namespace Negocio
         {
             return await DB_Visita.getCompletedVisitasByDate(_date);
         }
+        public static async Task<List<EN_Visita>> RN_getVisitasCompleteByDateRange(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return await DB_Visita.getCompletedVisitasByDateRange(fechaInicio, fechaFin);
+        }
+
     }
 }
