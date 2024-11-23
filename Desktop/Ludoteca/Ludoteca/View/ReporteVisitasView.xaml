@@ -70,7 +70,7 @@
         <StackLayout Grid.Row="1">
             <Grid IsVisible="True" BackgroundColor="{StaticResource FrameBackground}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -111,7 +111,7 @@
                         <ViewCell>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -189,7 +189,7 @@
 
                                 <Border  Grid.Column="7" >
                                     <Label HorizontalOptions="Center" VerticalOptions="Center"
-                                       Text="{Binding TiempoExcedido}"
+                                       Text="{Binding TiempoTotal, StringFormat='{0:N0}'}"
                                 FontAttributes="Italic"/>
                                 </Border>
 

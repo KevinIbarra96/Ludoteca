@@ -3,6 +3,7 @@ using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,12 +37,21 @@ namespace Ludoteca.ViewModel
             VisitasInmutable.Clear();
             Visitas.Clear();
 
-            var visitasResponse = await RN_Visita.RN_getAllVisitasCompleted();
-            
-            foreach (var visita in visitasResponse.Rbody)
+            try
             {
-                addVisitaToCollection(visita);
+                var visitasResponse = await RN_Visita.RN_getAllVisitasCompleted();
+
+                foreach (var visita in visitasResponse.Rbody)
+                {
+                    addVisitaToCollection(visita);
+                }
             }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
+
+            }
+            
         }
         private void addVisitaToCollection(EN_Visita visita)
         {
@@ -53,23 +63,40 @@ namespace Ludoteca.ViewModel
             VisitasInmutable.Clear();
             Visitas.Clear();
 
-            var visitasResponse = await RN_Visita.RN_getVisitaCompleteByDate(fecha);
-            foreach (var visita in visitasResponse)
+            try
             {
-                addVisitaToCollection(visita);
+                var visitasResponse = await RN_Visita.RN_getVisitaCompleteByDate(fecha);
+                foreach (var visita in visitasResponse)
+                {
+                    addVisitaToCollection(visita);
+                }
             }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
+
+            }
+            
         }
         public async Task LoadReporteVisitasByDateRange(DateTime fechaInicio, DateTime fechaFin)
         {
             Visitas.Clear();
             VisitasInmutable.Clear();
-
-            var visitasPorRango = await RN_Visita.RN_getVisitasCompleteByDateRange(fechaInicio, fechaFin);
-
-            foreach (var visita in visitasPorRango)
+            try
             {
-                addVisitaToCollection(visita);
+                var visitasPorRango = await RN_Visita.RN_getVisitasCompleteByDateRange(fechaInicio, fechaFin);
+
+                foreach (var visita in visitasPorRango)
+                {
+                    addVisitaToCollection(visita);
+                }
             }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
+                
+            }
+            
         }
 
     }

@@ -143,7 +143,7 @@
                                                          a.Oferta as IdOferta,
                                                          A.NumeroGafete,
                                                          b.OfertaName,
-                                                         a.TiempoExcedido,
+                                                         a.TiempoTotal,
                                                          a.Total
                                                     from visitas as a
                                               inner join ofertas as b on b.id = a.Oferta
@@ -195,9 +195,8 @@
                        a.Oferta AS IdOferta,
                        a.NumeroGafete,
                        b.OfertaName,
-                       a.TiempoExcedido,
-                       a.Total,
-                       a.TiempoExcedido
+                       a.TiempoTotal,
+                       a.Total
                   FROM visitas AS a
             INNER JOIN ofertas AS b ON b.id = a.Oferta
                  WHERE a.status = 2
@@ -252,7 +251,7 @@
                     a.Oferta AS IdOferta,
                     a.NumeroGafete,
                     b.OfertaName,
-                    a.TiempoExcedido,
+                    a.TiempoTotal,
                     a.Total
                 FROM visitas AS a
                 INNER JOIN ofertas AS b ON b.id = a.Oferta
