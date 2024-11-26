@@ -142,7 +142,7 @@
                                                          a.HoraSalida,
                                                          a.GafeteId,
                                                          a.Oferta as IdOferta,
-                                                         A.NumeroGafete,
+                                                         a.NumeroGafete,
                                                          b.OfertaName,
                                                          a.TiempoExcedido,
                                                          a.Total

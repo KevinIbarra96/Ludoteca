@@ -250,9 +250,11 @@ CREATE TABLE IF NOT EXISTS `padres` (
   `Telefono` varchar(45) DEFAULT NULL,
   `status` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla justkidsdb.padres: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla justkidsdb.padres: ~1 rows (aproximadamente)
+INSERT INTO `padres` (`id`, `PadreName`, `Address`, `Telefono`, `status`) VALUES
+	(0, 'Sin Padre/Madre Asignado', '0', '0', 1);
 
 -- Volcando estructura para tabla justkidsdb.productos
 CREATE TABLE IF NOT EXISTS `productos` (

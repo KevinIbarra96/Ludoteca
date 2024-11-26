@@ -105,14 +105,22 @@ public partial class VisitView : ContentPage
                 {
                     await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
                     return;
-                }
+                }                
 
-                await CrearTicketPDF(visitaSelected, action);
+                await ticket.PrintTicket(action);
 
-                //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
+                bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+                if (answer)
+                    await ticket.PrintTicket(action);
+
+
+                //await CrearTicketPDF(visitaSelected, action);
+                
                 await RN_Visita.cobrarVisitas(visitaSelected);
 
-                await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
+                _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+
+                await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos.First().NombreHijo, "OK");
 
             }
             catch(Exception ex)
@@ -144,7 +152,7 @@ public partial class VisitView : ContentPage
 
         // Obtener nuevo folio desde la base de datos
         var folioResponse = await RN_Tickets.RN_GetNewFolio();
-        var nuevoFolio = folioResponse.Rbody[0].id;
+        var nuevoFolio = folioResponse.Rbody.First().id;
 
         string nombreTicket = $"Ticket_{nuevoFolio}_{visitaSelected.Hijos[0].NombreHijo}{fechaActual:yyyyMMdd}.pdf";
 
@@ -167,16 +175,6 @@ public partial class VisitView : ContentPage
 
         // Definir la ruta del archivo PDF
         string rutaPDF = Path.Combine(rutaDirectorio, nombreTicket);
-
-
-        await ticket.PrintTicket(PrintName);
-
-        bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
-        
-        if(answer)
-            await ticket.PrintTicket(PrintName);
-
-        _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);        
 
         await RN_Tickets.RN_AddNewTicket(new EN_Tickets
         {
