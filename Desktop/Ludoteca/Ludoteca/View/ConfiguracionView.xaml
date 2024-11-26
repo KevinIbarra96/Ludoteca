@@ -42,7 +42,7 @@
                     <Label Text="Precio por 30 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                     <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoTreintaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"/>
 
-                    <Label Text="Precio por 30 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Label Text="Precio por 60 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
                     <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoSesentaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioMinutoSesentaMin_TextChanged"/>
 
                     <Label Text="Precio por minuto despues de un servicio:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
