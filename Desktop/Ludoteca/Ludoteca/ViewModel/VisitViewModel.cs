@@ -3,6 +3,8 @@ using Ludoteca.Resources;
 using Negocio;
 using System.Collections.ObjectModel;
 using Resources.Properties;
+using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Ludoteca.ViewModel
 {
@@ -19,7 +21,9 @@ namespace Ludoteca.ViewModel
     {
         public ObservableCollection<EN_Visita> Visitas { get; set; }
         public ObservableCollection<EN_Visita> VisitasInmutable { get; set; }
-        
+
+        private List<EN_Visita> VisitaListReponse;
+
         //Iniciacion de delegados
         public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
@@ -32,6 +36,8 @@ namespace Ludoteca.ViewModel
             Visitas = new ObservableCollection<EN_Visita>();
             VisitasInmutable = new ObservableCollection<EN_Visita>();
 
+            VisitaListReponse = new List<EN_Visita>();
+
             //Asignacin de delegados
             _loadVisitasTable = loadVisitasTable;
             _UpdateVisitasTable = UpdateVisitasTable;
@@ -39,10 +45,35 @@ namespace Ludoteca.ViewModel
 
             _AddProductoToVisita = addProductoToVisita;
             _addServicioToVIsita = addServicioToVisita;
-            
 
             loadVisitasTable();
 
+            ObtenerDatosEnSegundoPlano();
+
+        }
+        private async void ObtenerDatosEnSegundoPlano()
+        {
+
+            EjecutarTareaParalelamente.Ejecutar(getVisitaActivas, TimeSpan.FromSeconds(10), new CancellationTokenSource());
+
+        }
+
+        private async Task getVisitaActivas()
+        {
+
+            var response = await RN_Visita.RN_getAllVisitasActivas();
+                           
+            foreach(var vis in response.Rbody)
+            {
+                if (!VisitaListReponse.Contains(vis))
+                    addVisitaToCollection(vis);
+            }
+
+            foreach (var vis in VisitaListReponse)
+            {
+                if (!response.Rbody.Contains(vis))
+                    removerVisitaActiva(vis);
+            }
         }
 
         private void TimerCallback(object state)
@@ -113,9 +144,10 @@ namespace Ludoteca.ViewModel
             VisitasInmutable.Clear();
             Visitas.Clear();
 
-            var visitasResponse = await RN_Visita.RN_getAllVisitasActivas();
+            var response = await RN_Visita.RN_getAllVisitasActivas();
+            VisitaListReponse = response.Rbody;
 
-            foreach (var visita in visitasResponse.Rbody)
+            foreach (var visita in response.Rbody)
             {
                 visita.Timer = new Timer(TimerCallback, visita, 0, 15000);
                 visita.Total = calcularTotalVisita(visita);

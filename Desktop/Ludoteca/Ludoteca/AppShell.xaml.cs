@@ -1,11 +1,6 @@
 ﻿using Entidad;
-using Ludoteca.View;
 using Negocio;
-using System;
 using Ludoteca.Resources;
-using System.Reflection.Metadata;
-using Ludoteca.Resources.Models;
-using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca
 {
@@ -20,18 +15,26 @@ namespace Ludoteca
 
         private async void loadMenu()
         {
-            EN_Response<EN_Menu> menuResponse = await RN_Menu.RN_GetMenuByRol(Session.RolId);
-            List<EN_Menu> menuList = menuResponse.Rbody;
 
-            foreach (EN_Menu menu in menuList)
+            try
             {
-                ShellContent me = new ShellContent();
-                me.Title = menu.MenuName;
-                me.Icon = menu.IconName;
-                me.ContentTemplate = new DataTemplate(Type.GetType(menu.Path)) ;
-                me.Route = menu.ClassName;
+                EN_Response<EN_Menu> menuResponse = await RN_Menu.RN_GetMenuByRol(Session.RolId);
+                List<EN_Menu> menuList = menuResponse.Rbody;
 
-                Items.Add(me);
+                foreach (EN_Menu menu in menuList)
+                {
+                    ShellContent me = new ShellContent();
+                    me.Title = menu.MenuName;
+                    me.Icon = menu.IconName;
+                    me.ContentTemplate = new DataTemplate(Type.GetType(menu.Path));
+                    me.Route = menu.ClassName;
+
+                    Items.Add(me);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Ah ocurrido un error \nDetalle: " + ex.Message, "Ok");
             }
         }
 

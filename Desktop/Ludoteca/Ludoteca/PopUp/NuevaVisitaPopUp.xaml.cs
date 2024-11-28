@@ -10,6 +10,7 @@ using Mopups.Services;
 using Ludoteca.Resources;
 using global::Resources.Properties;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 public partial class NuevaVisitaPopUp
 {
@@ -123,6 +124,7 @@ public partial class NuevaVisitaPopUp
             nuevaVisita.Timer = new Timer(TimerCallback, nuevaVisita, 0, 15000);
 
             _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO, nuevaVisita);
+            Debug.WriteLine($"BindingContext actual: {BindingContext?.GetType().Name}");
 
             var toast = Toast.Make("Nueva visita registrada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();

@@ -7,6 +7,8 @@ using Mopups.Services;
 using Negocio;
 using Ludoteca.Resources;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using Microsoft.Maui.Animations;
 
 public partial class FiestasPopup
 {
@@ -16,6 +18,7 @@ public partial class FiestasPopup
     EN_Padre padre;
     EN_Servicio _Servicio;
     EN_Turno _Turno;
+    List<EN_Hijo> _hijosVisita;
     double _Total =0,_PrecioServicio = 0,_PrecioNiñoAdicional=0;
     int _niñosAdicionales = 0, _FiestaId;
     List<EN_Servicio> _ServiciosList = new List<EN_Servicio>();
@@ -27,6 +30,7 @@ public partial class FiestasPopup
 
     bool isResetting = false,_Editando = false,_Editado = false;
 
+    private TicketPrinter ticket;
     public FiestasPopup(UpdateFiestasTable updateFiestasTable)
 	{
 		InitializeComponent();
@@ -57,6 +61,7 @@ public partial class FiestasPopup
         FiestasList = fiestaVM.fiestas;
         _FiestaId = fiesta.id;
         _Editando = true;
+        _hijosVisita = fiesta.Hijo;
 
         _updateFiestaTable = updateFiestasTable;
 
@@ -83,8 +88,10 @@ public partial class FiestasPopup
                 _Servicio = ser;
 
                 PadresCollectionView.ItemsSource = fiesta.Padre;
-                HijosCollectionView.ItemsSource = fiesta.Hijo; HijosCollectionView.IsEnabled = false;
-                
+                HijosCollectionView.ItemsSource = fiesta.Hijo;
+                HijosCollectionView.SelectedItem = fiesta.Hijo.First();
+                HijosCollectionView.IsEnabled = false;
+
                 EN_Turno tur = _TurnoList.First(f => f.id == fiesta.IdTurno);
                 TurnosPicker.SelectedItem = tur;
                 _Turno = tur;
@@ -246,7 +253,10 @@ public partial class FiestasPopup
                 throw new Exception("Ah ocurrido un error\nDetalle: " + Response.Rmessage);
 
             nuevaFiesta.id = Response.Rbody.First().id;
+
             _updateFiestaTable(GlobalEnum.Action.CREAR_NUEVO, nuevaFiesta);
+
+            await imprimirFiesta(nuevaFiesta);
 
             var toast = Toast.Make("Nueva fiesta programada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
@@ -279,6 +289,7 @@ public partial class FiestasPopup
                 throw new Exception("No es permitido programar una fiesta hoy o anterior a hoy");
 
             EN_Fiesta nuevaFiesta = RecolercarFiestaData();
+            nuevaFiesta.Hijo = _hijosVisita;
             nuevaFiesta.id = _FiestaId;
 
             var Response = await RN_Fiesta.RN_UpdateFiesta(nuevaFiesta);
@@ -287,8 +298,13 @@ public partial class FiestasPopup
             
             _updateFiestaTable(GlobalEnum.Action.ACTUALIZAR, nuevaFiesta);
 
+            //await imprimirFiesta(nuevaFiesta);
+
             var toast = Toast.Make("Nueva fiesta Actualizada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
+
+            //await Task.WhenAll(imprimirFiesta(nuevaFiesta));
+            await imprimirFiesta(nuevaFiesta);
 
             await MopupService.Instance.PopAsync();
 
@@ -303,13 +319,33 @@ public partial class FiestasPopup
         }
     }
 
+    private async Task imprimirFiesta(EN_Fiesta fiesta)
+    {
+
+        ticket = new TicketPrinter(fiesta);
+        string action = await Application.Current.MainPage.DisplayActionSheet("Selecciona una impresora ", "Cancel", null,ticket.ListPrinters());
+
+        if (action == "Cancel")
+        {
+            //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso", "OK");
+            throw new Exception("No se seleccionó ninguna impresora, se cancelará el proceso");
+        }
+
+        await ticket.PrintTicket(action);
+
+        bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+        if (answer)
+            await ticket.PrintTicket(action);
+
+    }
+
     private EN_Fiesta RecolercarFiestaData()
     {
         EN_Fiesta nuevaFiesta = new EN_Fiesta();
         nuevaFiesta.Fecha = FechaFiesta.Date;
         nuevaFiesta.IdServicio = _Servicio.id;
         nuevaFiesta.Servicio = _Servicio;
-        nuevaFiesta.Hijo = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList(); ;
+        nuevaFiesta.Hijo = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
         nuevaFiesta.Tematica = TematicaEntry.Text;
         nuevaFiesta.EdadACumplir = int.Parse(EdadACumplirEntry.Text);
         nuevaFiesta.IdTurno = _Turno.id;

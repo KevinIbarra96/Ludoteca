@@ -6,11 +6,7 @@ using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Printing;
 
 public partial class VisitView : ContentPage
 {
@@ -131,16 +127,6 @@ public partial class VisitView : ContentPage
         }
         
     }
-
-
-    private async Task<bool> ValidacionGafete()
-    {
-
-        bool answer = await DisplayAlert("Información", "¿Entregó Gafete?", "Si", "No");
-        return answer;
-
-    }
-
     private async Task CrearTicketPDF(EN_Visita visitaSelected,string PrintName)
     {
 

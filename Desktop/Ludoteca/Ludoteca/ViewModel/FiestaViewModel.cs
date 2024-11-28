@@ -63,11 +63,8 @@ namespace Ludoteca.ViewModel
 
         private void addFiestaToCollection(EN_Fiesta fiesta)
         {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                fiestas.Add(fiesta);
-                fiestasInmutable.Add(fiesta);
-            });            
+            fiestas.Add(fiesta);
+            fiestasInmutable.Add(fiesta);
         }
 
         private void updateFiestaToColection(EN_Fiesta nuevaFiesta)
@@ -76,6 +73,7 @@ namespace Ludoteca.ViewModel
 
             if (Encontrado != null)
             {
+                Encontrado.Padre = nuevaFiesta.Padre;
                 Encontrado.Fecha = nuevaFiesta.Fecha;
                 Encontrado.IdServicio = nuevaFiesta.IdServicio;
                 Encontrado.Servicio = nuevaFiesta.Servicio;
