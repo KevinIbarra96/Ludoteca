@@ -1,9 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
-using Negocio;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
-using CommunityToolkit.Maui.Alerts;
-using Ludoteca.Resources;
+using Negocio;
 using Resources.Properties;
 
 namespace Ludoteca.View;
@@ -14,20 +14,20 @@ public partial class InventarioView : ContentPage
     int count = 0;
 
     InventarioViewModel viewModel;
-    
+
     UpdateInventarioData _updateInventarioData;
 
     public InventarioView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new InventarioViewModel();
         BindingContext = viewModel;
-        
+
         _updateInventarioData = viewModel._UpdateInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;
-        
+
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
@@ -67,7 +67,7 @@ public partial class InventarioView : ContentPage
 
                     if (resp.RerrorCode == "0") //0 significa que no hubo ningun error, 0 es el valor por defaul que se recibe de la WebAPi
                     {
-                        
+
                         //Increase Cantidad property with Entry Value
                         producto.Cantidad += int.Parse(responseEntry);
 
@@ -88,12 +88,12 @@ public partial class InventarioView : ContentPage
     }
 
     private async void EditarProducto_Clicked(object sender, EventArgs e)
-    {        
-        if(Session.RolId != ApplicationProperties.IdAdministratorRol)
+    {
+        if (Session.RolId != ApplicationProperties.IdAdministratorRol)
             return;
 
         var btn = sender as Button;
-        await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto) btn.CommandParameter,_updateInventarioData ));
+        await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto)btn.CommandParameter, _updateInventarioData));
     }
 
     private async void Agregar_Clicked(object sender, EventArgs e)

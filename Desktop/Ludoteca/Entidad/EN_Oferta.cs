@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Entidad
 {
@@ -17,10 +12,10 @@ namespace Entidad
         private double _totalDescuento;
 
 
-        public int id 
+        public int id
         {
             get => _id;
-            set { _id = value; OnPropertyChanged(nameof(id)); } 
+            set { _id = value; OnPropertyChanged(nameof(id)); }
         }
 
         public string OfertaName

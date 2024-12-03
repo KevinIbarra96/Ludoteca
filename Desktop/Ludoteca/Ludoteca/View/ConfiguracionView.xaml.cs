@@ -1,7 +1,7 @@
 using Entidad;
+using Ludoteca.ViewModel;
 using Negocio;
 using Resources.Properties;
-using Ludoteca.ViewModel;
 using Windows.Storage.Pickers;
 
 namespace Ludoteca.View;
@@ -9,19 +9,19 @@ namespace Ludoteca.View;
 public partial class ConfiguracionView : ContentPage
 {
 
-	private EN_Configuracion precioTreintaMin, precioSesentaMin, precioDespuesServicio,PrecioNiñoAdicional, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
-	private ConfiguracionViewModel viewModel;
+    private EN_Configuracion precioTreintaMin, precioSesentaMin, precioDespuesServicio, PrecioNiñoAdicional, edadMinimaConfiguracion, edadMaximaConfiguracion, rutaConfig;
+    private ConfiguracionViewModel viewModel;
 
     public ConfiguracionView()
-	{
-		//Agregar inserciones a la base de datos para asegurarce que los identificadores sea el mismo y no traer una configuracion diferemte o buscar una forma para asegurarse
-		//Considerar que cuando hay visitas activas no sea posible realizar cambios en el precio por minuto
-		InitializeComponent();
+    {
+        //Agregar inserciones a la base de datos para asegurarce que los identificadores sea el mismo y no traer una configuracion diferemte o buscar una forma para asegurarse
+        //Considerar que cuando hay visitas activas no sea posible realizar cambios en el precio por minuto
+        InitializeComponent();
 
-		viewModel = new ConfiguracionViewModel();
-		BindingContext = viewModel;
+        viewModel = new ConfiguracionViewModel();
+        BindingContext = viewModel;
 
-		loadConfiguraciones();
+        loadConfiguraciones();
     }
     private void loadConfiguraciones()
     {
@@ -35,7 +35,8 @@ public partial class ConfiguracionView : ContentPage
 
         loadConfigCampos();
     }
-    private void loadConfigCampos() {
+    private void loadConfigCampos()
+    {
         EntryPrecioMinutoTreintaMin.Text = ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue.ToString();
         EntryPrecioMinutoSesentaMin.Text = ApplicationProperties.PrecioMinutoSesentaMin.ConfigDecimalValue.ToString();
         EntryPrecioMinutoDespuesServicio.Text = ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue.ToString();
@@ -54,10 +55,10 @@ public partial class ConfiguracionView : ContentPage
 
     private async void EntryPrecioxMinuto_TextChanged(object sender, TextChangedEventArgs e)
     {
-		try
-		{
+        try
+        {
             if (string.IsNullOrEmpty(EntryPrecioMinutoTreintaMin.Text))
-               return; // No hacer nada si está vacío
+                return; // No hacer nada si está vacío
 
             if (!double.TryParse(EntryPrecioMinutoTreintaMin.Text, out double precioxminuto))
             {
@@ -66,10 +67,11 @@ public partial class ConfiguracionView : ContentPage
             }
             //Actualizar el precio
             precioTreintaMin.ConfigDecimalValue = double.Parse(EntryPrecioMinutoTreintaMin.Text);
-			EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioTreintaMin);
-            
-		}catch (Exception ex)
-		{
+            EN_Response<EN_Configuracion> response = await RN_Configuracion.updateConfigurationValues(precioTreintaMin);
+
+        }
+        catch (Exception ex)
+        {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
@@ -102,7 +104,7 @@ public partial class ConfiguracionView : ContentPage
         {
             if (string.IsNullOrEmpty(EntryPrecioMinutoSesentaMin.Text))
                 return; // No hacer nada si está vacío
-                                    // 
+                        // 
             if (!double.TryParse(EntryPrecioMinutoSesentaMin.Text, out double precioSesentaMins))
             {
                 await DisplayAlert("Error", "Por favor, ingrese un valor numérico válido.", "OK");

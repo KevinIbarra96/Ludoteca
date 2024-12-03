@@ -1,5 +1,4 @@
 using Entidad;
-using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using System.Diagnostics;
@@ -13,7 +12,7 @@ public partial class FiestasView : ContentPage
     UpdateFiestasTable _updateFiestasTable;
 
     public FiestasView()
-	{
+    {
         viewModel = new FiestaViewModel();
         BindingContext = viewModel;
 
@@ -26,7 +25,7 @@ public partial class FiestasView : ContentPage
 
     private async void Agregar_Clicked(object sender, EventArgs e)
     {
-		await MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable) );
+        await MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable));
         Debug.WriteLine($"BindingContext actual: {BindingContext?.GetType().Name}");
     }
 
@@ -40,7 +39,7 @@ public partial class FiestasView : ContentPage
     {
         var button = sender as Button;
 
-        await MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable, (EN_Fiesta) button.CommandParameter));
-        
+        await MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable, (EN_Fiesta)button.CommandParameter));
+
     }
 }

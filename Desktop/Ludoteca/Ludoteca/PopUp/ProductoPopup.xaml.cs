@@ -1,10 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-
-using Ludoteca.Resources;
-using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.PopUp;
 
@@ -28,11 +27,11 @@ public partial class ProductoPopup
         BtnGuardar.Clicked += GuardarActuzalizar_Clicked;//Agregar el eevnto al boton
 
         _updateInventarioData = updateInventarioData;//Inizialzacion del delegado
-	}
+    }
 
     //Contructor destinado para la creacion de un nuevo producto
     public ProductoPopup(UpdateInventarioData updateInventarioData)
-    {        
+    {
         InitializeComponent();
         _updateInventarioData = updateInventarioData; //Inizialzacion del delegado
 
@@ -76,7 +75,7 @@ public partial class ProductoPopup
         }
         finally
         {
-            
+
         }
     }
     private async void GuardarNuevo_Clicked(object sender, EventArgs e)

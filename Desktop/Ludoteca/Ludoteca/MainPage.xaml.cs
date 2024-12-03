@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Negocio;
-using Ludoteca.ViewModel;
-using System.Collections.ObjectModel;
-using Mopups.Services;
-using Ludoteca.Resources;
-using CommunityToolkit.Maui.Alerts;
 using Resources.Properties;
 
 namespace Ludoteca
@@ -114,15 +109,15 @@ namespace Ludoteca
                 EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(4);
                 ApplicationProperties.rutaTickets = response.Rbody[0];
 
-                
+
             }
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Ha ocurrido un error\nDetalle: {ex.Message}", "OK");
             }
         }
-        
-      
+
+
 
     }
 }

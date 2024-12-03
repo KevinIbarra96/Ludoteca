@@ -3,16 +3,15 @@ using Entidad;
 using Mopups.Services;
 using Negocio;
 using Resources.Properties;
-using System.Linq;
 
 namespace Ludoteca.PopUp;
 
 public partial class RegistrarPadresEHijos
 {
-	public RegistrarPadresEHijos()
-	{
-		InitializeComponent();
-	}
+    public RegistrarPadresEHijos()
+    {
+        InitializeComponent();
+    }
 
     private async void BtnGuardar_Clicked(object sender, EventArgs e)
     {
@@ -76,7 +75,7 @@ public partial class RegistrarPadresEHijos
                 foreach (var hijoLayout in HijosStackLayout.Children)
                 {
                     if (hijoLayout is VerticalStackLayout layout)
-                        {
+                    {
                         var nombreEntry = layout.Children.OfType<Entry>().FirstOrDefault();
                         var fechaDatePicker = layout.Children.OfType<HorizontalStackLayout>()
                             .FirstOrDefault()?.Children.OfType<DatePicker>().FirstOrDefault();
@@ -89,20 +88,20 @@ public partial class RegistrarPadresEHijos
                                 await DisplayAlert("Advertencia", $"La edad no es válida. Debe estar entre el rango permitido.\nEdad mínima: {ApplicationProperties.edadMinima.ConfigIntValue} años\nEdad máxima: {ApplicationProperties.edadMaxima.ConfigIntValue} años", "OK");
                                 return;
                             }
-                                
 
-                                EN_Hijo hijo = new EN_Hijo
-                                {
-                                    NombreHijo = nombreEntry.Text,
-                                    fechaNac = fechaDatePicker.Date.ToString(),
-                                    papa = idPapa,
-                                    mama = idMama
-                                };
-                                hijos.Add(hijo); // Añadir cada hijo a la lista
-                            } 
+
+                            EN_Hijo hijo = new EN_Hijo
+                            {
+                                NombreHijo = nombreEntry.Text,
+                                fechaNac = fechaDatePicker.Date.ToString(),
+                                papa = idPapa,
+                                mama = idMama
+                            };
+                            hijos.Add(hijo); // Añadir cada hijo a la lista
                         }
+                    }
                 }
-                
+
 
                 foreach (var hijo in hijos)
                 {
@@ -114,7 +113,7 @@ public partial class RegistrarPadresEHijos
                     }
                     else
                     {
-                     await DisplayAlert("Error", "Ha ocurrido un error\nDetalle: " + hijoResponse.Rmessage, "OK");
+                        await DisplayAlert("Error", "Ha ocurrido un error\nDetalle: " + hijoResponse.Rmessage, "OK");
                     }
                 }
 
@@ -141,16 +140,17 @@ public partial class RegistrarPadresEHijos
 
     private bool ValidarEntry(Entry campos)
     {
-        if ( string.IsNullOrEmpty(campos.Text) )
+        if (string.IsNullOrEmpty(campos.Text))
         {
             return false;
         }
         return true;
     }
 
-    private bool validaciones(int papaId, int mamaId )
+    private bool validaciones(int papaId, int mamaId)
     {
-        if ((papaId != null || mamaId != null) && ValidarEntry(EntryNombreHijo) && !string.IsNullOrEmpty(EditorDireccion.Text) ) {
+        if ((papaId != null || mamaId != null) && ValidarEntry(EntryNombreHijo) && !string.IsNullOrEmpty(EditorDireccion.Text))
+        {
             return true;
         }
         return false;
@@ -178,12 +178,13 @@ public partial class RegistrarPadresEHijos
 
         // Agregar un nuevo Entry para el nombre del hijo
         var nombreLabel = new Label { Text = "Nombre del hijo" };
-        var nombreEntry = new Entry { 
+        var nombreEntry = new Entry
+        {
             Placeholder = "Ingrese nombre del hijo",
             WidthRequest = 350,
             HorizontalOptions = LayoutOptions.Start
         };
-        
+
         // Agregar un nuevo DatePicker para la fecha de nacimiento
         var fechaLabel = new Label { Text = "Fecha de nacimiento" };
 

@@ -1,14 +1,9 @@
-﻿using System.Drawing.Printing;
-using System.Diagnostics;
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
-using System.ComponentModel;
-using Entidad;
-using System.Drawing;
-using System.Management;
-using System;
-using System.Globalization;
+﻿using Entidad;
 using Resources.Properties;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Globalization;
 //using DrawingImage = System.Drawing.Image;
 
 namespace Ludoteca.Resources
@@ -32,6 +27,7 @@ namespace Ludoteca.Resources
         {
             printtTicket = new PrintDocument();
             printtTicket.PrintPage += PrintFiestaPageHandler;
+            this.fiesta = fiesta;
         }
 
         public string[] ListPrinters()
@@ -108,15 +104,15 @@ namespace Ludoteca.Resources
                 offset += LineSpace;
             }
 
-            gfx.DrawString("Fecha de la fiesta: " + fiesta.Fecha , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Fecha de la fiesta: " + fiesta.Fecha.ToShortDateString(), regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            gfx.DrawString("Turno: " + fiesta.Turno , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Turno: " + fiesta.Turno, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            gfx.DrawString("Tematica: " + fiesta.Tematica  , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Tematica: " + fiesta.Tematica, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            gfx.DrawString("Tipo de comida: " + fiesta.TipoComida , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Tipo de comida: " + fiesta.TipoComida, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            gfx.DrawString("Niños adicionales: " + fiesta.NinosAdicionales , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Niños adicionales: " + fiesta.NinosAdicionales, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
 
             //Linea Horizontal Ajustada
@@ -135,9 +131,9 @@ namespace Ludoteca.Resources
             gfx.DrawString(fiesta.Servicio.Precio.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
             offset += LineSpace;
 
-            gfx.DrawString("Anticipo" , regularFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Anticipo", regularFont, Brushes.Black, x, y + offset);
             //gfx.DrawString(fiesta.Servicio.Precio.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
-            gfx.DrawString("-"+fiesta.Anticipo.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
+            gfx.DrawString("-" + fiesta.Anticipo.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
             offset += LineSpace;
 
             //Linea Horizontal Ajustada
@@ -145,8 +141,15 @@ namespace Ludoteca.Resources
             gfx.DrawLine(Pens.Black, x, offset, x + 200, offset);
             offset += LineSpace;
 
-            gfx.DrawString("Pendiente", EncabezadosFont, Brushes.Black, x, y + offset);
-            gfx.DrawString((fiesta.Total - fiesta.Anticipo).ToString("C2", culturaMexicana), EncabezadosFont, Brushes.Black, x + 135, y + offset);
+            if ((fiesta.Total - fiesta.Anticipo) > 0)
+            {
+                gfx.DrawString("Pendiente", EncabezadosFont, Brushes.Black, x, y + offset);
+                gfx.DrawString((fiesta.Total - fiesta.Anticipo).ToString("C2", culturaMexicana), EncabezadosFont, Brushes.Black, x + 135, y + offset);
+            }
+            else
+            {
+                gfx.DrawString("¡Pagado!", titleFont, Brushes.Black, x, y + offset);
+            }
 
             offset += (LineSpace * 4);
             gfx.DrawString("¡Gracias por su visita!", titleFont, Brushes.Black, x, y + offset);
@@ -159,7 +162,7 @@ namespace Ludoteca.Resources
             {
                 Alignment = StringAlignment.Center
             };
-            
+
             string imagePath = "logo_lustkids.scale-100.jpeg";
 
             Graphics gfx = e.Graphics;
@@ -167,7 +170,7 @@ namespace Ludoteca.Resources
             System.Drawing.Font EncabezadosFont = new System.Drawing.Font("Arial", 7, FontStyle.Bold);
             System.Drawing.Font regularFont = new System.Drawing.Font("Arial", 7, FontStyle.Regular);
 
-            int x = 0, y = 5,offset=10, LineSpace = 12;
+            int x = 0, y = 5, offset = 10, LineSpace = 12;
             float ancho = 180; // Ancho del área de texto
             float alto = 30; // Alto del área de texto
 
@@ -184,15 +187,15 @@ namespace Ludoteca.Resources
                     using (System.Drawing.Image image = System.Drawing.Image.FromStream(imageStream))
                     {
                         // Dibujar la imagen
-                        gfx.DrawImage(image, x+40, y+offset, 110, 40); // Ajusta tamaño y posición
-                        offset += (LineSpace*5);
+                        gfx.DrawImage(image, x + 40, y + offset, 110, 40); // Ajusta tamaño y posición
+                        offset += (LineSpace * 5);
                     }
                 }
             }
 
-            gfx.DrawString("Av. Lázaro Cárdenas No. 1559 ", EncabezadosFont, Brushes.Black, new RectangleF(x, y+ offset, ancho, alto), format);
+            gfx.DrawString("Av. Lázaro Cárdenas No. 1559 ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
             offset += LineSpace;
-            gfx.DrawString("Local A07 Plaza Las Americas ", EncabezadosFont, Brushes.Black, new RectangleF(x, y+ offset, ancho, alto), format);
+            gfx.DrawString("Local A07 Plaza Las Americas ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
             offset += LineSpace;
             gfx.DrawString("Lázaro Cárdenas Michoacan ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
             offset += LineSpace;
@@ -203,19 +206,19 @@ namespace Ludoteca.Resources
             offset += LineSpace;
             foreach (var hijo in visita.Hijos)
             {
-                gfx.DrawString("Nombre: " + hijo.NombreHijo, regularFont, Brushes.Black,x,y + offset);
+                gfx.DrawString("Nombre: " + hijo.NombreHijo, regularFont, Brushes.Black, x, y + offset);
                 offset += LineSpace;
             }
 
-            gfx.DrawString("Hora entrada: " + visita.HoraEntrada, regularFont, Brushes.Black, x, y+offset);
+            gfx.DrawString("Hora entrada: " + visita.HoraEntrada, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
             gfx.DrawString("Hora salida: " + visita.HoraSalida, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            gfx.DrawString("Gafete: " + visita.NumeroGafete, regularFont, Brushes.Black, x, y + offset) ;
+            gfx.DrawString("Gafete: " + visita.NumeroGafete, regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
             gfx.DrawString("Minutos de estadía: " + visita.TiempoTotal.ToString("N0"), regularFont, Brushes.Black, x, y + offset);
             offset += LineSpace;
-            
+
             if (visita.Servicios.First().Servicio_Id != ApplicationProperties.IdTiempoLibreServicio && visita.TiempoExcedido > 0)
             {
                 gfx.DrawString("Minutos extendidos: " + visita.TiempoExcedido.ToString("N0"), regularFont, Brushes.Black, x, y + offset);
@@ -224,12 +227,12 @@ namespace Ludoteca.Resources
 
             //Linea Horizontal Ajustada
             offset += LineSpace;
-            gfx.DrawLine(Pens.Black, x, offset, x+200 , offset);
+            gfx.DrawLine(Pens.Black, x, offset, x + 200, offset);
             offset += LineSpace;
 
             //Dibujar Encabezados de productos y Servicios
-            gfx.DrawString("Productos y Servicios" , EncabezadosFont, Brushes.Black, x, y + offset);
-            gfx.DrawString("Precio ", EncabezadosFont, Brushes.Black, x+110, y + offset);
+            gfx.DrawString("Productos y Servicios", EncabezadosFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Precio ", EncabezadosFont, Brushes.Black, x + 110, y + offset);
             gfx.DrawString("Total ", EncabezadosFont, Brushes.Black, x + 145, y + offset);
             offset += LineSpace;
 
@@ -239,16 +242,16 @@ namespace Ludoteca.Resources
 
                 gfx.DrawString(servicio.ServicioName, regularFont, Brushes.Black, x, y + offset);
                 gfx.DrawString(servicio.Servicio_Precio.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
-                gfx.DrawString((servicio.Servicio_Precio*visita.Hijos.Count).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
+                gfx.DrawString((servicio.Servicio_Precio * visita.Hijos.Count).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
                 offset += LineSpace;
 
                 if (servicio.Servicio_Id == ApplicationProperties.IdTiempoLibreServicio)
                 {
-                    gfx.DrawString("Precio/Minuto", regularFont, Brushes.Black, x+15 , y + offset);
+                    gfx.DrawString("Precio/Minuto", regularFont, Brushes.Black, x + 15, y + offset);
                     if (visita.TiempoTotal <= 35)
                     {
                         gfx.DrawString(((double)ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
-                        PrecioTotalTiempo = visita.TiempoTotal * (double)ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue * visita.Hijos.Count ;
+                        PrecioTotalTiempo = visita.TiempoTotal * (double)ApplicationProperties.PrecioMinutoTreintaMin.ConfigDecimalValue * visita.Hijos.Count;
                     }
                     else
                     {
@@ -260,7 +263,7 @@ namespace Ludoteca.Resources
                 else
                 {
                     //Se calcula el tiempo de tolerancia
-                    if(visita.TiempoExcedido > 0)
+                    if (visita.TiempoExcedido > 0)
                     {
                         gfx.DrawString("Precio/Minuto Ex.", regularFont, Brushes.Black, x + 15, y + offset);
                         gfx.DrawString(((double)ApplicationProperties.PrecioMinutoDespuesServicio.ConfigDecimalValue).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
@@ -295,11 +298,11 @@ namespace Ludoteca.Resources
             gfx.DrawLine(Pens.Black, x, offset, x + 200, offset);
             offset += LineSpace;
 
-            gfx.DrawString("Total", EncabezadosFont, Brushes.Black, x, y+offset);
-            gfx.DrawString(visita.Total.ToString("C2", culturaMexicana), EncabezadosFont, Brushes.Black, x+135, y+offset);
+            gfx.DrawString("Total", EncabezadosFont, Brushes.Black, x, y + offset);
+            gfx.DrawString(visita.Total.ToString("C2", culturaMexicana), EncabezadosFont, Brushes.Black, x + 135, y + offset);
 
-            offset += (LineSpace*4);
-            gfx.DrawString("¡Gracias por su visita!", titleFont, Brushes.Black, x, y+offset);
+            offset += (LineSpace * 4);
+            gfx.DrawString("¡Gracias por su visita!", titleFont, Brushes.Black, x, y + offset);
 
         }
 

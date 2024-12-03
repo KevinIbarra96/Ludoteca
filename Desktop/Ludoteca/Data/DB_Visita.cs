@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -56,19 +50,19 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);                
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
             }
 
             return response;
         }
 
-        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita,List<EN_ServiciosVisita> servicio)
+        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita, List<EN_ServiciosVisita> servicio)
         {
             EN_Response<EN_Visita> response = null;
 
             string _endPoint = _apiPath + "/addServicioToVisita"; //Adding endpoint to path
 
-            var RequestBody = new {id=idvisita, Servicios = servicio };
+            var RequestBody = new { id = idvisita, Servicios = servicio };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -113,7 +107,7 @@ namespace Data
         public static async Task<EN_Response<EN_Visita>> getAllVisitasActivas()
         {
             EN_Response<EN_Visita> response = null;
-            
+
             string _endPoint = _apiPath + "/getVisitasActivas"; //Adding endpoint to path
 
             using HttpResponseMessage responsevisit = await ApiRest_Properties.cliente.GetAsync(_endPoint);

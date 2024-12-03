@@ -1,6 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System.Security.Cryptography;
 
 namespace Data
 {

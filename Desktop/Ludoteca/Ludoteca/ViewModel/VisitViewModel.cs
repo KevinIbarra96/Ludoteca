@@ -1,16 +1,14 @@
 ﻿using Entidad;
 using Ludoteca.Resources;
+using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
 using Negocio;
-using System.Collections.ObjectModel;
 using Resources.Properties;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.ComponentModel;
 
 namespace Ludoteca.ViewModel
 {
-
-
-    public delegate void LoadVisitasTable();
+    
     public delegate void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita);
     public delegate double CalcularTotalVisita(EN_Visita visita);
 
@@ -25,13 +23,13 @@ namespace Ludoteca.ViewModel
         private List<EN_Visita> VisitaListReponse;
 
         //Iniciacion de delegados
-        public LoadVisitasTable _loadVisitasTable;
         public UpdateVisitasTable _UpdateVisitasTable;
         public CalcularTotalVisita _CalcularTotalVisita;
         public AddProductoToVisita _AddProductoToVisita;
         public AddServicioToVisita _addServicioToVIsita;
 
-        public VisitViewModel() {
+        public VisitViewModel()
+        {
 
             Visitas = new ObservableCollection<EN_Visita>();
             VisitasInmutable = new ObservableCollection<EN_Visita>();
@@ -39,41 +37,60 @@ namespace Ludoteca.ViewModel
             VisitaListReponse = new List<EN_Visita>();
 
             //Asignacin de delegados
-            _loadVisitasTable = loadVisitasTable;
             _UpdateVisitasTable = UpdateVisitasTable;
             _CalcularTotalVisita = calcularTotalVisita;
 
             _AddProductoToVisita = addProductoToVisita;
             _addServicioToVIsita = addServicioToVisita;
 
-            loadVisitasTable();
-
-            ObtenerDatosEnSegundoPlano();
+            init();
 
         }
-        private async void ObtenerDatosEnSegundoPlano()
+
+        private async void init()
         {
+            await loadVisitasTable();
 
+            await ObtenerDatosEnSegundoPlano();
+        }
+
+        private async Task ObtenerDatosEnSegundoPlano()
+        {
             EjecutarTareaParalelamente.Ejecutar(getVisitaActivas, TimeSpan.FromSeconds(10), new CancellationTokenSource());
-
         }
 
         private async Task getVisitaActivas()
         {
-
+            
             var response = await RN_Visita.RN_getAllVisitasActivas();
-                           
-            foreach(var vis in response.Rbody)
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+
+            foreach (var vis in response.Rbody)
             {
-                if (!VisitaListReponse.Contains(vis))
-                    addVisitaToCollection(vis);
+
+                var visitaEncontrado = VisitaListReponse.FirstOrDefault(v => v.id == vis.id);
+
+                if (visitaEncontrado == null )
+                    addVisitaToCollection(vis,GlobalEnum.ActionFrom.AsyncFunction);
             }
 
             foreach (var vis in VisitaListReponse)
             {
-                if (!response.Rbody.Contains(vis))
+                var visitaEncontrado = response.Rbody.FirstOrDefault(v => v.id == vis.id);
+
+                if (visitaEncontrado == null)
                     removerVisitaActiva(vis);
             }
+
+            sw.Stop();
+
+            Debug.WriteLine("Time:"+ sw.ElapsedTicks);
+
+            VisitaListReponse.Clear();
+            VisitaListReponse = response.Rbody;
+
         }
 
         private void TimerCallback(object state)
@@ -131,7 +148,7 @@ namespace Ludoteca.ViewModel
         private void UpdateVisitasTable(GlobalEnum.Action Action, EN_Visita visita)
         {
             if (Action == GlobalEnum.Action.CREAR_NUEVO)
-                addVisitaToCollection(visita);
+                addVisitaToCollection(visita,GlobalEnum.ActionFrom.UserInterface);
             if (Action == GlobalEnum.Action.ACTUALIZAR)
                 updateVisitaToColection(visita);
             if (Action == GlobalEnum.Action.REMOVER)
@@ -139,30 +156,42 @@ namespace Ludoteca.ViewModel
         }
 
         //Metodo destinado para limpiar y recargar la informacion de la tabla desde el inicio.
-        private async void loadVisitasTable()
+        private async Task loadVisitasTable()
         {
             VisitasInmutable.Clear();
             Visitas.Clear();
 
-            var response = await RN_Visita.RN_getAllVisitasActivas();
-            VisitaListReponse = response.Rbody;
-
-            foreach (var visita in response.Rbody)
+            try
             {
-                visita.Timer = new Timer(TimerCallback, visita, 0, 15000);
-                visita.Total = calcularTotalVisita(visita);
-                visita.TiempoTranscurrido = calcularTiempoRestanteVisita(visita);
-                addVisitaToCollection(visita);
+                var response = await RN_Visita.RN_getAllVisitasActivas();
+                foreach (var visita in response.Rbody)
+                {
+                    visita.Timer = new Timer(TimerCallback, visita, 0, 15000);
+                    visita.Total = calcularTotalVisita(visita);
+                    visita.TiempoTranscurrido = calcularTiempoRestanteVisita(visita);
+                    addVisitaToCollection(visita, GlobalEnum.ActionFrom.UserInterface);
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("Error en: "+ex.Source+ "\tDetalle: "+ ex.Message);
             }
         }
 
-        private void addVisitaToCollection(EN_Visita visita)
+        private void addVisitaToCollection(EN_Visita visita,GlobalEnum.ActionFrom ActionFrom)
         {
+            if(ActionFrom == GlobalEnum.ActionFrom.AsyncFunction)
+                visita.Timer = new Timer(TimerCallback, visita, 0, 15000);
+
             Visitas.Add(visita);
             VisitasInmutable.Add(visita);
+
+            if(ActionFrom == GlobalEnum.ActionFrom.UserInterface)
+                VisitaListReponse.Add(visita);
+
         }
 
-        private void addProductoToVisita(GlobalEnum.Action action ,EN_ProductosVisita producto,int visitaId)
+        private void addProductoToVisita(GlobalEnum.Action action, EN_ProductosVisita producto, int visitaId)
         {
 
             EN_Visita Encontrado = getVisitaByID(visitaId);
@@ -179,9 +208,9 @@ namespace Ludoteca.ViewModel
             }
 
         }
-        
 
-        private void addServicioToVisita(EN_ServiciosVisita servicio,int visitaId)
+
+        private void addServicioToVisita(EN_ServiciosVisita servicio, int visitaId)
         {
 
             EN_Visita Encontrado = getVisitaByID(visitaId);
@@ -192,7 +221,7 @@ namespace Ludoteca.ViewModel
         private double calcularTotalVisita(EN_Visita visita)
         {
             double totalVisita = 0;
-            
+
             foreach (EN_ServiciosVisita servicio in visita.Servicios)
             {
                 //totalVisita += Math.Round(servicio.Servicio_Precio);
@@ -248,7 +277,7 @@ namespace Ludoteca.ViewModel
 
         private EN_Visita getVisitaByID(int visitaId)
         {
-           return Visitas.FirstOrDefault(p => p.id == visitaId);
+            return Visitas.FirstOrDefault(p => p.id == visitaId);
         }
 
     }

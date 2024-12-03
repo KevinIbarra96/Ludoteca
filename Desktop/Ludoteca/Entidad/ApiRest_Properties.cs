@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entidad
+﻿namespace Entidad
 {
     public class ApiRest_Properties
     {
@@ -12,7 +6,8 @@ namespace Entidad
         //private static string Path = @"https://justkids.site/DesktopProviderDev";
         protected static HttpClient cliente = new HttpClient();
 
-        public ApiRest_Properties() {
+        public ApiRest_Properties()
+        {
             cliente.BaseAddress = new Uri(Path);
             cliente.DefaultRequestHeaders.Accept.Clear();
             cliente.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));

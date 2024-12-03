@@ -16,9 +16,9 @@ public partial class ProductoList
     ObservableCollection<EN_ProductosVisita> productosVisita;
 
 
-    public ProductoList(AddProductoToVisita addProductoToVisita,int visitaId, ObservableCollection<EN_ProductosVisita> productoVisita)
-	{
-		InitializeComponent();
+    public ProductoList(AddProductoToVisita addProductoToVisita, int visitaId, ObservableCollection<EN_ProductosVisita> productoVisita)
+    {
+        InitializeComponent();
 
         getAllProductos();
 
@@ -56,7 +56,7 @@ public partial class ProductoList
 
             foreach (EN_ProductosVisita prod in prodVisita)
             {
-                if (productosVisita.First().id_Producto == ApplicationProperties.IdSinProducto && count ==0)
+                if (productosVisita.First().id_Producto == ApplicationProperties.IdSinProducto && count == 0)
                 {
                     await RN_Producto.modificarProductoVisita(_visitaId, prod);
                     _addProductoToVisita(GlobalEnum.Action.ACTUALIZAR, prod, _visitaId);
@@ -69,22 +69,23 @@ public partial class ProductoList
                 }
             }
 
-            if(prodList.Count > 0) { EN_Response<EN_Visita> response = await RN_Visita.addProductosToVisita(_visitaId, prodList); }
+            if (prodList.Count > 0) { EN_Response<EN_Visita> response = await RN_Visita.addProductosToVisita(_visitaId, prodList); }
 
             //var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             //await toast.Show();
 
             await MopupService.Instance.PopAsync();
 
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
-            await DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"Ok");
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "Ok");
         }
     }
 
     private async void Productos_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        try 
+        try
         {
             DesactivarProductoVisitaEntry();
             //foreach (EN_Producto prod in e.CurrentSelection)
@@ -92,7 +93,7 @@ public partial class ProductoList
             {
                 if (prod.CantidadVisita == 0 || prod.CantidadVisita == null)
                     prod.CantidadVisita = 1;
-                
+
                 prod.IsEnable = true;
             }
         }
@@ -112,7 +113,7 @@ public partial class ProductoList
             if (e.NewTextValue == "")
                 cantidadV = 0;
 
-        }        
+        }
     }
 
     private void DesactivarProductoVisitaEntry()

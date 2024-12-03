@@ -1,9 +1,6 @@
-using CommunityToolkit.Maui.Alerts;
 using Entidad;
-using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
-using Negocio;
 
 namespace Ludoteca.View;
 
@@ -17,8 +14,8 @@ public partial class ServiciosView : ContentPage
     UpdateServiciosTable _UpdateServiciosTable;
 
     public ServiciosView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new ServiciosViewModel();
         BindingContext = viewModel;

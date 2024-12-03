@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -24,7 +19,7 @@ namespace Data
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);                
+                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);
 
             }
             return RolsResponse;
@@ -74,8 +69,7 @@ namespace Data
         }
 
         public static async Task<EN_Response<EN_Rol>> addNewRol(EN_Rol eN_Rol, List<EN_Menu> MenuList)
-        {
-
+        {            
             EN_Response<EN_Rol> RolsResponse = null;
             string endpointpath = _apiPath + "/addNewRol";
 
@@ -100,6 +94,8 @@ namespace Data
 
         public static async Task<EN_Response<EN_Rol>> updateRol(EN_Rol _Rol, List<EN_Menu> MenuList)
         {
+
+            return null;
 
             EN_Response<EN_Rol> RolsResponse = null;
             string endpointpath = _apiPath + "/editRol";

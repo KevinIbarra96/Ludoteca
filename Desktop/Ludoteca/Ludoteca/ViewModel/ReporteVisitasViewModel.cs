@@ -1,12 +1,6 @@
 ﻿using Entidad;
 using Negocio;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ludoteca.ViewModel
 {
@@ -51,7 +45,7 @@ namespace Ludoteca.ViewModel
                 await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
 
             }
-            
+
         }
         private void addVisitaToCollection(EN_Visita visita)
         {
@@ -76,7 +70,7 @@ namespace Ludoteca.ViewModel
                 await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
 
             }
-            
+
         }
         public async Task LoadReporteVisitasByDateRange(DateTime fechaInicio, DateTime fechaFin)
         {
@@ -94,9 +88,9 @@ namespace Ludoteca.ViewModel
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
-                
+
             }
-            
+
         }
 
     }

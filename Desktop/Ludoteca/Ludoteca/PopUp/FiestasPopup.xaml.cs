@@ -2,24 +2,22 @@ namespace Ludoteca.PopUp;
 
 using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using Ludoteca.Resources;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using Microsoft.Maui.Animations;
 
 public partial class FiestasPopup
 {
 
-	UpdateFiestasTable _updateFiestaTable;
+    UpdateFiestasTable _updateFiestaTable;
 
     EN_Padre padre;
     EN_Servicio _Servicio;
     EN_Turno _Turno;
     List<EN_Hijo> _hijosVisita;
-    double _Total =0,_PrecioServicio = 0,_PrecioNiñoAdicional=0;
+    double _Total = 0, _PrecioServicio = 0, _PrecioNiñoAdicional = 0;
     int _niñosAdicionales = 0, _FiestaId;
     List<EN_Servicio> _ServiciosList = new List<EN_Servicio>();
     List<EN_Turno> _TurnoList = new List<EN_Turno>();
@@ -28,12 +26,12 @@ public partial class FiestasPopup
 
     List<DateTime> FechasProgramadas;
 
-    bool isResetting = false,_Editando = false,_Editado = false;
+    bool isResetting = false, _Editando = false, _Editado = false;
 
     private TicketPrinter ticket;
     public FiestasPopup(UpdateFiestasTable updateFiestasTable)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         FiestaViewModel fiestaVM;
 
@@ -41,7 +39,7 @@ public partial class FiestasPopup
 
         FiestasList = fiestaVM.fiestas;
 
-		_updateFiestaTable = updateFiestasTable;
+        _updateFiestaTable = updateFiestasTable;
         NiñosAdicionalesEntry.Text = "0";
 
         LoadItemData(null);
@@ -82,7 +80,7 @@ public partial class FiestasPopup
             if (fiesta != null)
             {
                 NumTelefonoEntry.IsEnabled = false;
-                
+
                 EN_Servicio ser = _ServiciosList.First(f => f.id == fiesta.IdServicio);
                 ServiciosPicker.SelectedItem = ser;
                 _Servicio = ser;
@@ -95,7 +93,7 @@ public partial class FiestasPopup
                 EN_Turno tur = _TurnoList.First(f => f.id == fiesta.IdTurno);
                 TurnosPicker.SelectedItem = tur;
                 _Turno = tur;
-                
+
                 FechaFiesta.Date = fiesta.Fecha;
                 AnticipoEntry.Text = fiesta.Anticipo.ToString();
                 NiñosAdicionalesEntry.Text = fiesta.NinosAdicionales.ToString();
@@ -107,7 +105,8 @@ public partial class FiestasPopup
             calcularTotal();
             _Editando = false;
 
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
         }
@@ -122,12 +121,12 @@ public partial class FiestasPopup
 
     private async Task GetFiestasProgramadas()
     {
-        try 
-        { 
+        try
+        {
             var Response = await RN_Fiesta.RN_FechasProgramadas();
             FechasProgramadas = Response.Rbody;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
         }
@@ -144,7 +143,7 @@ public partial class FiestasPopup
             TurnosPicker.ItemDisplayBinding = new Binding("NombreTurno");
             TurnosPicker.SelectedItem = Response.Rbody.First();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
         }
@@ -157,13 +156,14 @@ public partial class FiestasPopup
 
     private async Task GetServiciosFiestas()
     {
-        try { 
+        try
+        {
             EN_Response<EN_Servicio> responseServicio = await RN_Servicio.RN_GetallServiciosByTipoServicio(2);
             _ServiciosList = responseServicio.Rbody;
             ServiciosPicker.ItemsSource = responseServicio.Rbody;
             ServiciosPicker.ItemDisplayBinding = new Binding("ServicioName");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
         }
@@ -176,7 +176,7 @@ public partial class FiestasPopup
         _Total += _PrecioNiñoAdicional * _niñosAdicionales;
 
         TotalFiesta.Text = "";
-        TotalFiesta.Text = "<strong style=\"color:red\"> Total: </strong>"+ _Total+ "$";
+        TotalFiesta.Text = "<strong style=\"color:red\"> Total: </strong>" + _Total + "$";
     }
 
     private void Hijos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -240,7 +240,7 @@ public partial class FiestasPopup
 
         try
         {
-            if(!await DisponibilidadValidacion(FechaFiesta.Date, (EN_Turno)TurnosPicker.SelectedItem))
+            if (!await DisponibilidadValidacion(FechaFiesta.Date, (EN_Turno)TurnosPicker.SelectedItem))
                 throw new Exception("Ya hay una fiesta programada en esta fecha y en el turno");
 
             if (FechaFiesta.Date <= DateTime.Now)
@@ -263,7 +263,8 @@ public partial class FiestasPopup
 
             await MopupService.Instance.PopAsync();
 
-        }catch (NullReferenceException ex)
+        }
+        catch (NullReferenceException ex)
         {
             await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
         }
@@ -295,7 +296,7 @@ public partial class FiestasPopup
             var Response = await RN_Fiesta.RN_UpdateFiesta(nuevaFiesta);
             if (Response.Rcode != 200)
                 throw new Exception("Ah ocurrido un error\nDetalle: " + Response.Rmessage);
-            
+
             _updateFiestaTable(GlobalEnum.Action.ACTUALIZAR, nuevaFiesta);
 
             //await imprimirFiesta(nuevaFiesta);
@@ -323,19 +324,22 @@ public partial class FiestasPopup
     {
 
         ticket = new TicketPrinter(fiesta);
-        string action = await Application.Current.MainPage.DisplayActionSheet("Selecciona una impresora ", "Cancel", null,ticket.ListPrinters());
+        string action = await Application.Current.MainPage.DisplayActionSheet("Selecciona una impresora ", "No Imprimir", null, ticket.ListPrinters());
 
-        if (action == "Cancel")
+        if (action == "No Imprimir")
         {
             //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso", "OK");
-            throw new Exception("No se seleccionó ninguna impresora, se cancelará el proceso");
+            //throw new Exception("No se seleccionó ninguna impresora, se cancelará el proceso");
+
         }
-
-        await ticket.PrintTicket(action);
-
-        bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
-        if (answer)
+        else
+        {
             await ticket.PrintTicket(action);
+
+            bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+            if (answer)
+                await ticket.PrintTicket(action);
+        }
 
     }
 
@@ -361,7 +365,7 @@ public partial class FiestasPopup
     private void NiñosAdicionalesEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
         _niñosAdicionales = 0;
-        if(NiñosAdicionalesEntry.Text != "")
+        if (NiñosAdicionalesEntry.Text != "")
             _niñosAdicionales = int.Parse(NiñosAdicionalesEntry.Text);
         calcularTotal();
     }
@@ -372,7 +376,7 @@ public partial class FiestasPopup
         if (isResetting || _Editando)
             return;
 
-        if (!await DisponibilidadValidacion(e.NewDate.Date,(EN_Turno)TurnosPicker.SelectedItem))
+        if (!await DisponibilidadValidacion(e.NewDate.Date, (EN_Turno)TurnosPicker.SelectedItem))
         {
             isResetting = true;
 
@@ -381,10 +385,10 @@ public partial class FiestasPopup
             isResetting = false;
             _Editado = true;
         }
-            
+
     }
 
-    private async Task<bool> DisponibilidadValidacion(DateTime fechaActual,EN_Turno Turno)
+    private async Task<bool> DisponibilidadValidacion(DateTime fechaActual, EN_Turno Turno)
     {
         bool res = true;
 
@@ -403,7 +407,7 @@ public partial class FiestasPopup
         if (_Editando)
             return;
 
-        if(!await DisponibilidadValidacion(FechaFiesta.Date, (EN_Turno)TurnosPicker.SelectedItem))
+        if (!await DisponibilidadValidacion(FechaFiesta.Date, (EN_Turno)TurnosPicker.SelectedItem))
         {
             TurnosPicker.SelectedItem = _Turno;
         }

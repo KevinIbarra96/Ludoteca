@@ -1,14 +1,14 @@
 ﻿using Entidad;
-using Negocio;
 using Ludoteca.Resources;
+using Negocio;
 
 namespace Ludoteca
 {
     public partial class AppShell : Shell
-    {        
+    {
 
         public AppShell()
-        {            
+        {
             InitializeComponent();
             loadMenu();
         }

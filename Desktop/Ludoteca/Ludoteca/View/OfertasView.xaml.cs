@@ -12,19 +12,19 @@ public partial class OfertasView : ContentPage
     OfertaViewModel viewModel;
 
     public OfertasView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new OfertaViewModel();
         BindingContext = viewModel;
 
-        _UpdateOfertaTable =  viewModel._UpdateOfertasTable;
-	}
+        _UpdateOfertaTable = viewModel._UpdateOfertasTable;
+    }
 
     private async void EditarOferta_Clicked(object sender, EventArgs e)
     {
-         var btn = sender as Button;
-        await MopupService.Instance.PushAsync(new PopUp.OfertaPopup(_UpdateOfertaTable,(EN_Oferta)btn.CommandParameter ));
+        var btn = sender as Button;
+        await MopupService.Instance.PushAsync(new PopUp.OfertaPopup(_UpdateOfertaTable, (EN_Oferta)btn.CommandParameter));
     }
 
     private async void Agregar_Clicked(object sender, EventArgs e)

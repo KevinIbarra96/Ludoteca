@@ -1,21 +1,20 @@
 namespace Ludoteca.PopUp;
 
-using Entidad;
-using Negocio;
-using System.Linq;
-using Ludoteca.ViewModel;
-using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
-using Mopups.Services;
-using Ludoteca.Resources;
+using Entidad;
 using global::Resources.Properties;
-using System.ComponentModel.DataAnnotations;
+using Ludoteca.Resources;
+using Ludoteca.ViewModel;
+using Mopups.Services;
+using Negocio;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 
 public partial class NuevaVisitaPopUp
 {
 
-	UpdateVisitasTable _updateVisitasTable;
+    UpdateVisitasTable _updateVisitasTable;
     CalcularTotalVisita _calcularTotalVisitas;
 
     ObservableCollection<EN_Hijo> Hijos;
@@ -27,18 +26,18 @@ public partial class NuevaVisitaPopUp
     bool _PrimerProductoSelec = true;
 
     EN_Gafete _Gafete;
-    List<EN_Oferta> _Oferta =  new List<EN_Oferta>();
+    List<EN_Oferta> _Oferta = new List<EN_Oferta>();
 
     private double _Total = 0;
 
     EN_Padre padre;
 
-    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable,CalcularTotalVisita calcularTotalVisita)
-	{
-		InitializeComponent();
+    public NuevaVisitaPopUp(UpdateVisitasTable updateVisitasTable, CalcularTotalVisita calcularTotalVisita)
+    {
+        InitializeComponent();
 
         Hijos = new ObservableCollection<EN_Hijo>();
-        
+
         getAllProductos();
         getAllServicios();
         getAllOfertas();
@@ -48,9 +47,10 @@ public partial class NuevaVisitaPopUp
 
         _updateVisitasTable = updateVisitasTable;
         _calcularTotalVisitas = calcularTotalVisita;
-	}
+    }
 
-    private void calcularTotal() {
+    private void calcularTotal()
+    {
 
         _Total = 0;
         _Total = _totalProducto + (_totalServicio * _TotalHijos);
@@ -82,7 +82,7 @@ public partial class NuevaVisitaPopUp
     private async void getGafetesActivosNoAsignados()
     {
         EN_Response<EN_Gafete> responseGafete = await RN_Gafete.getGafeteNoAsignado();
-        
+
         GafetePicker.ItemsSource = responseGafete.Rbody;
         GafetePicker.ItemDisplayBinding = new Binding("Numero");
 
@@ -114,7 +114,7 @@ public partial class NuevaVisitaPopUp
             nuevaVisita.NumeroGafete = _Gafete.Numero;
             nuevaVisita.Hijos = HijosCollectionView.SelectedItems.OfType<EN_Hijo>().ToList();
             nuevaVisita.Padres = lisPadre;
-            nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita( (EN_Servicio) ServicioCollectionView.SelectedItem);
+            nuevaVisita.Servicios = ConvertClass.convertEN_ServicionToEN_ServicioVisita((EN_Servicio)ServicioCollectionView.SelectedItem);
             nuevaVisita.Productos = ConvertClass.convertEN_ProductosToEN_ProductosVisita(ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList());
             nuevaVisita.HoraEntrada = DateTime.Now;
 
@@ -133,12 +133,13 @@ public partial class NuevaVisitaPopUp
 
 
         }
-        catch(NullReferenceException invalidCastException)
+        catch (NullReferenceException invalidCastException)
         {
             await DisplayAlert("Error", "Por favor verifica que todos los datos esten correctos", "OK");
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
-            await DisplayAlert("Error","Ah ocurrido un error\nDetalle: "+ex.Message,"OK");
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
 
@@ -149,16 +150,16 @@ public partial class NuevaVisitaPopUp
         if (ProductosCollectionView.SelectedItems.Count == 0)
             resp = "Porfavor Selecciona un producto";
 
-        if(ServicioCollectionView.SelectedItem == null )
+        if (ServicioCollectionView.SelectedItem == null)
             resp = "Porfavor Selecciona un servicio";
 
-        if(HijosCollectionView.SelectedItems.Count == 0)
+        if (HijosCollectionView.SelectedItems.Count == 0)
             resp = "Porfavor Selecciona un hijo";
 
         if (_Oferta.Count == 0)
             resp = "Porfavor Selecciona una oferta";
 
-        if (_Gafete == null )
+        if (_Gafete == null)
             resp = "Porfavor Selecciona un Gafete";
 
         return resp;
@@ -197,7 +198,7 @@ public partial class NuevaVisitaPopUp
 
     private void EntryCantidadProducto_TextChanged(object sender, TextChangedEventArgs e)
     {
-        
+
         _totalProducto = 0;
         foreach (EN_Producto prod in ProductosCollectionView.SelectedItems.OfType<EN_Producto>().ToList())
         {
@@ -216,7 +217,7 @@ public partial class NuevaVisitaPopUp
         _totalServicio = 0;
         foreach (EN_Servicio serv in e.CurrentSelection)
         {
-            _totalServicio += Math.Round(serv.Precio,2);
+            _totalServicio += Math.Round(serv.Precio, 2);
         }
         calcularTotal();
     }
@@ -276,8 +277,8 @@ public partial class NuevaVisitaPopUp
 
     private void GafetePicker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var pick = (Picker) sender;
-        EN_Gafete gaf = (EN_Gafete)pick.SelectedItem ;
+        var pick = (Picker)sender;
+        EN_Gafete gaf = (EN_Gafete)pick.SelectedItem;
         _Gafete = gaf;
     }
     #endregion
@@ -301,18 +302,20 @@ public partial class NuevaVisitaPopUp
 
             Padrelabl.Text = padre.PadreName;
             HijosCollectionView.ItemsSource = hijo;
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Padrelabl.Text = "";
             HijosCollectionView.ItemsSource = new List<EN_Hijo>();
-            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message,"OK");
+            await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
     }
 
     private async void getAllProductos()
     {
-        try { 
-            List<EN_Producto> prod= await RN_Producto.RN_GetAllActiveProductos();
+        try
+        {
+            List<EN_Producto> prod = await RN_Producto.RN_GetAllActiveProductos();
             ProductosCollectionView.ItemsSource = await RN_Producto.RN_GetAllActiveProductos();
         }
         catch (Exception ex)
@@ -322,9 +325,10 @@ public partial class NuevaVisitaPopUp
     }
     private async void getAllServicios()
     {
-        try { 
+        try
+        {
             EN_Response<EN_Servicio> Serv = await RN_Servicio.RN_GetallServiciosByTipoServicio(1);
-            
+
             ServicioCollectionView.ItemsSource = Serv.Rbody;
         }
         catch (Exception ex)
@@ -352,8 +356,8 @@ public partial class NuevaVisitaPopUp
     #region PrivatMethod
     private void DesactivarProductoVisitaEntry()
     {
-        foreach (EN_Producto prod in ProductosCollectionView.ItemsSource )
-        {            
+        foreach (EN_Producto prod in ProductosCollectionView.ItemsSource)
+        {
             prod.IsEnable = false;
         }
     }

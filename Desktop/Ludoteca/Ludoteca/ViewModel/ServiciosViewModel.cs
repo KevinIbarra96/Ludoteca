@@ -49,7 +49,7 @@ namespace Ludoteca.ViewModel
             {
                 foreach (EN_TipoServicio tp in tipoServicioRes.Rbody)
                 {
-                    if(tp.id == servicio.IdTipoServicio)
+                    if (tp.id == servicio.IdTipoServicio)
                         servicio.TipoServicio = tp.Nombre;
                 }
                 addServiciosToCollection(servicio);

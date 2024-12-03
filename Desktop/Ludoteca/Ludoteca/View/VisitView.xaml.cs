@@ -21,8 +21,8 @@ public partial class VisitView : ContentPage
     TicketPrinter ticket;
 
     public VisitView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new VisitViewModel();
         BindingContext = viewModel;
@@ -50,10 +50,10 @@ public partial class VisitView : ContentPage
             viewModel.Visitas.Add(product); // Agregar los productos filtrados de nuevo
         }
         Console.WriteLine(count);
-    }    
+    }
     private async void NuevaVisita_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable,_calcularTotalVisita));
+        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable, _calcularTotalVisita));
     }
 
     private async void AddServicio_Clicked(object sender, EventArgs e)
@@ -62,12 +62,12 @@ public partial class VisitView : ContentPage
         var btn = sender as Label;
         var visitaSelected = btn.BindingContext as EN_Visita;
 
-        await MopupService.Instance.PushAsync(new PopUp.ServicioList(_addServicioToVisita,visitaSelected.id) );
+        await MopupService.Instance.PushAsync(new PopUp.ServicioList(_addServicioToVisita, visitaSelected.id));
     }
 
     private async void RegistrarPadreEHijo_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.RegistrarPadresEHijos() );
+        await MopupService.Instance.PushAsync(new PopUp.RegistrarPadresEHijos());
     }
 
     private async void Cobrar_Clicked(object sender, EventArgs e)
@@ -79,7 +79,7 @@ public partial class VisitView : ContentPage
         {
             try
             {
-                
+
                 var btn = sender as Label;
                 var visitaSelected = btn.BindingContext as EN_Visita;
 
@@ -97,11 +97,11 @@ public partial class VisitView : ContentPage
                 ticket = new TicketPrinter(visitaSelected);
                 string action = await DisplayActionSheet("Selecciona una impresora ", "Cancel", null, ticket.ListPrinters());
 
-                if(action == "Cancel")
+                if (action == "Cancel")
                 {
                     await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
                     return;
-                }                
+                }
 
                 await ticket.PrintTicket(action);
 
@@ -111,7 +111,7 @@ public partial class VisitView : ContentPage
 
 
                 //await CrearTicketPDF(visitaSelected, action);
-                
+
                 await RN_Visita.cobrarVisitas(visitaSelected);
 
                 _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
@@ -119,15 +119,15 @@ public partial class VisitView : ContentPage
                 await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos.First().NombreHijo, "OK");
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                await DisplayAlert("Error","Ah ocurrido un error\nDetalle:"+ ex.Message,"OK");
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
                 Debug.WriteLine(ex.Message);
             }
         }
-        
+
     }
-    private async Task CrearTicketPDF(EN_Visita visitaSelected,string PrintName)
+    private async Task CrearTicketPDF(EN_Visita visitaSelected, string PrintName)
     {
 
         // Obtener la fecha actual
@@ -178,6 +178,6 @@ public partial class VisitView : ContentPage
         var btn = sender as Border;
         var visitaSelected = btn.BindingContext as EN_Visita;
 
-        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id,visitaSelected.Productos));
+        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id, visitaSelected.Productos));
     }
 }

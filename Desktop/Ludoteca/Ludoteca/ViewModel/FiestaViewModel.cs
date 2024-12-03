@@ -1,13 +1,8 @@
-﻿using Data;
-using Entidad;
+﻿using Entidad;
 using Ludoteca.Resources;
 using Negocio;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Ludoteca.ViewModel
 {
@@ -41,15 +36,21 @@ namespace Ludoteca.ViewModel
         {
             fiestasInmutable.Clear();
             fiestas.Clear();
-            EN_Response<EN_Fiesta> fiestasl = await RN_Fiesta.RN_GetAllActiveFiestas();
-            var turno = await RN_Turno.RN_GetAllActiveTurno();
-
-            foreach (var fiesta in fiestasl.Rbody)
+            try
             {
-                EN_Turno t = turno.Rbody.First(x => x.id == fiesta.IdTurno);
-                fiesta.Turno = t.NombreTurno;
+                EN_Response<EN_Fiesta> fiestasl = await RN_Fiesta.RN_GetAllActiveFiestas();
+                var turno = await RN_Turno.RN_GetAllActiveTurno();
 
-                addFiestaToCollection(fiesta);
+                foreach (var fiesta in fiestasl.Rbody)
+                {
+                    EN_Turno t = turno.Rbody.First(x => x.id == fiesta.IdTurno);
+                    fiesta.Turno = t.NombreTurno;
+
+                    addFiestaToCollection(fiesta);
+                }
+            }
+            catch (Exception ex) { 
+                Debug.WriteLine(ex.Message);
             }
         }
 
