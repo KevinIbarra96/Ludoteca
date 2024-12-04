@@ -10,6 +10,7 @@ public partial class FiestasView : ContentPage
     FiestaViewModel viewModel;
 
     UpdateFiestasTable _updateFiestasTable;
+    LoadFiestasTable _loadFiestasTable;
 
     public FiestasView()
     {
@@ -17,11 +18,10 @@ public partial class FiestasView : ContentPage
         BindingContext = viewModel;
 
         _updateFiestasTable = viewModel._UpdateFiestasTable;
+        _loadFiestasTable = viewModel._loadFiestasTable;
 
         InitializeComponent();
-
-        UpdateListView();
-    }
+    }    
 
     private async void Agregar_Clicked(object sender, EventArgs e)
     {
@@ -42,4 +42,25 @@ public partial class FiestasView : ContentPage
         await MopupService.Instance.PushAsync(new PopUp.FiestasPopup(_updateFiestasTable, (EN_Fiesta)button.CommandParameter));
 
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _loadFiestasTable();
+
+        UpdateListView();
+
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+
+    }
+
 }

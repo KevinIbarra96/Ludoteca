@@ -16,6 +16,7 @@ public partial class InventarioView : ContentPage
     InventarioViewModel viewModel;
 
     UpdateInventarioData _updateInventarioData;
+    LoadInventarioData _loadInventarioData;
 
     public InventarioView()
     {
@@ -25,9 +26,17 @@ public partial class InventarioView : ContentPage
         BindingContext = viewModel;
 
         _updateInventarioData = viewModel._UpdateInventarioData;
+        _loadInventarioData = viewModel._loadInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _loadInventarioData();
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
@@ -100,4 +109,14 @@ public partial class InventarioView : ContentPage
     {
         await MopupService.Instance.PushAsync(new PopUp.ProductoPopup(_updateInventarioData));
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
 }

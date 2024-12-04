@@ -26,6 +26,12 @@ public partial class ServiciosView : ContentPage
         searchBar.TextChanged += SearchBar_TextChanged;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _loadServiciosTable();
+    }
+
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
     {
         string searchText = searchBar.Text;
@@ -53,4 +59,14 @@ public partial class ServiciosView : ContentPage
     {
         await MopupService.Instance.PushAsync(new PopUp.ServicioPopup(_UpdateServiciosTable));
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
 }

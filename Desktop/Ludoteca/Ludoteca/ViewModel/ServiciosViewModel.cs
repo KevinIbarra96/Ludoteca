@@ -27,7 +27,7 @@ namespace Ludoteca.ViewModel
             _loadServiciosTable = loadServiciosTable;
             _UpdateServiciosTable = UpdateServiciosTable;
 
-            loadServiciosTable();
+            //loadServiciosTable();
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion

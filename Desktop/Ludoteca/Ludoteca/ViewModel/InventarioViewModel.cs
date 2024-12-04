@@ -30,7 +30,7 @@ namespace Ludoteca.ViewModel
             _loadInventarioData = loadInventarioData;
             _UpdateInventarioData = UpdateInventarioData;
 
-            loadInventarioData();
+            //loadInventarioData();
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion

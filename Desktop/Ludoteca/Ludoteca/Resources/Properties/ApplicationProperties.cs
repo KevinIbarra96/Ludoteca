@@ -13,11 +13,28 @@ namespace Resources.Properties
         public static EN_Configuracion edadMaxima;
         public static EN_Configuracion rutaTickets;
 
-        public static int IdTiempoLibreServicio = 1;
 
-        public static int IdAdministratorRol = 1;
+        public readonly static int IdPrecioMinutoTreintaMin = 1 ;
+        public readonly static int IdPrecioMinutoSesentaMin = 6;
+        public readonly static int IdPrecioMinutoDespuesServicio = 7;
+        public readonly static int IdPrecioNiñoAdicional = 5;
+        public readonly static int IdedadMinima = 2;
+        public readonly static int IdedadMaxima = 3;
+        public readonly static int IdrutaTickets = 4;
 
-        public static int IdSinProducto = 1;
+        //Configuracion Local
+        public readonly static int IdTiempoLibreServicio = 7;
+
+        public readonly static int IdAdministratorRol = 1;
+
+        public readonly static int IdSinProducto = 20;
+
+        //Server Configuracion
+        /*public readonly static int IdTiempoLibreServicio = 1;
+
+        public readonly static int IdAdministratorRol = 1;
+
+        public readonly static int IdSinProducto = 1;*/
 
     }
 }

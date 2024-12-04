@@ -21,8 +21,16 @@ public partial class ConfiguracionView : ContentPage
         viewModel = new ConfiguracionViewModel();
         BindingContext = viewModel;
 
-        loadConfiguraciones();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        loadConfiguraciones();
+
+    }
+
     private void loadConfiguraciones()
     {
         precioTreintaMin = ApplicationProperties.PrecioMinutoTreintaMin;
@@ -248,5 +256,14 @@ public partial class ConfiguracionView : ContentPage
     private void HabilitarYDesHabilitarGafete_Tapped(object sender, TappedEventArgs e)
     {
 
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
     }
 }

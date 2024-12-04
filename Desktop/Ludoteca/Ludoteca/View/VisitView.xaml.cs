@@ -18,6 +18,8 @@ public partial class VisitView : ContentPage
     AddProductoToVisita _addProductoToVisita;
     AddServicioToVisita _addServicioToVisita;
 
+    InitVisitas _initVisitas;
+
     TicketPrinter ticket;
 
     public VisitView()
@@ -31,25 +33,40 @@ public partial class VisitView : ContentPage
         _calcularTotalVisita = viewModel._CalcularTotalVisita;
         _addProductoToVisita = viewModel._AddProductoToVisita;
         _addServicioToVisita = viewModel._addServicioToVIsita;
+        _initVisitas = viewModel._InitVisitas;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
     }
 
-    private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
+    private async void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         string searchText = searchBar.Text;
         int count = 0;
+
         viewModel.Visitas.Clear();
 
-        foreach (var product in viewModel.VisitasInmutable.Where(visita =>
-                                visita.Hijos != null && visita.Hijos.Any(hijo =>
-                                hijo.NombreHijo.Contains(searchText, StringComparison.OrdinalIgnoreCase))))
+        var VisitaByGafete = viewModel.VisitasInmutable.Where(V => V.NumeroGafete.ToString().Contains(searchText) );
+
+        if (VisitaByGafete != null)
         {
-            count += 1;
-            viewModel.Visitas.Add(product); // Agregar los productos filtrados de nuevo
+            foreach (var vis in VisitaByGafete)
+            {
+                viewModel.Visitas.Add(vis);
+            }
         }
-        Console.WriteLine(count);
+
+        sw.Stop();
+
+         Debug.WriteLine("Search event Time"+sw.ElapsedMilliseconds);
+
+        GC.Collect();
+        GC.SuppressFinalize(this);
+        GC.WaitForPendingFinalizers();
+
     }
     private async void NuevaVisita_Clicked(object sender, EventArgs e)
     {
@@ -94,27 +111,39 @@ public partial class VisitView : ContentPage
                 visitaSelected.HoraSalida = DateTime.Now;
                 visitaSelected.TiempoTotal = visitaSelected.TiempoTranscurrido;
 
-                ticket = new TicketPrinter(visitaSelected);
-                string action = await DisplayActionSheet("Selecciona una impresora ", "Cancel", null, ticket.ListPrinters());
-
-                if (action == "Cancel")
-                {
-                    await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
-                    return;
-                }
-
-                await ticket.PrintTicket(action);
-
-                bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
-                if (answer)
-                    await ticket.PrintTicket(action);
-
-
                 //await CrearTicketPDF(visitaSelected, action);
 
                 await RN_Visita.cobrarVisitas(visitaSelected);
 
                 _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+
+                ticket = new TicketPrinter(visitaSelected);
+                string action = await DisplayActionSheet("Selecciona una impresora ", "No Imprimir", null, ticket.ListPrinters());
+
+                if (action == "No Imprimir")
+                {
+                    //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
+                    bool answer = await DisplayAlert("Atencion", "¿Seguro que no quieres imprimir?", "Si", "No");
+                    if (!answer)
+                    {
+                        string action2 = await DisplayActionSheet("Selecciona una impresora ", "Cancelar", null, ticket.ListPrinters());
+                        if (action2 != "Cancelar")
+                        {
+                            await ticket.PrintTicket(action2);
+                            bool answer1 = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+                            if (answer1)
+                                await ticket.PrintTicket(action2);
+                        }
+                    }
+                }
+                else
+                {
+                    await ticket.PrintTicket(action);
+
+                    bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+                    if (answer)
+                        await ticket.PrintTicket(action);
+                }                
 
                 await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos.First().NombreHijo, "OK");
 
@@ -172,12 +201,32 @@ public partial class VisitView : ContentPage
         });
 
     }
-
     private async void AddProductos_Tapped(object sender, TappedEventArgs e)
     {
         var btn = sender as Border;
         var visitaSelected = btn.BindingContext as EN_Visita;
 
         await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id, visitaSelected.Productos));
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _initVisitas();
+        VisitasListView.ItemsSource = viewModel.Visitas;
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        VisitasListView.ItemsSource = null;
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+        //Application.Current.MainPage.Navigation.RemovePage(this);
+        //Shell.Current.Navigation.RemovePage(Shell.Current.CurrentPage);        
     }
 }

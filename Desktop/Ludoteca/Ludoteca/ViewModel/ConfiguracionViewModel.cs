@@ -25,16 +25,17 @@ namespace Ludoteca.ViewModel
             Gafetes = new ObservableCollection<EN_Gafete>();
             Usuarios = new ObservableCollection<EN_User>();
             Rol = new ObservableCollection<EN_Rol>();
-            getAllGafetes();
-            getAllUsers();
-            getAllRol();
 
             _updateUsuario = UpdateUsuario;
             _updateRol = UpdateRol;
 
+            getAllGafetes();
+            getAllUsers();
+            getAllRol();
+
         }
 
-        private async void getAllUsers()
+        private async Task getAllUsers()
         {
             var UsuariosResponse = await RN_Users.RN_GetUsersAndRol();
             foreach (EN_User us in UsuariosResponse.Rbody)
@@ -47,7 +48,7 @@ namespace Ludoteca.ViewModel
             }
 
         }
-        private async void getAllRol()
+        private async Task getAllRol()
         {
             var RolResponse = await RN_Rol.RN_GetAllRols();
             foreach (EN_Rol rol in RolResponse.Rbody)
@@ -77,7 +78,7 @@ namespace Ludoteca.ViewModel
                 updateRolToColection(rol);
         }
 
-        private async void getAllGafetes()
+        private async Task getAllGafetes()
         {
 
             var gafeteResponse = await RN_Gafete.getAllGafete();

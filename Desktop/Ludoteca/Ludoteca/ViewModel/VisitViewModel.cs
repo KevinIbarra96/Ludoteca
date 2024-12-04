@@ -15,6 +15,8 @@ namespace Ludoteca.ViewModel
     public delegate void AddProductoToVisita(GlobalEnum.Action action, EN_ProductosVisita producto, int visitaId);
     public delegate void AddServicioToVisita(EN_ServiciosVisita servicio, int visitaId);
 
+    public delegate Task InitVisitas();
+
     public class VisitViewModel
     {
         public ObservableCollection<EN_Visita> Visitas { get; set; }
@@ -27,6 +29,8 @@ namespace Ludoteca.ViewModel
         public CalcularTotalVisita _CalcularTotalVisita;
         public AddProductoToVisita _AddProductoToVisita;
         public AddServicioToVisita _addServicioToVIsita;
+        public InitVisitas _InitVisitas;
+
 
         public VisitViewModel()
         {
@@ -43,11 +47,12 @@ namespace Ludoteca.ViewModel
             _AddProductoToVisita = addProductoToVisita;
             _addServicioToVIsita = addServicioToVisita;
 
-            init();
+            _InitVisitas = init;
+
 
         }
 
-        private async void init()
+        private async Task init()
         {
             await loadVisitasTable();
 
@@ -82,6 +87,14 @@ namespace Ludoteca.ViewModel
 
                 if (visitaEncontrado == null)
                     removerVisitaActiva(vis);
+            }
+
+            foreach(var vis in VisitaListReponse)
+            {
+                var visitaEncontrado = VisitaListReponse.FirstOrDefault(v => v.id == vis.id);
+
+                if (visitaEncontrado != null)
+                    updateVisitaToColection(vis);
             }
 
             sw.Stop();
@@ -271,7 +284,13 @@ namespace Ludoteca.ViewModel
 
             if (Encontrado != null)
             {
-                //TODO necesitamos implementar los cambios para actualizar.
+                var sinProd = visita.Productos.FirstOrDefault(pro => pro.id_Producto == ApplicationProperties.IdSinProducto);
+
+                if (visita.Productos.Count > Encontrado.Productos.Count)
+                    Encontrado.Productos = visita.Productos;
+                else if (sinProd != null && visita.Productos.Count == Encontrado.Productos.Count)
+                    Encontrado.Productos = visita.Productos;
+
             }
         }
 

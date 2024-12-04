@@ -28,7 +28,7 @@ namespace Ludoteca.ViewModel
             _loadFiestasTable = loadFiestaTable;
             _UpdateFiestasTable = UpdateFiestaTable;
 
-            loadFiestaTable();
+            //loadFiestaTable();
 
         }
 

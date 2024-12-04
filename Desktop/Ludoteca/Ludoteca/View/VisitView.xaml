@@ -54,7 +54,7 @@
                 <Label Grid.Column="9" FontAttributes="Bold" Text="Acciones" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
             </Grid>
 
-            <ListView ItemsSource="{Binding Visitas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10" >
+            <ListView x:Name="VisitasListView" ItemsSource="{Binding Visitas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10" CachingStrategy="RecycleElement">
                 <ListView.HeaderTemplate>
                     <DataTemplate>
                         <ViewCell >

@@ -31,4 +31,14 @@ public partial class OfertasView : ContentPage
     {
         await MopupService.Instance.PushAsync(new PopUp.OfertaPopup(_UpdateOfertaTable));
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
 }
