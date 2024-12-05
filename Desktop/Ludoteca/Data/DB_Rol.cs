@@ -103,8 +103,13 @@ namespace Data
 
             EN_Response<EN_Rol> RolsResponse = null;
             string endpointpath = _apiPath + "/editRol";
+            List<int> menuIdList = new List<int>();
+            foreach (EN_Menu menu in MenuList)
+            {
+                menuIdList.Add(menu.id);
+            }
 
-            var RequestBody = new { RolName = _Rol.RolName, MenuList = MenuList };
+            var RequestBody = new {Rol = _Rol, MenuList = menuIdList };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 

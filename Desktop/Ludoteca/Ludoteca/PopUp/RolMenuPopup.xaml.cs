@@ -12,24 +12,31 @@ public partial class RolMenuPopup
 {
 
     UpdateRolConfig _updateRolConfig;
+    EN_Response<EN_Menu> menuSelectedResponse = new EN_Response<EN_Menu>();
 
-	public RolMenuPopup(UpdateRolConfig updateRolConfig)
+    EN_Rol RolActualizando;
+    List<EN_Menu> menuSelected;
+
+    public RolMenuPopup(UpdateRolConfig updateRolConfig)
 	{
 		InitializeComponent();
-        getAllActiveMenu();
+        getValues();
 
         RolNamelbl.Text = "Nuevo Rol";
 
         _updateRolConfig = updateRolConfig;
 
         BtnGuardar.Clicked += BtnGuardar_Clicked;
+        MenuCollectionView.SelectionChanged += MenuCollectionView_SelectionChanged;
     }
 
     public RolMenuPopup(UpdateRolConfig updateRolConfig,EN_Rol rol)
     {
         InitializeComponent();
-        getAllActiveMenu();
-        getMenuByRol(rol.id);
+        menuSelected = new List<EN_Menu>();
+        RolActualizando = rol;
+        getValues();
+        
         
 
         RolNamelbl.Text = rol.RolName;
@@ -38,9 +45,17 @@ public partial class RolMenuPopup
         _updateRolConfig = updateRolConfig;
 
         BtnGuardar.Clicked += BtnGuardarActualizar_Clicked;
+        //MenuCollectionView.SelectionChanged += MenuCollectionViewActualizando_SelectionChanged;
+
 
     }
 
+    private async void getValues()
+    {
+        await getAllActiveMenu();
+        if (RolActualizando != null)
+            getMenuByRol(RolActualizando.id);
+    }
 
     private async Task getAllActiveMenu()
     {
@@ -61,17 +76,24 @@ public partial class RolMenuPopup
         try
         {
             //await getAllActiveMenu();
-            EN_Response<EN_Menu> menuResponse = await RN_Menu.RN_GetMenuByRol(idRol);
+            menuSelectedResponse = await RN_Menu.RN_GetMenuByRol(idRol);
 
-            if (menuResponse.Rcode == 200)
+            if (menuSelectedResponse.Rcode == 200)
             {
-                IList<object> MenuListInterface = [.. menuResponse.Rbody];
+                IList<object> MenuListInterface = [.. menuSelectedResponse.Rbody];
+                //MenuCollectionView.SelectedItems = MenuListInterface;
+                
+                foreach (EN_Menu s in menuSelectedResponse.Rbody)
+                {
+                    menuSelected.Add(s);
+                }
 
-                MenuCollectionView.SelectedItems = MenuListInterface;
+                MenuSelectedPaint();
+
             }
             else
             {
-                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + menuResponse.Rmessage, "OK");
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + menuSelectedResponse.Rmessage, "OK");
             }
 
         }
@@ -81,21 +103,63 @@ public partial class RolMenuPopup
         }
     }
 
-
+    //Este metodo quedo exclusivo para el caso de agregar un nuevo rol
     private void MenuCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        
         foreach (EN_Menu menu in e.PreviousSelection)
         {
-            menu.SelectedBackgroundColor = "White";
-        }
-        
-        foreach (EN_Menu menu in e.CurrentSelection)
-        {
-            menu.SelectedBackgroundColor = "#40E1E1E1";
-            
+            menu.SelectedBackgroundColor = "White"; // Restablecer color
         }
 
+        // Selección de nuevos elementos
+        foreach (EN_Menu menu in e.CurrentSelection)
+        {
+            menu.SelectedBackgroundColor = "#40E1E1E1"; // Marcar visualmente
+        }
     }
+
+    //Este metodo quedo exclusivopara el caso de actualizar un rol
+
+    private void MenuSeletectedPaint(EN_Menu menuFromCVSelected)
+    {
+
+        if (menuSelected.Count == 0)
+        {
+            menuSelected.Add(menuFromCVSelected);
+            MenuSelectedPaint();
+            return;
+        }
+        
+        var menuEncontrado = menuSelected.FirstOrDefault(m => m.id == menuFromCVSelected.id);
+        if(menuEncontrado == null)
+            menuSelected.Add(menuFromCVSelected);
+        else
+            menuSelected.Remove(menuEncontrado);        
+
+        MenuSelectedPaint();
+    } 
+
+    private void MenuSelectedPaint()
+    {
+        var activeMenus = MenuCollectionView.ItemsSource.OfType<EN_Menu>().ToList();
+        // Actualizar el estado de selección de cada menú        
+        foreach (var menu in activeMenus)
+        {
+            if (menuSelected.Any(selected => selected.id == menu.id))
+            {
+                menu.SelectedBackgroundColor = "#40E1E1E1"; // Cambia el color según sea necesario
+            }
+            else
+            {
+                menu.SelectedBackgroundColor = "White";
+
+            }
+        }
+    }
+
+    
+    
 
     private async void BtnGuardar_Clicked(object sender, EventArgs e)
     {
@@ -135,16 +199,19 @@ public partial class RolMenuPopup
         {
             EN_Rol nuevoRol = new EN_Rol();
             nuevoRol.RolName = RolNameEntry.Text;
+            nuevoRol.status = 1;
+            nuevoRol.id = RolActualizando.id;
             nuevoRol.statusString = "Activo";
+            Console.WriteLine($"ID del rol: {nuevoRol.id}");
 
-            List<EN_Menu> MenuList = MenuCollectionView.SelectedItems.OfType<EN_Menu>().ToList();
 
-            await RN_Rol.RN_UpdateRol(nuevoRol, MenuList);
-
+            var response = await RN_Rol.RN_UpdateRol(nuevoRol, menuSelected);
+            if (response.Rcode != 200) throw new Exception(response.Rmessage);
+            
 
             _updateRolConfig(GlobalEnum.Action.ACTUALIZAR, nuevoRol);
 
-            var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            var toast = Toast.Make("Rol actualizado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
             await toast.Show();
 
             await MopupService.Instance.PopAsync();
@@ -164,5 +231,16 @@ public partial class RolMenuPopup
     private void Cancelar_Clicked(object sender, EventArgs e)
     {
         MopupService.Instance.PopAsync();
+    }
+
+    private void MenuCollection_Tapped(object sender, TappedEventArgs e)
+    {
+        if (RolActualizando == null)
+            return;
+
+        StackLayout btn = sender as StackLayout;
+        var Menu = btn.BindingContext as EN_Menu;
+        
+        MenuSeletectedPaint(Menu);
     }
 }

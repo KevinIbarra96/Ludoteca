@@ -8,6 +8,7 @@ namespace Ludoteca.ViewModel
 
     public delegate void UpdateUsuarioConfig(GlobalEnum.Action Action,EN_User usuario);
     public delegate void UpdateRolConfig(GlobalEnum.Action Action, EN_Rol rol);
+    public delegate void GetAllRolConfig();
 
     internal class ConfiguracionViewModel
     {
@@ -18,6 +19,7 @@ namespace Ludoteca.ViewModel
 
         public UpdateUsuarioConfig _updateUsuario;
         public UpdateRolConfig _updateRol;
+        public GetAllRolConfig _getAllRol;
  
         public ConfiguracionViewModel() {
 
@@ -30,6 +32,7 @@ namespace Ludoteca.ViewModel
 
             _updateUsuario = UpdateUsuario;
             _updateRol = UpdateRol;
+            
 
         }
 
@@ -100,6 +103,8 @@ namespace Ludoteca.ViewModel
         private void addRolToCollection(EN_Rol rol)
         {
             Rol.Add(rol);
+
+            _getAllRol = getAllRol;
         }
         private void addUsuariosToCollection(EN_User usuario)
         {
@@ -126,7 +131,10 @@ namespace Ludoteca.ViewModel
             
             EN_Rol encontrado = Rol.FirstOrDefault(r => r.id == rol.id);
 
-            encontrado.RolName = rol.RolName;
+            if (encontrado != null)
+            {
+                encontrado.RolName = rol.RolName;
+            }
 
         }
 
