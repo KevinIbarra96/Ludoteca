@@ -23,18 +23,18 @@ namespace Resources.Properties
         public readonly static int IdrutaTickets = 4;
 
         //Configuracion Local
-        public readonly static int IdTiempoLibreServicio = 7;
+        /*public readonly static int IdTiempoLibreServicio = 7;
 
         public readonly static int IdAdministratorRol = 1;
 
-        public readonly static int IdSinProducto = 20;
+        public readonly static int IdSinProducto = 20;*/
 
         //Server Configuracion
-        /*public readonly static int IdTiempoLibreServicio = 1;
+        public readonly static int IdTiempoLibreServicio = 1;
 
         public readonly static int IdAdministratorRol = 1;
 
-        public readonly static int IdSinProducto = 1;*/
+        public readonly static int IdSinProducto = 1;
 
     }
 }

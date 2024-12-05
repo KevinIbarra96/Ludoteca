@@ -125,7 +125,7 @@ namespace Ludoteca.Resources
 
             foreach (var producto in venta.Productos)
             {
-                gfx.DrawString(producto.CantidadVisita.ToString() , regularFont, Brushes.Black, x, y + offset);
+                gfx.DrawString(producto.CantidadProducto , regularFont, Brushes.Black, x, y + offset);
                 gfx.DrawString(producto.Precio.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
                 gfx.DrawString((producto.Precio * producto.CantidadVisita).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
                 offset += LineSpace;

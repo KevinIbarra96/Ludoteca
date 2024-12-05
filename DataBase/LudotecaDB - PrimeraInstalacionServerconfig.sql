@@ -217,17 +217,18 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `IconName` varchar(45) DEFAULT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla justkidsdb.menu: ~7 rows (aproximadamente)
 INSERT INTO `menu` (`id`, `MenuName`, `ClassName`, `MenuOrder`, `Path`, `IconName`, `status`) VALUES
-	(1, 'Inventario', 'InventarioView', 3, 'Ludoteca.View.InventarioView', 'inventario_icon.jpg', 1),
+	(1, 'Inventario', 'InventarioView', 5, 'Ludoteca.View.InventarioView', 'inventario_icon.jpg', 1),
 	(2, 'Visitas', 'VisitView', 2, 'Ludoteca.View.VisitView', 'visitas_icon.jpg', 1),
-	(3, 'Servicios', 'ServiciosView', 4, 'Ludoteca.View.ServiciosView', 'inventario_icon.jpg', 1),
-	(4, 'Configuracion', 'ConfiguracionView', 6, 'Ludoteca.View.ConfiguracionView', 'configuracion_icon.jpg', 1),
-	(5, 'Ofertas', 'OfertasView', 5, 'Ludoteca.View.OfertasView', 'inventario_icon.jpg', 1),
-	(6, 'Fiestas', 'FiestasView', 2, 'Ludoteca.View.FiestasView', 'fiesta_icon.jpg', 1),
-	(7, 'Reporte Visitas', 'ReporteVisitasView', 7, 'Ludoteca.View.ReporteVisitasView', 'inventario_icon.jpg', 1);
+	(3, 'Servicios', 'ServiciosView', 6, 'Ludoteca.View.ServiciosView', 'inventario_icon.jpg', 1),
+	(4, 'Configuracion', 'ConfiguracionView', 8, 'Ludoteca.View.ConfiguracionView', 'configuracion_icon.jpg', 1),
+	(5, 'Ofertas', 'OfertasView', 7, 'Ludoteca.View.OfertasView', 'inventario_icon.jpg', 1),
+	(6, 'Fiestas', 'FiestasView', 3, 'Ludoteca.View.FiestasView', 'fiesta_icon.jpg', 1),
+	(7, 'Reporte Visitas', 'ReporteVisitasView', 3, 'Ludoteca.View.ReporteVisitasView', 'inventario_icon.jpg', 1),
+	(8, 'Ventas', 'VentasView', 4, 'Ludoteca.View.VentasView', 'inventario_icon.jpg', 1);
 
 -- Volcando estructura para tabla justkidsdb.ofertas
 CREATE TABLE IF NOT EXISTS `ofertas` (
@@ -249,7 +250,8 @@ CREATE TABLE IF NOT EXISTS `padres` (
   `Address` varchar(105) DEFAULT NULL,
   `Telefono` varchar(45) DEFAULT NULL,
   `status` smallint DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Telefono_UNIQUE` (`Telefono`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla justkidsdb.padres: ~1 rows (aproximadamente)
@@ -266,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla justkidsdb.productos: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla justkidsdb.productos: ~0 rows (aproximadamente)
 INSERT INTO `productos` (`id`, `ProductoName`, `Cantidad`, `Precio`, `status`) VALUES
 	(1, 'Sin Producto', 99999999, 0.00, 1);
 
@@ -292,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `rol_menu` (
   KEY `FK_Rol_Menu_Menu_idx` (`id_Menu`),
   CONSTRAINT `FK_Rol_Menu_Menu` FOREIGN KEY (`id_Menu`) REFERENCES `menu` (`id`),
   CONSTRAINT `FK_Rol_Menu_Rol` FOREIGN KEY (`id_Rol`) REFERENCES `rol` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 -- Volcando datos para la tabla justkidsdb.rol_menu: ~7 rows (aproximadamente)
 INSERT INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
@@ -302,7 +304,8 @@ INSERT INTO `rol_menu` (`id`, `id_Rol`, `id_Menu`) VALUES
 	(4, 1, 4),
 	(5, 1, 5),
 	(6, 1, 6),
-	(7, 1, 7);
+	(7, 1, 7),
+	(8, 1, 8);
 
 -- Volcando estructura para tabla justkidsdb.servicios
 CREATE TABLE IF NOT EXISTS `servicios` (
@@ -318,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `servicios` (
   CONSTRAINT `fk_Servicio_TipoServicio` FOREIGN KEY (`IdTipoServicio`) REFERENCES `tiposervicio` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
--- Volcando datos para la tabla justkidsdb.servicios: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla justkidsdb.servicios: ~0 rows (aproximadamente)
 INSERT INTO `servicios` (`id`, `ServicioName`, `Descripcion`, `Precio`, `Tiempo`, `IdTipoServicio`, `status`) VALUES
 	(1, 'Tiempo Libre', 'Este servicio esta destinado a cobrar el minuto en base al tiempo dentro', 0.00, 0, 1, 1);
 
@@ -379,6 +382,31 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `UserName`, `Password`, `idRol`, `status`) VALUES
 	(1, 'Administrator', 'JustKidAdmin', 1, 1),
 	(2, 'PerlaAyala', 'Molly_2310', 1, 1);
+
+-- Volcando estructura para tabla justkidsdb.ventas
+CREATE TABLE IF NOT EXISTS `ventas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Total` double(10,2) DEFAULT NULL,
+  `Fecha` datetime DEFAULT NULL,
+  `status` smallint DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla justkidsdb.ventas: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla justkidsdb.ventas_productos
+CREATE TABLE IF NOT EXISTS `ventas_productos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_Venta` int DEFAULT NULL,
+  `id_Producto` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_VentaProducto_Venta_idx` (`id_Producto`),
+  KEY `fk_VentaProducto_Venta_idx1` (`id_Venta`),
+  CONSTRAINT `fk_VentaProducto_Producto` FOREIGN KEY (`id_Producto`) REFERENCES `productos` (`id`),
+  CONSTRAINT `fk_VentaProducto_Venta` FOREIGN KEY (`id_Venta`) REFERENCES `ventas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Volcando datos para la tabla justkidsdb.ventas_productos: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla justkidsdb.visitas
 CREATE TABLE IF NOT EXISTS `visitas` (
