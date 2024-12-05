@@ -1,9 +1,9 @@
-using Mopups.Services;
-using Ludoteca.ViewModel;
-using Entidad;
-using Negocio;
-using Ludoteca.Resources;
 using CommunityToolkit.Maui.Alerts;
+using Entidad;
+using Ludoteca.Resources;
+using Ludoteca.ViewModel;
+using Mopups.Services;
+using Negocio;
 
 namespace Ludoteca.PopUp;
 
@@ -17,7 +17,7 @@ public partial class ServicioPopup
     public ServicioPopup(EN_Servicio servicio, UpdateServiciosTable updateServiciosTable)
     {
         InitializeComponent();
-        getTipoServicio(GlobalEnum.Action.ACTUALIZAR,servicio.IdTipoServicio);
+        getTipoServicio(GlobalEnum.Action.ACTUALIZAR, servicio.IdTipoServicio);
 
         //Llenar el formulario
         IdServicioEntry.Text = servicio.id.ToString();
@@ -44,7 +44,7 @@ public partial class ServicioPopup
 
         _UpdateServiciosTable = updateServiciosTable;
 
-        getTipoServicio(GlobalEnum.Action.CREAR_NUEVO,0);
+        getTipoServicio(GlobalEnum.Action.CREAR_NUEVO, 0);
     }
 
     private async void BtnGuardarActualizar_Clicked(object? sender, EventArgs e)
@@ -59,8 +59,8 @@ public partial class ServicioPopup
             //Ejecuta el delegado 
             _UpdateServiciosTable(GlobalEnum.Action.ACTUALIZAR, servicio);
 
-            var toast = Toast.Make("Actualizacion de " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAllAsync();
 
@@ -87,17 +87,15 @@ public partial class ServicioPopup
             //Ejecuta el delegado para agregar el nuevo servicio
             _UpdateServiciosTable(GlobalEnum.Action.CREAR_NUEVO, servicio);
 
-            var toast = Toast.Make("Se agregó el " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+
+            await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error en el proceso de guardado\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 

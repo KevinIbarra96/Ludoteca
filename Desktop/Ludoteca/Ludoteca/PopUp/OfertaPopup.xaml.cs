@@ -15,15 +15,15 @@ public partial class OfertaPopup
     public OfertaPopup(UpdateOfertasTable updateOfertasTable)
     {
         InitializeComponent();
-        
+
         OfertaNamelbl.Text = "Nueva Oferta";
 
         _UpdateOfertaTable = updateOfertasTable;
 
         BtnGuardar.Clicked += BtnGuardarNuevo_Clicked;
     }
-    
-    public OfertaPopup(UpdateOfertasTable updateOfertasTable,EN_Oferta oferta)
+
+    public OfertaPopup(UpdateOfertasTable updateOfertasTable, EN_Oferta oferta)
     {
         InitializeComponent();
 
@@ -41,9 +41,9 @@ public partial class OfertaPopup
 
 
     public OfertaPopup()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private async void BtnGuardarNuevo_Clicked(object? sender, EventArgs e)
     {
@@ -63,8 +63,8 @@ public partial class OfertaPopup
 
             _UpdateOfertaTable(GlobalEnum.Action.CREAR_NUEVO, oferta);
 
-            var toast = Toast.Make("Se agregó el " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAllAsync();
 
@@ -83,28 +83,28 @@ public partial class OfertaPopup
     {
         try
         {
-            var oferta = new EN_Oferta() { id = int.Parse(IdOfertaEntry.Text),
-                                           OfertaName = OfertaNameEntry.Text,
-                                           Descripcion = DescripcionEditor.Text,
-                                           Tiempo = int.Parse(OfertaTiempoEntry.Text),
-                                           totalDescuento = double.Parse(PrecioOferta.Text)
+            var oferta = new EN_Oferta()
+            {
+                id = int.Parse(IdOfertaEntry.Text),
+                OfertaName = OfertaNameEntry.Text,
+                Descripcion = DescripcionEditor.Text,
+                Tiempo = int.Parse(OfertaTiempoEntry.Text),
+                totalDescuento = double.Parse(PrecioOferta.Text)
             };
             await RN_Oferta.RN_UpdateOferta(oferta);
 
             //Ejecuta el delegado 
             _UpdateOfertaTable(GlobalEnum.Action.ACTUALIZAR, oferta);
 
-            var toast = Toast.Make("Actualizacion de " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+
+            //await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 

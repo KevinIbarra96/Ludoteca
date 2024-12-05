@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -15,7 +9,7 @@ namespace Data
         private static List<EN_Padre> PadresResponse = null;
 
         public static async Task<EN_Response<EN_Padre>> getPadreByPhone(string _phone)
-        {            
+        {
             string _endPoint = _apiPath + "/getPadreByPhone"; //Adding endpoint to path
 
             EN_Response<EN_Padre> PadreRes = null;

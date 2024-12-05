@@ -1,6 +1,6 @@
 ﻿using Entidad;
-using Negocio;
 using Ludoteca.Resources;
+using Negocio;
 using System.Collections.ObjectModel;
 
 namespace Ludoteca.ViewModel
@@ -70,7 +70,7 @@ namespace Ludoteca.ViewModel
             }
         }
 
-    }    
+    }
 
 }
 

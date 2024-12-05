@@ -1,4 +1,3 @@
-using Ludoteca.View;
 using Mopups.Services;
 using Negocio;
 
@@ -9,8 +8,8 @@ public partial class ErrorPopup : Mopups.Pages.PopupPage
     private int failConfigId;
 
     public ErrorPopup(string title, string message, int configId)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         TitleErrorLabel.Text = title;
         ErrorDetailLabel.Text = message;

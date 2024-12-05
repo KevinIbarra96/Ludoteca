@@ -201,9 +201,9 @@
                                 <Border Grid.Column="9">
                                     <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
                                         <!-- StackLayout para los dos primeros botones en la misma línea -->
-                                        <Label Text="Descargar" ToolTipProperties.Text="Descargar t" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                        <Label Text="Impimir" ToolTipProperties.Text="ImprimirTicket" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
                                             <Label.GestureRecognizers>
-                                                <TapGestureRecognizer CommandParameter="{Binding .}"/>
+                                                <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="ImprimirTicket_Tapped" />
                                             </Label.GestureRecognizers>
                                         </Label>
                                         

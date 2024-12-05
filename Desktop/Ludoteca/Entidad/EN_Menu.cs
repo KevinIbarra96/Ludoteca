@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Entidad
 {
     public class EN_Menu : INotifyPropertyChanged
     {
-        public int id {  get; set; }
+        public int id { get; set; }
         public string MenuName { get; set; }
         public string Path { get; set; }
         public string ClassName { get; set; }

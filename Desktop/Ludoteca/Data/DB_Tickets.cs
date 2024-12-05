@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -50,11 +45,11 @@ namespace Data
             return TicketsResponse;
         }
 
-        
+
         public static async Task<EN_Response<EN_Tickets>> addNewTicket(EN_Tickets _Ticket)
         {
 
-           
+
             EN_Response<EN_Tickets> Response = null;
             string endpointpath = _apiPath + "/addNewTicket";
 
@@ -71,7 +66,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                 
+
                 Response = JsonConvert.DeserializeObject<EN_Response<EN_Tickets>>(result);
             }
 

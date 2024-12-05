@@ -4,7 +4,6 @@ using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using System.Collections.Generic;
 
 namespace Ludoteca.PopUp;
 
@@ -30,15 +29,14 @@ public partial class RolMenuPopup
         MenuCollectionView.SelectionChanged += MenuCollectionView_SelectionChanged;
     }
 
-    public RolMenuPopup(UpdateRolConfig updateRolConfig,EN_Rol rol)
+    public RolMenuPopup(UpdateRolConfig updateRolConfig, EN_Rol rol)
     {
         InitializeComponent();
+      
         menuSelected = new List<EN_Menu>();
         RolActualizando = rol;
         getValues();
-        
-        
-
+               
         RolNamelbl.Text = rol.RolName;
         RolNameEntry.Text = rol.RolName;
 
@@ -65,7 +63,7 @@ public partial class RolMenuPopup
             MenuCollectionView.ItemsSource = menuResponse.Rbody;
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
@@ -112,10 +110,11 @@ public partial class RolMenuPopup
             menu.SelectedBackgroundColor = "White"; // Restablecer color
         }
 
-        // Selección de nuevos elementos
+        // Selecciï¿½n de nuevos elementos
         foreach (EN_Menu menu in e.CurrentSelection)
         {
             menu.SelectedBackgroundColor = "#40E1E1E1"; // Marcar visualmente
+
         }
     }
 
@@ -143,12 +142,12 @@ public partial class RolMenuPopup
     private void MenuSelectedPaint()
     {
         var activeMenus = MenuCollectionView.ItemsSource.OfType<EN_Menu>().ToList();
-        // Actualizar el estado de selección de cada menú        
+        // Actualizar el estado de selecciï¿½n de cada menï¿½        
         foreach (var menu in activeMenus)
         {
             if (menuSelected.Any(selected => selected.id == menu.id))
             {
-                menu.SelectedBackgroundColor = "#40E1E1E1"; // Cambia el color según sea necesario
+                menu.SelectedBackgroundColor = "#40E1E1E1"; // Cambia el color segï¿½n sea necesario
             }
             else
             {
@@ -178,14 +177,14 @@ public partial class RolMenuPopup
 
                 _updateRolConfig(GlobalEnum.Action.CREAR_NUEVO, nuevoRol);
 
-                var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                await toast.Show();
+            /*var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
                 await MopupService.Instance.PopAsync();
             }
             else
             {
-                await DisplayAlert("Alerta", "El Nombre de Rol está vacio o la lista está vacía", "OK");
+                await DisplayAlert("Alerta", "El Nombre de Rol estï¿½ vacio o la lista estï¿½ vacï¿½a", "OK");
             }
 
             
@@ -199,7 +198,7 @@ public partial class RolMenuPopup
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
-        
+
     }
 
     private async void BtnGuardarActualizar_Clicked(object sender, EventArgs e)
@@ -219,15 +218,15 @@ public partial class RolMenuPopup
 
 
                 _updateRolConfig(GlobalEnum.Action.ACTUALIZAR, nuevoRol);
-
-                var toast = Toast.Make("Rol actualizado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                await toast.Show();
+              
+            /*var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
                 await MopupService.Instance.PopAsync();
             }
             else
             {
-                await DisplayAlert("Alerta", "El Nombre de Rol está vacio o la lista está vacía", "OK");
+                await DisplayAlert("Alerta", "El Nombre de Rol estï¿½ vacio o la lista estï¿½ vacï¿½a", "OK");
             }
             
 

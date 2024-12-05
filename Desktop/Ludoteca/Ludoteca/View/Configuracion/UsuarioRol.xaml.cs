@@ -11,8 +11,8 @@ public partial class UsuarioRol : ContentView
     UpdateUsuarioConfig _updateUsuarioConfig;
 
     public UsuarioRol()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new ConfiguracionViewModel();
         BindingContext = viewModel;
@@ -25,7 +25,7 @@ public partial class UsuarioRol : ContentView
     {
         var btn = sender as Button;
         EN_User usuario = (EN_User)btn.CommandParameter;
-        MopupService.Instance.PushAsync(new PopUp.UsuarioRolPopup(_updateUsuarioConfig,usuario));
+        MopupService.Instance.PushAsync(new PopUp.UsuarioRolPopup(_updateUsuarioConfig, usuario));
     }
 
     private void Nuevo_Clicked(object sender, EventArgs e)

@@ -6,13 +6,13 @@ namespace Ludoteca.View.Configuracion;
 
 public partial class RolMenu : ContentView
 {
-    
+
     ConfiguracionViewModel viewModel;
     UpdateRolConfig _updateRolConfig;
 
     public RolMenu()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new ConfiguracionViewModel();
         BindingContext = viewModel;
@@ -31,6 +31,6 @@ public partial class RolMenu : ContentView
         var button = sender as Button;
 
 
-        MopupService.Instance.PushAsync(new PopUp.RolMenuPopup(_updateRolConfig, (EN_Rol)button.CommandParameter ));
+        MopupService.Instance.PushAsync(new PopUp.RolMenuPopup(_updateRolConfig, (EN_Rol)button.CommandParameter));
     }
 }

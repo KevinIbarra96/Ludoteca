@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Entidad
 {
     public class EN_Hijo : INotifyPropertyChanged
     {
-        public EN_Hijo() { } 
+        public EN_Hijo() { }
 
-        public EN_Hijo(int _id, string _name) {
+        public EN_Hijo(int _id, string _name)
+        {
             id = _id;
             NombreHijo = _name;
         }
 
-        public int id {  get; set; }
+        public int id { get; set; }
         //public string NombreHijo { get; set; }
-        public int papa {  get; set; }
+        public int papa { get; set; }
         public int mama { get; set; }
-        public string fechaNac {  get; set; }
+        public string fechaNac { get; set; }
 
         private string _selectedBackgroundColor;
         private string _nombreHijo;

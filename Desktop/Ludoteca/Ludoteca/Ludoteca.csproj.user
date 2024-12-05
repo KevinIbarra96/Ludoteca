@@ -21,6 +21,9 @@
     <MauiXaml Update="PopUp\FiestasPopup.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="PopUp\NuevaVentaPoup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="PopUp\NuevaVisitaPopUp.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
@@ -73,6 +76,9 @@
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\StringFormatTemplate.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="View\VentasView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\VisitView.xaml">

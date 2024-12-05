@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -19,7 +14,7 @@ namespace Data
             string _endPoint = _apiPath + "/modificarProductoVisita";
             EN_Response<EN_Producto> ProductosResponse = null;
 
-            var requestBody = new { idVisita = id_Visita , idProducto = producto.id_Producto, cantidadProducto = producto.CantidadProductoVisita, precioProducto = producto.precioProductoVisita };
+            var requestBody = new { idVisita = id_Visita, idProducto = producto.id_Producto, cantidadProducto = producto.CantidadProductoVisita, precioProducto = producto.precioProductoVisita };
 
             var requesData = JsonConvert.SerializeObject(requestBody);
 
@@ -38,14 +33,14 @@ namespace Data
             return ProductosResponse;
         }
 
-        public static async Task<EN_Response<EN_Producto>> increaseCantidadProducto(int idProducto,int cantidad)
+        public static async Task<EN_Response<EN_Producto>> increaseCantidadProducto(int idProducto, int cantidad)
         {
 
             ProductosResponse = null;
             EN_Response<EN_Producto> ProductRest = new EN_Response<EN_Producto>();
             string endpointpath = _apiPath + "/increaseCantidadProduct";
 
-            var RequestBody = new { id= idProducto, Cantidad = cantidad };
+            var RequestBody = new { id = idProducto, Cantidad = cantidad };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-
-namespace Entidad
+﻿namespace Entidad
 {
     public class EN_Response<T>
     {

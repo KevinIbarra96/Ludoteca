@@ -1,10 +1,5 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
@@ -26,7 +21,7 @@ namespace Negocio
         {
             return await DB_Tickets.deleteTicket(_id);
         }
-        public static async Task  RN_UpdateTicket(EN_Tickets eN_Tickets)
+        public static async Task RN_UpdateTicket(EN_Tickets eN_Tickets)
         {
             await DB_Tickets.updateTicket(eN_Tickets);
         }

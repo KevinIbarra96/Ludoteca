@@ -1,10 +1,5 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
@@ -14,7 +9,7 @@ namespace Negocio
         {
             return await DB_Producto.modificarProductoVisita(id_Visita, producto);
         }
-        public static async Task<EN_Response<EN_Producto>> RN_increaseCantidadProducto(int id,int Cantidad)
+        public static async Task<EN_Response<EN_Producto>> RN_increaseCantidadProducto(int id, int Cantidad)
         {
             return await DB_Producto.increaseCantidadProducto(id, Cantidad);
         }

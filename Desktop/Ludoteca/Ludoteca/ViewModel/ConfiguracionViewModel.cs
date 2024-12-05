@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 namespace Ludoteca.ViewModel
 {
 
-    public delegate void UpdateUsuarioConfig(GlobalEnum.Action Action,EN_User usuario);
+    public delegate void UpdateUsuarioConfig(GlobalEnum.Action Action, EN_User usuario);
     public delegate void UpdateRolConfig(GlobalEnum.Action Action, EN_Rol rol);
     public delegate void GetAllRolConfig();
 
@@ -22,21 +22,21 @@ namespace Ludoteca.ViewModel
         public GetAllRolConfig _getAllRol;
  
         public ConfiguracionViewModel() {
-
             Gafetes = new ObservableCollection<EN_Gafete>();
             Usuarios = new ObservableCollection<EN_User>();
             Rol = new ObservableCollection<EN_Rol>();
-            getAllGafetes();
-            getAllUsers();
-            getAllRol();
 
             _updateUsuario = UpdateUsuario;
             _updateRol = UpdateRol;
             
 
+            getAllGafetes();
+            getAllUsers();
+            getAllRol();
+
         }
 
-        private async void getAllUsers()
+        private async Task getAllUsers()
         {
             var UsuariosResponse = await RN_Users.RN_GetUsersAndRol();
             foreach (EN_User us in UsuariosResponse.Rbody)
@@ -49,7 +49,7 @@ namespace Ludoteca.ViewModel
             }
 
         }
-        private async void getAllRol()
+        private async Task getAllRol()
         {
             var RolResponse = await RN_Rol.RN_GetAllRols();
             foreach (EN_Rol rol in RolResponse.Rbody)
@@ -79,7 +79,7 @@ namespace Ludoteca.ViewModel
                 updateRolToColection(rol);
         }
 
-        private async void getAllGafetes()
+        private async Task getAllGafetes()
         {
 
             var gafeteResponse = await RN_Gafete.getAllGafete();
@@ -118,7 +118,7 @@ namespace Ludoteca.ViewModel
 
         private void updateUserToColection(EN_User user)
         {
-            EN_User encontrado = Usuarios.FirstOrDefault( usuario => usuario.id == user.id );
+            EN_User encontrado = Usuarios.FirstOrDefault(usuario => usuario.id == user.id);
 
             encontrado.UserName = user.UserName;
             encontrado.idRol = user.idRol;
@@ -128,7 +128,7 @@ namespace Ludoteca.ViewModel
         }
         private void updateRolToColection(EN_Rol rol)
         {
-            
+
             EN_Rol encontrado = Rol.FirstOrDefault(r => r.id == rol.id);
 
             if (encontrado != null)

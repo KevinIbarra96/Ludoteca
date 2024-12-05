@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
-namespace Entidad 
+namespace Entidad
 {
     public class EN_Visita : INotifyPropertyChanged
     {
@@ -25,7 +24,7 @@ namespace Entidad
             get { return _gafeteId; }
             set { if (_gafeteId != value) { _gafeteId = value; OnPropertyChanged(nameof(GafeteId)); } }
         }
-        
+
         public int NumeroGafete
         {
             get { return _numeroGafete; }
@@ -34,8 +33,9 @@ namespace Entidad
 
         public DateTime HoraEntrada
         {
-            get {  return _HoraEntrada; }
-            set {
+            get { return _HoraEntrada; }
+            set
+            {
                 if (_HoraEntrada != value)
                 {
                     _HoraEntrada = value;
@@ -72,18 +72,18 @@ namespace Entidad
 
         public List<EN_Hijo>? Hijos { get; set; }
 
-        public ObservableCollection<EN_ServiciosVisita>? Servicios 
+        public ObservableCollection<EN_ServiciosVisita>? Servicios
         {
             get => _servicios;
-            set { _servicios = value; OnPropertyChanged(nameof(Servicios)); } 
+            set { _servicios = value; OnPropertyChanged(nameof(Servicios)); }
         }
-        public List<EN_Padre>? Padres {  get; set; }
+        public List<EN_Padre>? Padres { get; set; }
 
 
         public ObservableCollection<EN_ProductosVisita>? _productos;
 
-        public ObservableCollection<EN_ProductosVisita>? Productos 
-        { 
+        public ObservableCollection<EN_ProductosVisita>? Productos
+        {
             get { return _productos; }
             set { _productos = value; OnPropertyChanged(nameof(Productos)); }
         }
@@ -99,7 +99,7 @@ namespace Entidad
                     OnPropertyChanged(nameof(Total));
                 }
             }
-        }        
+        }
 
         public int TiempoTranscurrido
         {
@@ -118,7 +118,7 @@ namespace Entidad
             get { return _tiempoTotal; }
             set { _tiempoTotal = value; OnPropertyChanged(nameof(TiempoTotal)); }
         }
-        
+
 
         public int TiempoExcedido
         {

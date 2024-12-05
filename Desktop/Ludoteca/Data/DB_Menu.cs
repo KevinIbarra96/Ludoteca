@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -154,7 +148,7 @@ namespace Data
             return MenusResponse;
         }
 
-        public static async Task<EN_Response<EN_Menu> > getMenuByRol(int idRol)
+        public static async Task<EN_Response<EN_Menu>> getMenuByRol(int idRol)
         {
             string _endPoint = _apiPath + "/getMenuByRol";
             EN_Response<EN_Menu> MenuRest = null;

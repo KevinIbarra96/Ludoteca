@@ -1,16 +1,11 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
     public class RN_Servicio
     {
-        public static async Task<EN_Response<EN_Servicio>> RN_setNewPrecio(int id,int precio)
+        public static async Task<EN_Response<EN_Servicio>> RN_setNewPrecio(int id, int precio)
         {
             return await DB_Servicio.setNewPrecio(id, precio);
         }
@@ -25,7 +20,7 @@ namespace Negocio
         public static async Task<EN_Response<EN_Servicio>> RN_GetallServiciosByTipoServicio(int _idTipoServicio)
         {
             return await DB_Servicio.getallServiciosByTipoServicio(_idTipoServicio);
-        }        
+        }
         public static async Task<List<EN_Servicio>> RN_GetServicioByID(int _id)
         {
             return await DB_Servicio.getServiciosById(_id);

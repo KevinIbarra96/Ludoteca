@@ -1,9 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
-using Negocio;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
-using CommunityToolkit.Maui.Alerts;
-using Ludoteca.Resources;
+using Negocio;
 using Resources.Properties;
 
 namespace Ludoteca.View;
@@ -14,20 +14,29 @@ public partial class InventarioView : ContentPage
     int count = 0;
 
     InventarioViewModel viewModel;
-    
+
     UpdateInventarioData _updateInventarioData;
+    LoadInventarioData _loadInventarioData;
 
     public InventarioView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new InventarioViewModel();
         BindingContext = viewModel;
-        
+
         _updateInventarioData = viewModel._UpdateInventarioData;
+        _loadInventarioData = viewModel._loadInventarioData;
 
         searchBar.TextChanged += SearchBar_TextChanged;
-        
+
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _loadInventarioData();
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
@@ -67,14 +76,15 @@ public partial class InventarioView : ContentPage
 
                     if (resp.RerrorCode == "0") //0 significa que no hubo ningun error, 0 es el valor por defaul que se recibe de la WebAPi
                     {
-                        
+
                         //Increase Cantidad property with Entry Value
                         producto.Cantidad += int.Parse(responseEntry);
 
                         _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
 
-                        var toast = Toast.Make("Se agregaron " + responseEntry + " " + producto.ProductoName, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                        await toast.Show();
+                        /*var toast = Toast.Make("Se agregaron " + responseEntry + " " + producto.ProductoName, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                        await toast.Show();*/
+
                     }
                     else
                         await DisplayAlert("Mensaje", resp.Rmessage, "ok");
@@ -88,16 +98,26 @@ public partial class InventarioView : ContentPage
     }
 
     private async void EditarProducto_Clicked(object sender, EventArgs e)
-    {        
-        if(Session.RolId != ApplicationProperties.IdAdministratorRol)
+    {
+        if (Session.RolId != ApplicationProperties.IdAdministratorRol)
             return;
 
         var btn = sender as Button;
-        await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto) btn.CommandParameter,_updateInventarioData ));
+        await MopupService.Instance.PushAsync(new PopUp.ProductoPopup((EN_Producto)btn.CommandParameter, _updateInventarioData));
     }
 
     private async void Agregar_Clicked(object sender, EventArgs e)
     {
         await MopupService.Instance.PushAsync(new PopUp.ProductoPopup(_updateInventarioData));
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
 }

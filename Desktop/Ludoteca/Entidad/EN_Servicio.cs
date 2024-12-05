@@ -16,7 +16,7 @@ namespace Entidad
         private string _tipoServicio;
         private int _status;
 
-        public string ServicioName 
+        public string ServicioName
         {
             get { return _ServicioName; }
             set { if (_ServicioName != value) { _ServicioName = value; OnPropertyChanged(nameof(ServicioName)); } }

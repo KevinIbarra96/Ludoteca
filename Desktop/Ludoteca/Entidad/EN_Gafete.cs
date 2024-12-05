@@ -22,30 +22,38 @@ namespace Entidad
         public int Asignado
         {
             get { return _asignado; }
-            set {   _asignado = value;
-                    OnPropertyChanged(nameof(Asignado));
+            set
+            {
+                _asignado = value;
+                OnPropertyChanged(nameof(Asignado));
             }
         }
 
         public string AsignadoString
         {
             get { return _asignadoString; }
-            set { _asignadoString = value;
+            set
+            {
+                _asignadoString = value;
                 OnPropertyChanged(nameof(AsignadoString));
             }
-        }       
+        }
         public int Status
         {
             get { return _status; }
-            set { _status = value;
-                    OnPropertyChanged(nameof(Status));
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(Status));
             }
         }
 
         public string StatusString
         {
             get { return _statusString; }
-            set { _statusString = value;
+            set
+            {
+                _statusString = value;
                 OnPropertyChanged(nameof(StatusString));
             }
         }

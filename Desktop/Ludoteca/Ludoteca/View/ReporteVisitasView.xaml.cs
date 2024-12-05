@@ -4,14 +4,14 @@ namespace Ludoteca.View;
 
 public partial class ReporteVisitasView : ContentPage
 {
-	ReporteVisitasViewModel viewModel;
+    ReporteVisitasViewModel viewModel;
     private DateTime fechaInicio;
     private DateTime fechaFin;
     public ReporteVisitasView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
-		viewModel = new ReporteVisitasViewModel();
+        viewModel = new ReporteVisitasViewModel();
         BindingContext = viewModel;
 
     }
@@ -55,4 +55,17 @@ public partial class ReporteVisitasView : ContentPage
         }
     }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
+    private void ImprimirTicket_Tapped(object sender, TappedEventArgs e)
+    {
+
+    }
 }

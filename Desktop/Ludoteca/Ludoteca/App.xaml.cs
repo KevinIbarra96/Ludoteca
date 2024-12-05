@@ -1,7 +1,6 @@
 ﻿using Entidad;
 using Ludoteca.Resources;
-using Negocio;
-using Resources.Properties;
+using System.Diagnostics;
 
 namespace Ludoteca
 {
@@ -20,16 +19,16 @@ namespace Ludoteca
         {
             try
             {
-                 VerificarSession();
+                VerificarSession();
             }
             catch (Exception ex)
             {
                 // Manejar la excepción (por ejemplo, mostrar un mensaje de error o registrarla)
-                Console.WriteLine($"Error al verificar sesión y navegar: {ex.Message}");
+                Debug.WriteLine($"Error al verificar sesión y navegar: {ex.Message}");
             }
         }
-       
-        private void  VerificarSession()
+
+        private void VerificarSession()
         {
             AccionesSession.VerificarSession();
         }
