@@ -39,8 +39,8 @@ public partial class Login : ContentPage
                         AccionesSession.SaveSession();
 
                         // Mostrar un mensaje de éxito
-                        var toastMessage = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
-                        await toastMessage.Show();
+                        /*var toastMessage = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
+                        await toastMessage.Show();*/
 
                         // Redirigir a la página principal de la aplicación
                         App.Current.MainPage = new AppShell();

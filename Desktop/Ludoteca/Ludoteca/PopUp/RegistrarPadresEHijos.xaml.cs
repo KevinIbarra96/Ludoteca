@@ -108,8 +108,8 @@ public partial class RegistrarPadresEHijos
                     EN_Response<EN_Hijo> hijoResponse = await RN_Hijo.RN_AddNewHijo(hijo);
                     if (hijoResponse != null && hijoResponse.Rcode == 200)
                     {
-                        var toast = Toast.Make("Registro correcto", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                        await toast.Show();
+                        /*var toast = Toast.Make("Registro correcto", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                        await toast.Show();*/
                     }
                     else
                     {

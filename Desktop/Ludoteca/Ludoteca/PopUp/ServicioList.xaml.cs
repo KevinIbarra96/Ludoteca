@@ -55,8 +55,8 @@ public partial class ServicioList
                 _addServicioToVisita(serv, _visitaId);
                 EN_Response<EN_Visita> response = await RN_Visita.addServicioToVisita(_visitaId, servList);
 
-                var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                await toast.Show();
+                /*var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                await toast.Show();*/
 
                 await MopupService.Instance.PopAsync();
             }

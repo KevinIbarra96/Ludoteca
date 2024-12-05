@@ -258,8 +258,8 @@ public partial class FiestasPopup
 
             await imprimirFiesta(nuevaFiesta);
 
-            var toast = Toast.Make("Nueva fiesta programada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Nueva fiesta programada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAsync();
 
@@ -301,8 +301,8 @@ public partial class FiestasPopup
 
             //await imprimirFiesta(nuevaFiesta);
 
-            var toast = Toast.Make("Nueva fiesta Actualizada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Nueva fiesta Actualizada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             //await Task.WhenAll(imprimirFiesta(nuevaFiesta));
             await imprimirFiesta(nuevaFiesta);

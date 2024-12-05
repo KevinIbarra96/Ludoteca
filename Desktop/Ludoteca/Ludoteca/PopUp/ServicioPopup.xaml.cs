@@ -59,8 +59,8 @@ public partial class ServicioPopup
             //Ejecuta el delegado 
             _UpdateServiciosTable(GlobalEnum.Action.ACTUALIZAR, servicio);
 
-            var toast = Toast.Make("Actualizacion de " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAllAsync();
 
@@ -87,17 +87,15 @@ public partial class ServicioPopup
             //Ejecuta el delegado para agregar el nuevo servicio
             _UpdateServiciosTable(GlobalEnum.Action.CREAR_NUEVO, servicio);
 
-            var toast = Toast.Make("Se agregó el " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + servicio.ServicioName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+
+            await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error en el proceso de guardado\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 

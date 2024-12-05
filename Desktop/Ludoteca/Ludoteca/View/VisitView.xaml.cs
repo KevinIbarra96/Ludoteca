@@ -117,33 +117,7 @@ public partial class VisitView : ContentPage
 
                 _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
 
-                ticket = new TicketPrinter(visitaSelected);
-                string action = await DisplayActionSheet("Selecciona una impresora ", "No Imprimir", null, ticket.ListPrinters());
-
-                if (action == "No Imprimir")
-                {
-                    //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
-                    bool answer = await DisplayAlert("Atencion", "¿Seguro que no quieres imprimir?", "Si", "No");
-                    if (!answer)
-                    {
-                        string action2 = await DisplayActionSheet("Selecciona una impresora ", "Cancelar", null, ticket.ListPrinters());
-                        if (action2 != "Cancelar")
-                        {
-                            await ticket.PrintTicket(action2);
-                            bool answer1 = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
-                            if (answer1)
-                                await ticket.PrintTicket(action2);
-                        }
-                    }
-                }
-                else
-                {
-                    await ticket.PrintTicket(action);
-
-                    bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
-                    if (answer)
-                        await ticket.PrintTicket(action);
-                }                
+                await ImprimirTicket(visitaSelected);
 
                 await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos.First().NombreHijo, "OK");
 
@@ -155,6 +129,37 @@ public partial class VisitView : ContentPage
             }
         }
 
+    }
+
+    private async Task ImprimirTicket(EN_Visita visitaSelected)
+    {
+        ticket = new TicketPrinter(visitaSelected);
+        string action = await DisplayActionSheet("Selecciona una impresora ", "No Imprimir", null, ticket.ListPrinters());
+
+        if (action == "No Imprimir")
+        {
+            //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso de cobro", "OK");
+            bool answer = await DisplayAlert("Atencion", "¿Seguro que no quieres imprimir?", "Si", "No");
+            if (!answer)
+            {
+                string action2 = await DisplayActionSheet("Selecciona una impresora ", "Cancelar", null, ticket.ListPrinters());
+                if (action2 != "Cancelar")
+                {
+                    await ticket.PrintTicket(action2);
+                    bool answer1 = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+                    if (answer1)
+                        await ticket.PrintTicket(action2);
+                }
+            }
+        }
+        else
+        {
+            await ticket.PrintTicket(action);
+
+            bool answer = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+            if (answer)
+                await ticket.PrintTicket(action);
+        }
     }
     private async Task CrearTicketPDF(EN_Visita visitaSelected, string PrintName)
     {

@@ -64,4 +64,8 @@ public partial class ReporteVisitasView : ContentPage
         GC.SuppressFinalize(this);
     }
 
+    private void ImprimirTicket_Tapped(object sender, TappedEventArgs e)
+    {
+
+    }
 }
