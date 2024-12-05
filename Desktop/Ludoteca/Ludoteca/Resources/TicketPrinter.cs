@@ -13,6 +13,7 @@ namespace Ludoteca.Resources
         PrintDocument printtTicket;
         private EN_Visita visita;
         private EN_Fiesta fiesta;
+        private EN_Ventas venta;
 
         private readonly CultureInfo culturaMexicana = new CultureInfo("es-MX");
 
@@ -28,6 +29,13 @@ namespace Ludoteca.Resources
             printtTicket = new PrintDocument();
             printtTicket.PrintPage += PrintFiestaPageHandler;
             this.fiesta = fiesta;
+        }
+
+        public TicketPrinter(EN_Ventas venta)
+        {
+            printtTicket = new PrintDocument();
+            printtTicket.PrintPage += PrintVentaPageHandler;
+            this.venta = venta;
         }
 
         public string[] ListPrinters()
@@ -50,6 +58,92 @@ namespace Ludoteca.Resources
 
             return printerList;
         }
+
+        private void PrintVentaPageHandler(object sender, PrintPageEventArgs e)
+        {
+
+            StringFormat format = new StringFormat
+            {
+                Alignment = StringAlignment.Center
+            };
+
+            string imagePath = "logo_lustkids.scale-100.jpeg";
+
+            Graphics gfx = e.Graphics;
+            System.Drawing.Font titleFont = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+            System.Drawing.Font EncabezadosFont = new System.Drawing.Font("Arial", 7, FontStyle.Bold);
+            System.Drawing.Font regularFont = new System.Drawing.Font("Arial", 7, FontStyle.Regular);
+
+            int x = 0, y = 5, offset = 10, LineSpace = 12;
+            float ancho = 180; // Ancho del área de texto
+            float alto = 30; // Alto del área de texto
+
+            // Encabezado centrado
+            string titulo = "JUST KIDS";
+
+            gfx.DrawString(titulo, titleFont, Brushes.Black, new RectangleF(x, y, ancho, alto), format);
+            offset += LineSpace;
+
+            using (Stream imageStream = FileSystem.OpenAppPackageFileAsync(imagePath).Result)
+            {
+                if (imageStream != null)
+                {
+                    using (System.Drawing.Image image = System.Drawing.Image.FromStream(imageStream))
+                    {
+                        // Dibujar la imagen
+                        gfx.DrawImage(image, x + 40, y + offset, 110, 40); // Ajusta tamaño y posición
+                        offset += (LineSpace * 5);
+                    }
+                }
+            }
+
+            gfx.DrawString("Av. Lázaro Cárdenas No. 1559 ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
+            offset += LineSpace;
+            gfx.DrawString("Local A07 Plaza Las Americas ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
+            offset += LineSpace;
+            gfx.DrawString("Lázaro Cárdenas Michoacan ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
+            offset += LineSpace;
+            gfx.DrawString("Tel. 7536882066 ", EncabezadosFont, Brushes.Black, new RectangleF(x, y + offset, ancho, alto), format);
+            offset += (LineSpace * 2);
+
+            gfx.DrawString("Folio: " + venta.id, regularFont, Brushes.Black, x, y + offset);
+            offset += LineSpace;            
+
+            gfx.DrawString("Fecha: " + venta.Fecha, regularFont, Brushes.Black, x, y + offset);
+            offset += LineSpace;
+
+            //Linea Horizontal Ajustada
+            offset += LineSpace;
+            gfx.DrawLine(Pens.Black, x, offset, x + 200, offset);
+            offset += LineSpace;
+
+            //Dibujar Encabezados de productos y Servicios
+            gfx.DrawString("Productos", EncabezadosFont, Brushes.Black, x, y + offset);
+            gfx.DrawString("Precio ", EncabezadosFont, Brushes.Black, x + 110, y + offset);
+            gfx.DrawString("Total ", EncabezadosFont, Brushes.Black, x + 145, y + offset);
+            offset += LineSpace;
+
+            foreach (var producto in venta.Productos)
+            {
+                gfx.DrawString(producto.CantidadVisita.ToString() , regularFont, Brushes.Black, x, y + offset);
+                gfx.DrawString(producto.Precio.ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 110, y + offset);
+                gfx.DrawString((producto.Precio * producto.CantidadVisita).ToString("C2", culturaMexicana), regularFont, Brushes.Black, x + 145, y + offset);
+                offset += LineSpace;
+            }
+
+            //Linea Horizontal Ajustada
+            offset += LineSpace;
+            gfx.DrawLine(Pens.Black, x, offset, x + 200, offset);
+            offset += LineSpace;
+
+            gfx.DrawString("Total", EncabezadosFont, Brushes.Black, x, y + offset);
+            gfx.DrawString(venta.Total.ToString("C2", culturaMexicana), EncabezadosFont, Brushes.Black, x + 135, y + offset);
+
+            offset += (LineSpace * 4);
+            gfx.DrawString("¡Gracias por su visita!", titleFont, Brushes.Black, x, y + offset);
+
+        }
+
         private void PrintFiestaPageHandler(object sender, PrintPageEventArgs e)
         {
             StringFormat format = new StringFormat

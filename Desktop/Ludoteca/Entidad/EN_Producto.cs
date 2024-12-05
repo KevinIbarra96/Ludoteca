@@ -18,6 +18,12 @@ namespace Entidad
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public string CantidadProducto
+        {
+            get => $"({CantidadVisita}) {ProductoName}";
+
+        }
+
         public string ProductoName
         {
             get { return _productoName; }

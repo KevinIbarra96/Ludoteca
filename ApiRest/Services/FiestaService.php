@@ -19,7 +19,7 @@
             $HS = new HijoService();
             $SS = new ServiciosService();
 
-            $stm =  $this-> DbConection->prepare("insert into fiestas(idServicio, 
+            $stm =  $this-> DbConection->prepare("insert into fiestas(idServicio,
                                                                             idTurno, 
                                                                             Fecha, 
                                                                             Tematica, 

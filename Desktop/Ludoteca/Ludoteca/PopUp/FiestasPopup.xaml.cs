@@ -330,7 +330,18 @@ public partial class FiestasPopup
         {
             //await DisplayAlert("Atencion", "No se seleccionó ninguna impresora, se cancelará el proceso", "OK");
             //throw new Exception("No se seleccionó ninguna impresora, se cancelará el proceso");
-
+            bool answer = await Application.Current.MainPage.DisplayAlert("Atencion", "¿Seguro que no quieres imprimir?", "Si", "No");
+            if (!answer)
+            {
+                string action2 = await Application.Current.MainPage.DisplayActionSheet("Selecciona una impresora ", "Cancelar", null, ticket.ListPrinters());
+                if (action2 != "Cancelar")
+                {
+                    await ticket.PrintTicket(action2);
+                    bool answer1 = await DisplayAlert("Atencion", "¿Quieres imprimir otro ticket?", "Si", "No");
+                    if (answer1)
+                        await ticket.PrintTicket(action2);
+                }
+            }
         }
         else
         {
