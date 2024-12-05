@@ -283,14 +283,20 @@ namespace Ludoteca.ViewModel
             EN_Visita Encontrado = getVisitaByID(visita.id);
 
             if (Encontrado != null)
-            {
-                var sinProd = visita.Productos.FirstOrDefault(pro => pro.id_Producto == ApplicationProperties.IdSinProducto);
+            {                
 
                 if (visita.Productos.Count > Encontrado.Productos.Count)
                     Encontrado.Productos = visita.Productos;
-                else if (sinProd != null && visita.Productos.Count == Encontrado.Productos.Count)
-                    Encontrado.Productos = visita.Productos;
 
+                else if (visita.Productos.Count == Encontrado.Productos.Count && visita.Productos.Count == 1)
+                {
+                    var sinProd = visita.Productos.FirstOrDefault(pro => pro.id_Producto == ApplicationProperties.IdSinProducto);
+
+                    if (sinProd == null && Encontrado.Productos.First().id_Producto == ApplicationProperties.IdSinProducto)
+                    {
+                        Encontrado.Productos = visita.Productos;
+                    }
+                }
             }
         }
 
