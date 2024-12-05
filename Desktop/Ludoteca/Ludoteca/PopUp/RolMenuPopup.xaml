@@ -25,7 +25,7 @@
                     <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Nombre del producto" />
                 </Grid>
                 <ScrollView HeightRequest="350">
-                    <CollectionView x:Name="MenuCollectionView" SelectionMode="Multiple" SelectionChanged="MenuCollectionView_SelectionChanged">
+                    <CollectionView x:Name="MenuCollectionView" SelectionMode="Multiple">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="5" BackgroundColor="White">
@@ -34,6 +34,9 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackLayout Padding="1" BackgroundColor="{Binding SelectedBackgroundColor}">
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="MenuCollection_Tapped" CommandParameter="{Binding .}" />
+                                        </StackLayout.GestureRecognizers>
                                         <Label HorizontalOptions="Center" Text="{Binding MenuName}" VerticalOptions="Center" />
                                     </StackLayout>
                                     

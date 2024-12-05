@@ -33,6 +33,16 @@
 
         }
 
+        function updateRol($dataBody){
+            
+            $stm =  $this-> DbConection->prepare("UPDATE rol 
+                  SET RolName = :RolName, status = :status 
+                  WHERE id = :id");
+            $stm->bindValue(':id', $dataBody["id"], PDO::PARAM_INT);
+            $stm->bindValue(':RolName', $dataBody["RolName"], PDO::PARAM_STR);
+            $stm->bindValue(':status', $dataBody["status"], PDO::PARAM_STR);
+            $stm->execute();
 
+        }
     }
 ?>
