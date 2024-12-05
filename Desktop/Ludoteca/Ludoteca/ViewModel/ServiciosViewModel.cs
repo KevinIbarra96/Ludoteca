@@ -27,7 +27,7 @@ namespace Ludoteca.ViewModel
             _loadServiciosTable = loadServiciosTable;
             _UpdateServiciosTable = UpdateServiciosTable;
 
-            loadServiciosTable();
+            //loadServiciosTable();
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion
@@ -49,7 +49,7 @@ namespace Ludoteca.ViewModel
             {
                 foreach (EN_TipoServicio tp in tipoServicioRes.Rbody)
                 {
-                    if(tp.id == servicio.IdTipoServicio)
+                    if (tp.id == servicio.IdTipoServicio)
                         servicio.TipoServicio = tp.Nombre;
                 }
                 addServiciosToCollection(servicio);

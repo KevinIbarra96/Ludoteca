@@ -9,7 +9,8 @@ require_once $ProjectPath."/Database/config.php";
 		public function __construct(){
 			$options = [
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+				PDO::MYSQL_ATTR_MULTI_STATEMENTS => true
 			];
 
 			$this->Conection = new PDO("mysql:host=".DB_SERVER.";port=".DB_PORT.";dbname=".DB_DATABASE,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);

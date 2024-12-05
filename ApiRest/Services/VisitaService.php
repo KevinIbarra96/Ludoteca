@@ -98,7 +98,7 @@
                                                          a.TiempoTotal
                                                     from visitas as a
                                               inner join ofertas as b on b.id = a.Oferta
-                                                   where a.status = 1;");
+                                                   where a.status = 1 order by a.HoraEntrada Asc;");
             $stm->execute();
             
             $Visitas = $stm->fetchAll(PDO::FETCH_ASSOC);

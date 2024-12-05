@@ -1,6 +1,6 @@
 ﻿
-using Entidad;
 using Data;
+using Entidad;
 
 namespace Negocio
 {
@@ -18,7 +18,8 @@ namespace Negocio
         {
             return await DB_Configuracion.getConfigurationById(_id);
         }
-        public static async Task<EN_Response<EN_Configuracion>> updateConfigurationValues(EN_Configuracion _configuration) { 
+        public static async Task<EN_Response<EN_Configuracion>> updateConfigurationValues(EN_Configuracion _configuration)
+        {
             return await DB_Configuracion.updateConfigurationValues(_configuration);
         }
     }

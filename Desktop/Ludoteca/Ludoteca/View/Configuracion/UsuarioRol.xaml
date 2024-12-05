@@ -31,48 +31,46 @@
         </Grid>
 
         <!-- Lista de productos -->
-            <ScrollView>
-                <ListView ItemsSource="{Binding Usuarios}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47" VerticalOptions="FillAndExpand">
-            <ListView.HeaderTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid IsVisible="False">
-                            <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.HeaderTemplate>
+            <ListView ItemsSource="{Binding Usuarios}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47" VerticalOptions="FillAndExpand">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid IsVisible="False">
+                                <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
 
-            <ListView.ItemTemplate >
-                <DataTemplate>
-                    <ViewCell >
-                        <Grid>
+                <ListView.ItemTemplate >
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="200" />
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="200" />
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0" Text="{Binding UserName}" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            <Label Grid.Column="1" Text="{Binding RolName}" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Grid.Column="2" Text="{Binding statusString}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Grid.Column="0" Text="{Binding UserName}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Text="{Binding RolName}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding statusString}" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                            <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Producto" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80" Clicked="Editar_Clicked"/>
+                                <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Producto" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80" Clicked="Editar_Clicked"/>
 
-                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
-                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
-                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
-                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
-                            <!-- Agrega líneas de separación adicionales si es necesario -->
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
+                                <!-- Agrega líneas de separación adicionales si es necesario -->
 
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-            </ScrollView>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </VerticalStackLayout>
         </Grid >
     

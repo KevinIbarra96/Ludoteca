@@ -1,9 +1,9 @@
-using Mopups.Services;
-using Ludoteca.ViewModel;
-using Entidad;
-using Negocio;
-using Ludoteca.Resources;
 using CommunityToolkit.Maui.Alerts;
+using Entidad;
+using Ludoteca.Resources;
+using Ludoteca.ViewModel;
+using Mopups.Services;
+using Negocio;
 
 namespace Ludoteca.PopUp;
 
@@ -17,7 +17,7 @@ public partial class ServicioPopup
     public ServicioPopup(EN_Servicio servicio, UpdateServiciosTable updateServiciosTable)
     {
         InitializeComponent();
-        getTipoServicio(GlobalEnum.Action.ACTUALIZAR,servicio.IdTipoServicio);
+        getTipoServicio(GlobalEnum.Action.ACTUALIZAR, servicio.IdTipoServicio);
 
         //Llenar el formulario
         IdServicioEntry.Text = servicio.id.ToString();
@@ -44,7 +44,7 @@ public partial class ServicioPopup
 
         _UpdateServiciosTable = updateServiciosTable;
 
-        getTipoServicio(GlobalEnum.Action.CREAR_NUEVO,0);
+        getTipoServicio(GlobalEnum.Action.CREAR_NUEVO, 0);
     }
 
     private async void BtnGuardarActualizar_Clicked(object? sender, EventArgs e)

@@ -15,7 +15,7 @@ namespace Negocio
         }
         public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita, List<EN_ServiciosVisita> servicio)
         {
-            return await DB_Visita.addServicioToVisita( idvisita, servicio);
+            return await DB_Visita.addServicioToVisita(idvisita, servicio);
         }
         public static async Task<EN_Response<EN_Visita>> addProductosToVisita(int idvisita, List<EN_ProductosVisita> productos)
         {

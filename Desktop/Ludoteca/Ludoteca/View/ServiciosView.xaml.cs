@@ -1,9 +1,6 @@
-using CommunityToolkit.Maui.Alerts;
 using Entidad;
-using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
-using Negocio;
 
 namespace Ludoteca.View;
 
@@ -17,8 +14,8 @@ public partial class ServiciosView : ContentPage
     UpdateServiciosTable _UpdateServiciosTable;
 
     public ServiciosView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new ServiciosViewModel();
         BindingContext = viewModel;
@@ -27,6 +24,12 @@ public partial class ServiciosView : ContentPage
         _UpdateServiciosTable = viewModel._UpdateServiciosTable;
 
         searchBar.TextChanged += SearchBar_TextChanged;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _loadServiciosTable();
     }
 
     private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
@@ -56,4 +59,14 @@ public partial class ServiciosView : ContentPage
     {
         await MopupService.Instance.PushAsync(new PopUp.ServicioPopup(_UpdateServiciosTable));
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+    }
+
 }

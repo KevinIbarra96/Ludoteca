@@ -15,15 +15,15 @@ public partial class OfertaPopup
     public OfertaPopup(UpdateOfertasTable updateOfertasTable)
     {
         InitializeComponent();
-        
+
         OfertaNamelbl.Text = "Nueva Oferta";
 
         _UpdateOfertaTable = updateOfertasTable;
 
         BtnGuardar.Clicked += BtnGuardarNuevo_Clicked;
     }
-    
-    public OfertaPopup(UpdateOfertasTable updateOfertasTable,EN_Oferta oferta)
+
+    public OfertaPopup(UpdateOfertasTable updateOfertasTable, EN_Oferta oferta)
     {
         InitializeComponent();
 
@@ -41,9 +41,9 @@ public partial class OfertaPopup
 
 
     public OfertaPopup()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private async void BtnGuardarNuevo_Clicked(object? sender, EventArgs e)
     {
@@ -83,11 +83,13 @@ public partial class OfertaPopup
     {
         try
         {
-            var oferta = new EN_Oferta() { id = int.Parse(IdOfertaEntry.Text),
-                                           OfertaName = OfertaNameEntry.Text,
-                                           Descripcion = DescripcionEditor.Text,
-                                           Tiempo = int.Parse(OfertaTiempoEntry.Text),
-                                           totalDescuento = double.Parse(PrecioOferta.Text)
+            var oferta = new EN_Oferta()
+            {
+                id = int.Parse(IdOfertaEntry.Text),
+                OfertaName = OfertaNameEntry.Text,
+                Descripcion = DescripcionEditor.Text,
+                Tiempo = int.Parse(OfertaTiempoEntry.Text),
+                totalDescuento = double.Parse(PrecioOferta.Text)
             };
             await RN_Oferta.RN_UpdateOferta(oferta);
 

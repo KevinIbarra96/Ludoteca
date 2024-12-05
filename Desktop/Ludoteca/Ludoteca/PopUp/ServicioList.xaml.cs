@@ -1,9 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using Ludoteca.Resources;
-using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.PopUp;
 
@@ -12,9 +12,9 @@ public partial class ServicioList
     public AddServicioToVisita _addServicioToVisita;
     public int _visitaId;
 
-	public ServicioList(AddServicioToVisita addServicioToVisita,int visitaId)
-	{
-		InitializeComponent();
+    public ServicioList(AddServicioToVisita addServicioToVisita, int visitaId)
+    {
+        InitializeComponent();
         _addServicioToVisita = addServicioToVisita;
         _visitaId = visitaId;
 

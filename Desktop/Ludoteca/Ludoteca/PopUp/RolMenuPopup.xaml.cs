@@ -4,7 +4,6 @@ using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using System.Collections.Generic;
 
 namespace Ludoteca.PopUp;
 
@@ -13,9 +12,9 @@ public partial class RolMenuPopup
 
     UpdateRolConfig _updateRolConfig;
 
-	public RolMenuPopup(UpdateRolConfig updateRolConfig)
-	{
-		InitializeComponent();
+    public RolMenuPopup(UpdateRolConfig updateRolConfig)
+    {
+        InitializeComponent();
         getAllActiveMenu();
 
         RolNamelbl.Text = "Nuevo Rol";
@@ -25,12 +24,12 @@ public partial class RolMenuPopup
         BtnGuardar.Clicked += BtnGuardar_Clicked;
     }
 
-    public RolMenuPopup(UpdateRolConfig updateRolConfig,EN_Rol rol)
+    public RolMenuPopup(UpdateRolConfig updateRolConfig, EN_Rol rol)
     {
         InitializeComponent();
         getAllActiveMenu();
         getMenuByRol(rol.id);
-        
+
 
         RolNamelbl.Text = rol.RolName;
         RolNameEntry.Text = rol.RolName;
@@ -50,7 +49,7 @@ public partial class RolMenuPopup
             MenuCollectionView.ItemsSource = menuResponse.Rbody;
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
@@ -88,11 +87,11 @@ public partial class RolMenuPopup
         {
             menu.SelectedBackgroundColor = "White";
         }
-        
+
         foreach (EN_Menu menu in e.CurrentSelection)
         {
             menu.SelectedBackgroundColor = "#40E1E1E1";
-            
+
         }
 
     }
@@ -126,7 +125,7 @@ public partial class RolMenuPopup
         {
             await DisplayAlert("Error", "Ah ocurrido un error\nDetalle: " + ex.Message, "OK");
         }
-        
+
     }
 
     private async void BtnGuardarActualizar_Clicked(object sender, EventArgs e)

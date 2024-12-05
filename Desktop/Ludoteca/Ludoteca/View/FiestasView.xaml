@@ -46,7 +46,7 @@
         </Grid>
 
         <!-- Lista de productos -->
-        <ListView ItemsSource="{Binding fiestas, Mode=TwoWay}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}">
+        <ListView x:Name="FiestasListView" ItemsSource="{Binding fiestas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}">
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <ViewCell>

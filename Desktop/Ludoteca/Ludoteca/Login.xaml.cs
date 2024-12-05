@@ -1,8 +1,6 @@
 using CommunityToolkit.Maui.Alerts;
-using Entidad;
 using Ludoteca.Resources;
 using Negocio;
-using Newtonsoft.Json;
 
 namespace Ludoteca;
 
@@ -12,12 +10,12 @@ public partial class Login : ContentPage
 
 
     public Login()
-	{
-		InitializeComponent();
-	}
-	
-	public async void OnLoginButtonClicked(object sender, EventArgs e)
-	{
+    {
+        InitializeComponent();
+    }
+
+    public async void OnLoginButtonClicked(object sender, EventArgs e)
+    {
         string username = txtUsername.Text;
         string password = txtContraseña.Text;
 
@@ -54,7 +52,8 @@ public partial class Login : ContentPage
 
 
                 }
-                else {
+                else
+                {
                     await DisplayAlert("Error", response.Rmessage, "OK");
 
                 }
@@ -80,5 +79,5 @@ public partial class Login : ContentPage
         return null;
 
     }
-	
+
 }

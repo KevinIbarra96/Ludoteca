@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -13,9 +8,9 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Servicios"; //Adding ControllerName to Path
         private static List<EN_Servicio> ServiciosResponse = null;
 
-        public static async Task<EN_Response<EN_Servicio>> setNewPrecio(int id,int Precio)
+        public static async Task<EN_Response<EN_Servicio>> setNewPrecio(int id, int Precio)
         {
-            
+
             EN_Response<EN_Servicio> servicioResponse = new EN_Response<EN_Servicio>();
             string endpointpath = _apiPath + "/setNewPrecio";
 
@@ -131,7 +126,7 @@ namespace Data
         public static async Task<EN_Response<EN_Servicio>> addNewServicios(EN_Servicio _Servicio)
         {
             EN_Response<EN_Servicio> ServicioResponse = null;
-            
+
             string endpointpath = _apiPath + "/addNewServicios";
 
             EN_Servicio RequestBody = _Servicio;
