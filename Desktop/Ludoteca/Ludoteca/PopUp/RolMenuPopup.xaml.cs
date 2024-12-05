@@ -171,15 +171,24 @@ public partial class RolMenuPopup
 
             List<EN_Menu> MenuList = MenuCollectionView.SelectedItems.OfType<EN_Menu>().ToList();
 
-            await RN_Rol.RN_AddNewRol(nuevoRol, MenuList);
+            if (!string.IsNullOrEmpty(nuevoRol.RolName) && MenuList.Count >= 1)
+            {
+                await RN_Rol.RN_AddNewRol(nuevoRol, MenuList);
 
 
-            _updateRolConfig(GlobalEnum.Action.CREAR_NUEVO, nuevoRol);
+                _updateRolConfig(GlobalEnum.Action.CREAR_NUEVO, nuevoRol);
 
-            var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+                var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                await toast.Show();
 
-            await MopupService.Instance.PopAsync();
+                await MopupService.Instance.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Alerta", "El Nombre de Rol está vacio o la lista está vacía", "OK");
+            }
+
+            
 
         }
         catch (NullReferenceException invalidCastException)
@@ -202,19 +211,25 @@ public partial class RolMenuPopup
             nuevoRol.status = 1;
             nuevoRol.id = RolActualizando.id;
             nuevoRol.statusString = "Activo";
-            Console.WriteLine($"ID del rol: {nuevoRol.id}");
+
+            if(!string.IsNullOrEmpty(nuevoRol.RolName) && menuSelected.Count >= 1 )
+            {
+                var response = await RN_Rol.RN_UpdateRol(nuevoRol, menuSelected);
+                if (response.Rcode != 200) throw new Exception(response.Rmessage);
 
 
-            var response = await RN_Rol.RN_UpdateRol(nuevoRol, menuSelected);
-            if (response.Rcode != 200) throw new Exception(response.Rmessage);
+                _updateRolConfig(GlobalEnum.Action.ACTUALIZAR, nuevoRol);
+
+                var toast = Toast.Make("Rol actualizado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                await toast.Show();
+
+                await MopupService.Instance.PopAsync();
+            }
+            else
+            {
+                await DisplayAlert("Alerta", "El Nombre de Rol está vacio o la lista está vacía", "OK");
+            }
             
-
-            _updateRolConfig(GlobalEnum.Action.ACTUALIZAR, nuevoRol);
-
-            var toast = Toast.Make("Rol actualizado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
-
-            await MopupService.Instance.PopAsync();
 
         }
         catch (NullReferenceException invalidCastException)
