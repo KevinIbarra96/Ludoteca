@@ -111,8 +111,8 @@ public partial class RolMenuPopup
 
             _updateRolConfig(GlobalEnum.Action.CREAR_NUEVO, nuevoRol);
 
-            var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAsync();
 
@@ -143,8 +143,8 @@ public partial class RolMenuPopup
 
             _updateRolConfig(GlobalEnum.Action.ACTUALIZAR, nuevoRol);
 
-            var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Nuevo Rol Creado correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAsync();
 

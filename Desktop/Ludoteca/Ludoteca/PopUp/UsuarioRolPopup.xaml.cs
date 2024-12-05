@@ -70,10 +70,10 @@ public partial class UsuarioRolPopup
 
             _updateUsuarioConfig(GlobalEnum.Action.ACTUALIZAR, usuario);
 
-            var toast = Toast.Make("Actualizacion de " + usuario.UserName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + usuario.UserName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
-            MopupService.Instance.PopAsync();
+            await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)
@@ -95,10 +95,10 @@ public partial class UsuarioRolPopup
 
             _updateUsuarioConfig(GlobalEnum.Action.CREAR_NUEVO, usuario);
 
-            var toast = Toast.Make("Se agregó el " + usuario.UserName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + usuario.UserName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
-            MopupService.Instance.PopAsync();
+            await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)

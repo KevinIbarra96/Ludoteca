@@ -63,8 +63,8 @@ public partial class OfertaPopup
 
             _UpdateOfertaTable(GlobalEnum.Action.CREAR_NUEVO, oferta);
 
-            var toast = Toast.Make("Se agregó el " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAllAsync();
 
@@ -96,17 +96,15 @@ public partial class OfertaPopup
             //Ejecuta el delegado 
             _UpdateOfertaTable(GlobalEnum.Action.ACTUALIZAR, oferta);
 
-            var toast = Toast.Make("Actualizacion de " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + oferta.OfertaName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+
+            //await MopupService.Instance.PopAsync();
 
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "Ok");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAllAsync();
         }
     }
 

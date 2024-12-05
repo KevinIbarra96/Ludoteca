@@ -60,8 +60,8 @@ public partial class ProductoPopup
             //Excecute the delegate to load the data on inventory
             _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
 
-            var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAsync();
         }
@@ -90,16 +90,13 @@ public partial class ProductoPopup
             //Excecute the delegate to load the data on inventory
             _updateInventarioData(GlobalEnum.Action.CREAR_NUEVO, producto);
 
-            var toast = Toast.Make("Se agregó el " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+            await MopupService.Instance.PopAsync();
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al agregar un nuevo producto\nDetalle: " + ex.Message, "OK");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAsync();
         }
     }
 }

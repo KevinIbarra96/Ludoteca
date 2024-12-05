@@ -126,8 +126,8 @@ public partial class NuevaVisitaPopUp
             _updateVisitasTable(GlobalEnum.Action.CREAR_NUEVO, nuevaVisita);
             Debug.WriteLine($"BindingContext actual: {BindingContext?.GetType().Name}");
 
-            var toast = Toast.Make("Nueva visita registrada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Nueva visita registrada correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
 
             await MopupService.Instance.PopAsync();
 
