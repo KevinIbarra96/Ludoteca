@@ -2,8 +2,8 @@
 {
     public class ApiRest_Properties
     {
-        private static string Path = @"http://localhost:80/LudotecaService";
-        //private static string Path = @"https://justkids.site/DesktopProviderDev";
+        //private static string Path = @"http://localhost:80/LudotecaService";
+        private static string Path = @"https://justkids.site/DesktopProviderDev";
         protected static HttpClient cliente = new HttpClient();
 
         public ApiRest_Properties()

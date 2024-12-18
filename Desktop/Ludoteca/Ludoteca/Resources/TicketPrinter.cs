@@ -41,7 +41,7 @@ namespace Ludoteca.Resources
         public string[] ListPrinters()
         {
 
-            string[] printerList = new string[PrinterSettings.InstalledPrinters.Count - 4];
+            string[] printerList = new string[PrinterSettings.InstalledPrinters.Count];
             int count = 0;
 
             foreach (string printerName in PrinterSettings.InstalledPrinters)
