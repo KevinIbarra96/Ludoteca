@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Entidad 
+namespace Entidad
 {
     public class EN_Visita : INotifyPropertyChanged
     {
         public int id { get; set; }
         private DateTime _HoraEntrada;
-
+        private int _numeroGafete;
         private int _gafeteId;
-        
+        private DateTime? _HoraSalida;
+        private List<EN_Oferta> _Oferta;
+        private ObservableCollection<EN_ServiciosVisita>? _servicios;
+        private double _Total;
+        private int _tiempoTranscurrido;
+        private int _tiempoExcedido;
+        private int _tiempoTotal;
+
+        public bool GafeteEntregado = true;
+
         public int GafeteId
         {
             get { return _gafeteId; }
             set { if (_gafeteId != value) { _gafeteId = value; OnPropertyChanged(nameof(GafeteId)); } }
         }
-
-        private int _numeroGafete;
 
         public int NumeroGafete
         {
@@ -31,8 +33,9 @@ namespace Entidad
 
         public DateTime HoraEntrada
         {
-            get {  return _HoraEntrada; }
-            set {
+            get { return _HoraEntrada; }
+            set
+            {
                 if (_HoraEntrada != value)
                 {
                     _HoraEntrada = value;
@@ -40,8 +43,7 @@ namespace Entidad
                 }
             }
         }
-        private DateTime? _HoraSalida;
-        
+
         public DateTime? HoraSalida
         {
             get { return _HoraSalida; }
@@ -54,9 +56,8 @@ namespace Entidad
                 }
             }
         }
-        private int _Oferta;
-        
-        public int Oferta
+
+        public List<EN_Oferta> Oferta
         {
             get { return _Oferta; }
             set
@@ -68,37 +69,25 @@ namespace Entidad
                 }
             }
         }
-        private string _OfertaName;
-        public string OfertaName
-        {
-            get { return _OfertaName; }
-            set
-            {
-                if (_OfertaName != value)
-                {
-                    _OfertaName = value;
-                    OnPropertyChanged(nameof(OfertaName));
-                }
-            }
-        }
+
         public List<EN_Hijo>? Hijos { get; set; }
 
-        private ObservableCollection<EN_ServiciosVisita>? _servicios;
-        public ObservableCollection<EN_ServiciosVisita>? Servicios 
+        public ObservableCollection<EN_ServiciosVisita>? Servicios
         {
             get => _servicios;
-            set { _servicios = value; OnPropertyChanged(nameof(Servicios)); } 
+            set { _servicios = value; OnPropertyChanged(nameof(Servicios)); }
         }
-        public List<EN_Padre>? Padres {  get; set; }
+        public List<EN_Padre>? Padres { get; set; }
+
 
         public ObservableCollection<EN_ProductosVisita>? _productos;
-        public ObservableCollection<EN_ProductosVisita>? Productos 
-        { 
+
+        public ObservableCollection<EN_ProductosVisita>? Productos
+        {
             get { return _productos; }
             set { _productos = value; OnPropertyChanged(nameof(Productos)); }
         }
 
-        private double _Total;
         public double Total
         {
             get { return _Total; }
@@ -112,8 +101,6 @@ namespace Entidad
             }
         }
 
-        private int _tiempoTranscurrido;
-
         public int TiempoTranscurrido
         {
             get { return _tiempoTranscurrido; }
@@ -126,8 +113,12 @@ namespace Entidad
                 }
             }
         }
+        public int TiempoTotal
+        {
+            get { return _tiempoTotal; }
+            set { _tiempoTotal = value; OnPropertyChanged(nameof(TiempoTotal)); }
+        }
 
-        private int _tiempoExcedido;
 
         public int TiempoExcedido
         {

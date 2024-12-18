@@ -1,7 +1,12 @@
 <?php
 
     $pt = explode('\\',__DIR__);
+    
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -26,6 +31,31 @@
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "All Configuracion listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Configuracion);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveConfiguracion(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $ConfiguracionSvc = new ConfiguracionService();
+                $Response->Rbody = $ConfiguracionSvc->getAllActive();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Active Configuracion listed";
                                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;

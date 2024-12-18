@@ -15,7 +15,7 @@ namespace Negocio
         }
         public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita, List<EN_ServiciosVisita> servicio)
         {
-            return await DB_Visita.addServicioToVisita( idvisita, servicio);
+            return await DB_Visita.addServicioToVisita(idvisita, servicio);
         }
         public static async Task<EN_Response<EN_Visita>> addProductosToVisita(int idvisita, List<EN_ProductosVisita> productos)
         {
@@ -45,5 +45,18 @@ namespace Negocio
         {
             return await DB_Visita.addNewVisita(eN_Visita);
         }
+        public static async Task<EN_Response<EN_Visita>> RN_getAllVisitasCompleted()
+        {
+            return await DB_Visita.getAllVisitasCompleted();
+        }
+        public static async Task<List<EN_Visita>> RN_getVisitaCompleteByDate(DateTime _date)
+        {
+            return await DB_Visita.getCompletedVisitasByDate(_date);
+        }
+        public static async Task<List<EN_Visita>> RN_getVisitasCompleteByDateRange(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return await DB_Visita.getCompletedVisitasByDateRange(fechaInicio, fechaFin);
+        }
+
     }
 }

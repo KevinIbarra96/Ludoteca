@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -56,19 +50,19 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);                
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
             }
 
             return response;
         }
 
-        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita,List<EN_ServiciosVisita> servicio)
+        public static async Task<EN_Response<EN_Visita>> addServicioToVisita(int idvisita, List<EN_ServiciosVisita> servicio)
         {
             EN_Response<EN_Visita> response = null;
 
             string _endPoint = _apiPath + "/addServicioToVisita"; //Adding endpoint to path
 
-            var RequestBody = new {id=idvisita, Servicios = servicio };
+            var RequestBody = new { id = idvisita, Servicios = servicio };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -113,7 +107,7 @@ namespace Data
         public static async Task<EN_Response<EN_Visita>> getAllVisitasActivas()
         {
             EN_Response<EN_Visita> response = null;
-            
+
             string _endPoint = _apiPath + "/getVisitasActivas"; //Adding endpoint to path
 
             using HttpResponseMessage responsevisit = await ApiRest_Properties.cliente.GetAsync(_endPoint);
@@ -250,6 +244,75 @@ namespace Data
 
             return VisitasResponse;
         }
+        public static async Task<EN_Response<EN_Visita>> getAllVisitasCompleted()
+        {
+            EN_Response<EN_Visita> response = null;
+
+            string _endPoint = _apiPath + "/getAllCompletedVisitas"; //Adding endpoint to path
+
+            using HttpResponseMessage responsevisit = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (responsevisit.IsSuccessStatusCode)
+            {
+                var content = await responsevisit.Content.ReadAsStringAsync();
+
+                response = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(content);
+            }
+
+            return response;
+        }
+        public static async Task<List<EN_Visita>> getCompletedVisitasByDate(DateTime _date)
+        {
+            string _endPoint = _apiPath + "/getVisitaCompleteByDate";
+            VisitasResponse = null;
+
+            var requestBody = new { HoraEntrada = _date.ToString("yyyy-MM-dd") };
+
+            var requesData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content =
+                new StringContent(requesData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Visita> VisitaRest = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+                VisitasResponse = VisitaRest.Rbody;
+            }
+
+            return VisitasResponse;
+
+        }
+        public static async Task<List<EN_Visita>> getCompletedVisitasByDateRange(DateTime fechaInicio, DateTime fechaFin)
+        {
+            string _endPoint = _apiPath + "/getVisitaCompleteByDateRange";
+            VisitasResponse = null;
+
+            var requestBody = new
+            {
+                HoraEntrada = fechaInicio.ToString("yyyy-MM-dd"),
+                HoraSalida = fechaFin.ToString("yyyy-MM-dd")
+            };
+
+            var requestData = JsonConvert.SerializeObject(requestBody);
+
+            HttpContent content = new StringContent(requestData, System.Text.Encoding.UTF8, "application/json");
+
+            var httpResponse = await cliente.PostAsync(_endPoint, content);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var result = await httpResponse.Content.ReadAsStringAsync();
+                EN_Response<EN_Visita> VisitaRest = JsonConvert.DeserializeObject<EN_Response<EN_Visita>>(result);
+                VisitasResponse = VisitaRest.Rbody;
+            }
+
+            return VisitasResponse;
+        }
+
 
     }
 }

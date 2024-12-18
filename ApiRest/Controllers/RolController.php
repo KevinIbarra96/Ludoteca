@@ -1,8 +1,13 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+
     //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
@@ -39,6 +44,30 @@
                 var_dump($Rol);
             echo '</prev>';*/
         }
+        function getAllActiveRol(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $RolSvc = new RolService();
+                $Response->Rbody = $RolSvc->getAllActive();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Rol listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Rol);
+            echo '</prev>';*/
+        }        
 
         function getRolById(){
             $Response = new ResponseModel();
@@ -69,12 +98,12 @@
 
                 $dataBody = [
                     'RolName' =>$BodyRequest['RolName'],
-                    'status' =>$BodyRequest['status'],
+                    'MenuList' =>$BodyRequest['MenuList']
                 ];
 
                 $database = new Connection();
                 $RolSvc = new RolService();
-                $RolSvc->new($dataBody);
+                $Response->Rbody = $RolSvc->addNewRol($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -95,18 +124,26 @@
             try{
                 $BodyRequest = json_decode(file_get_contents('php://input'),true);
 
-                $dataBody = [
-                    'RolName' =>$BodyRequest['RolName'],
-                    'status' =>$BodyRequest['status'],
-                ];
-
                 $database = new Connection();
                 $RolSvc = new RolService();
-                $RolSvc->update($BodyRequest['id'],$dataBody);
+                $MenuSvc = new MenuService();
+                // Verificar si se debe actualizar el nombre del rol
+                if (isset($BodyRequest['Rol']) && !empty($BodyRequest['Rol'])) {
+
+                    $RolSvc->updateRol($BodyRequest['Rol']);
+                }else{
+                    throw new Exception("Rol no puede estar vacio", 405);
+                }
+
+                if (isset($BodyRequest['MenuList']) && is_array($BodyRequest['MenuList'])) {
+                    $MenuSvc->updateMenusForRol($BodyRequest['Rol']["id"], $BodyRequest['MenuList']);
+                }else{
+                    throw new Exception("Lista de Menu no puede estar vacio", 405);
+                }
                 $database->closeConection();
 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Rol Updated";
+                $Response->Rmessage = "Rol y menús actualizados correctamente";
 
                 
             }catch(Exception $ex){
@@ -138,4 +175,3 @@
             }
         }
     }
-?>

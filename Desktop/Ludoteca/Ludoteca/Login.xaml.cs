@@ -1,8 +1,6 @@
 using CommunityToolkit.Maui.Alerts;
-using Entidad;
 using Ludoteca.Resources;
 using Negocio;
-using Newtonsoft.Json;
 
 namespace Ludoteca;
 
@@ -12,12 +10,12 @@ public partial class Login : ContentPage
 
 
     public Login()
-	{
-		InitializeComponent();
-	}
-	
-	public async void OnLoginButtonClicked(object sender, EventArgs e)
-	{
+    {
+        InitializeComponent();
+    }
+
+    public async void OnLoginButtonClicked(object sender, EventArgs e)
+    {
         string username = txtUsername.Text;
         string password = txtContraseña.Text;
 
@@ -33,7 +31,6 @@ public partial class Login : ContentPage
                 {
                     // Obtener los datos del usuario de la respuesta
 
-                   
                     var userData = response.Rbody.FirstOrDefault();
                     if (userData != null)
                     {
@@ -42,20 +39,25 @@ public partial class Login : ContentPage
                         AccionesSession.SaveSession();
 
                         // Mostrar un mensaje de éxito
-                        var toastMessage = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
-                        await toastMessage.Show();
+                        /*var toastMessage = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 13);
+                        await toastMessage.Show();*/
 
                         // Redirigir a la página principal de la aplicación
                         App.Current.MainPage = new AppShell();
                     }
                     else
                     {
-                        await DisplayAlert("Error", response.Rmessage, "OK");
+                        await DisplayAlert("Error", "No se encontro informacion del usuario", "OK");
                     }
 
-                    
+
                 }
-                
+                else
+                {
+                    await DisplayAlert("Error", response.Rmessage, "OK");
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -77,5 +79,5 @@ public partial class Login : ContentPage
         return null;
 
     }
-	
+
 }

@@ -1,10 +1,12 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-        //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-
-        $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+    
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     //echo $ProjectPath;
 
@@ -27,7 +29,7 @@
                 $ServiciosSvc->setNewPrecio($BodyRequest['id'],$BodyRequest['Precio']);
                 
                 $Response->Rcode = 200;
-                $Response->Rmessage = "Se actualizó el precio correctamente";                        
+                $Response->Rmessage = "Se actualizó el precio correctamente";
 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -64,6 +66,56 @@
             echo '</prev>';*/
         }
 
+        function getAllActiveServicios(){
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $ServiciosSvc = new ServiciosService();
+                $Response->Rbody = $ServiciosSvc->getAllActive();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Servicios listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Servicios);
+            echo '</prev>';*/
+        }
+
+        function getServicioByType(){
+
+        }
+
+        function getallServiciosByTipoServicio(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $ServiciosSvc = new ServiciosService();
+                $Response->Rbody = $ServiciosSvc->getallServiciosByTipoServicio($BodyRequest['IdTipoServicio']);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Servicios Founded";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
         function getServiciosById(){
             $Response = new ResponseModel();
 
@@ -95,7 +147,8 @@
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Precio' =>$BodyRequest['Precio']
+                    'Precio' =>$BodyRequest['Precio'],
+                    'IdTipoServicio' =>$BodyRequest['IdTipoServicio']
                 ];
 
                 $database = new Connection();
@@ -125,7 +178,8 @@
                     'ServicioName' =>$BodyRequest['ServicioName'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
-                    'Precio' =>$BodyRequest['Precio']
+                    'Precio' =>$BodyRequest['Precio'],
+                    'IdTipoServicio' =>$BodyRequest['IdTipoServicio']
                 ];
 
                 $database = new Connection();

@@ -1,9 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using Ludoteca.Resources;
-using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.PopUp;
 
@@ -12,9 +12,9 @@ public partial class ServicioList
     public AddServicioToVisita _addServicioToVisita;
     public int _visitaId;
 
-	public ServicioList(AddServicioToVisita addServicioToVisita,int visitaId)
-	{
-		InitializeComponent();
+    public ServicioList(AddServicioToVisita addServicioToVisita, int visitaId)
+    {
+        InitializeComponent();
         _addServicioToVisita = addServicioToVisita;
         _visitaId = visitaId;
 
@@ -26,8 +26,8 @@ public partial class ServicioList
     {
         try
         {
-            List<EN_Servicio> Serv = await RN_Servicio.RN_GetAllServicios();
-            ServicioCollectionView.ItemsSource = await RN_Servicio.RN_GetAllServicios();
+            EN_Response<EN_Servicio> Serv = await RN_Servicio.RN_GetallServiciosByTipoServicio(1);
+            ServicioCollectionView.ItemsSource = Serv.Rbody;
         }
         catch (Exception ex)
         {
@@ -55,8 +55,8 @@ public partial class ServicioList
                 _addServicioToVisita(serv, _visitaId);
                 EN_Response<EN_Visita> response = await RN_Visita.addServicioToVisita(_visitaId, servList);
 
-                var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-                await toast.Show();
+                /*var toast = Toast.Make(response.Rmessage, CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+                await toast.Show();*/
 
                 await MopupService.Instance.PopAsync();
             }

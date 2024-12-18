@@ -12,10 +12,17 @@
         }
 
         public function getAll(){
+            $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} ");
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function getAllActive(){
             $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} where status = 1");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
+
         public function getById($idget){
             $stm = $this->DbConection->prepare("Select {$this->columns} from {$this->tableName} where status = 1 and id = $idget");
             $stm->execute();
@@ -39,11 +46,6 @@
             $stm->execute();
         }
         public function new($data){
-            //Get new If for item created
-            $query ="Select max(id)+1 as id from {$this->tableName} ";
-            $stm = $this->DbConection->prepare($query);
-            $stm->execute();
-            $newId = $stm->fetchAll(PDO::FETCH_ASSOC);
 
             //Excecute insert query
             $query ="insert into {$this->tableName} (";
@@ -65,6 +67,12 @@
                 $stm->bindValue(":{$column}", $value);
             }
             $stm->execute();
+
+            //Get new If for item created
+            $query ="Select max(id) as id from {$this->tableName} ";
+            $stm = $this->DbConection->prepare($query);
+            $stm->execute();
+            $newId = $stm->fetchAll(PDO::FETCH_ASSOC);
 
             //id no fail, return new Id;
             return $newId;

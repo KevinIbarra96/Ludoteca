@@ -27,7 +27,7 @@ namespace Ludoteca.ViewModel
             _loadServiciosTable = loadServiciosTable;
             _UpdateServiciosTable = UpdateServiciosTable;
 
-            loadServiciosTable();
+            //loadServiciosTable();
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion
@@ -44,8 +44,14 @@ namespace Ludoteca.ViewModel
         {
             SsrviciosInmutble.Clear();
             servicios.Clear();
-            foreach (var servicio in await RN_Servicio.RN_GetAllServicios())
+            EN_Response<EN_TipoServicio> tipoServicioRes = await RN_TipoServicio.RN_GetAllActiveTipoServicio();
+            foreach (var servicio in await RN_Servicio.RN_GetAllActiveServicios())
             {
+                foreach (EN_TipoServicio tp in tipoServicioRes.Rbody)
+                {
+                    if (tp.id == servicio.IdTipoServicio)
+                        servicio.TipoServicio = tp.Nombre;
+                }
                 addServiciosToCollection(servicio);
             }
         }
@@ -66,6 +72,8 @@ namespace Ludoteca.ViewModel
                 Encontrado.Descripcion = servicio.Descripcion;
                 Encontrado.Precio = servicio.Precio;
                 Encontrado.Tiempo = servicio.Tiempo;
+                Encontrado.IdTipoServicio = servicio.IdTipoServicio;
+                Encontrado.TipoServicio = servicio.TipoServicio;
             }
         }
 

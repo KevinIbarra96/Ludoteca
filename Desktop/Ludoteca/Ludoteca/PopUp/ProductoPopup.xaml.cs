@@ -1,10 +1,9 @@
+using CommunityToolkit.Maui.Alerts;
 using Entidad;
+using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-
-using Ludoteca.Resources;
-using CommunityToolkit.Maui.Alerts;
 
 namespace Ludoteca.PopUp;
 
@@ -28,11 +27,11 @@ public partial class ProductoPopup
         BtnGuardar.Clicked += GuardarActuzalizar_Clicked;//Agregar el eevnto al boton
 
         _updateInventarioData = updateInventarioData;//Inizialzacion del delegado
-	}
+    }
 
     //Contructor destinado para la creacion de un nuevo producto
     public ProductoPopup(UpdateInventarioData updateInventarioData)
-    {        
+    {
         InitializeComponent();
         _updateInventarioData = updateInventarioData; //Inizialzacion del delegado
 
@@ -61,16 +60,22 @@ public partial class ProductoPopup
             //Excecute the delegate to load the data on inventory
             _updateInventarioData(GlobalEnum.Action.ACTUALIZAR, producto);
 
-            var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Actualizacion de " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+
+            await MopupService.Instance.PopAsync();
         }
-        catch(Exception ex)
+        catch (NullReferenceException ex)
+        {
+            await DisplayAlert("Error", "Por favor completa todos los campos", "OK");
+        }
+        catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al actualizar\nDetalle: " + ex.Message, "OK");
         }
         finally
         {
-            await MopupService.Instance.PopAsync();
+
         }
     }
     private async void GuardarNuevo_Clicked(object sender, EventArgs e)
@@ -80,21 +85,18 @@ public partial class ProductoPopup
             var producto = new EN_Producto() { ProductoName = ProductNameEntry.Text, Precio = int.Parse(PrecioProduct.Text) };
             EN_Response<EN_Producto> resp = await RN_Producto.RN_AddNewProducto(producto);
 
-            producto.id = resp.Rbody[0].id;
+            producto.id = resp.Rbody.First().id;
 
             //Excecute the delegate to load the data on inventory
             _updateInventarioData(GlobalEnum.Action.CREAR_NUEVO, producto);
 
-            var toast = Toast.Make("Se agregó el " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
-            await toast.Show();
+            /*var toast = Toast.Make("Se agregó el " + producto.ProductoName + " correctamente", CommunityToolkit.Maui.Core.ToastDuration.Short, 30);
+            await toast.Show();*/
+            await MopupService.Instance.PopAsync();
         }
         catch (Exception ex)
         {
             await DisplayAlert("Error", "Ah ocurrido un error al agregar un nuevo producto\nDetalle: " + ex.Message, "OK");
-        }
-        finally
-        {
-            await MopupService.Instance.PopAsync();
         }
     }
 }

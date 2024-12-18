@@ -1,11 +1,14 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
 
-    //echo $ProjectPath;
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/MenuService.php');
@@ -25,6 +28,31 @@
                 $database = new Connection();
                 $MenuSvc = new MenuService();
                 $Response->Rbody = $MenuSvc->getAll();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Menu listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Menu);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveMenu(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $MenuSvc = new MenuService();
+                $Response->Rbody = $MenuSvc->getAllActive();
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "All Menu listed";

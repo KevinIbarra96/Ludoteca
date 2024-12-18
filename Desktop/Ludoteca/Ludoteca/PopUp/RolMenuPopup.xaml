@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopups:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mopups="clr-namespace:Mopups.Pages;assembly=Mopups"
+             x:Class="Ludoteca.PopUp.RolMenuPopup"
+             Title="Rol" BackgroundColor="#80000000" CloseWhenBackgroundIsClicked="True">
+    <ScrollView HorizontalOptions="Center" VerticalOptions="Center">
+        <Border WidthRequest="480" HeightRequest="650" BackgroundColor="White" HorizontalOptions="Center" >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+
+            <VerticalStackLayout Spacing="3" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" Margin="20" >
+
+                <Label x:Name="RolNamelbl" VerticalOptions="Start" Margin="0,0,0,5" FontSize="25" />
+
+                <Label Text="Nombre del rol" VerticalOptions="Start" />
+                <Entry x:Name="RolNameEntry" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Placeholder=" Nombre del rol" HeightRequest="5" WidthRequest="400" />
+
+                <Grid Padding="5" BackgroundColor="{StaticResource FrameBackground}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" HorizontalOptions="Center" FontAttributes="Bold" Text="Nombre del producto" />
+                </Grid>
+                <ScrollView HeightRequest="350">
+                    <CollectionView x:Name="MenuCollectionView" SelectionMode="Multiple">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="5" BackgroundColor="White">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackLayout Padding="1" BackgroundColor="{Binding SelectedBackgroundColor}">
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="MenuCollection_Tapped" CommandParameter="{Binding .}" />
+                                        </StackLayout.GestureRecognizers>
+                                        <Label HorizontalOptions="Center" Text="{Binding MenuName}" VerticalOptions="Center" />
+                                    </StackLayout>
+                                    
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+
+                <HorizontalStackLayout BackgroundColor="#F3F3F3" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                    <Button x:Name="BtnGuardar" Text="Guardar" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
+                            BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                            CornerRadius="8" Margin="10" Padding="10" Scale=".8" FontSize="18" FontFamily="OpenSans" WidthRequest="200"/>
+
+                    <Button Text="Cancelar" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                            BackgroundColor="White" TextColor="Black" BorderColor="#E5E5E5"
+                            CornerRadius="8" Margin="10" Padding="10" Scale=".8"  FontSize="18" WidthRequest="200" Clicked="Cancelar_Clicked" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+    </ScrollView>
+</mopups:PopupPage>

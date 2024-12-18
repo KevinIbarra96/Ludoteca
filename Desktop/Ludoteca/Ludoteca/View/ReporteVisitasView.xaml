@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
+             x:Class="Ludoteca.View.ReporteVisitasView"
+             Title="Reporte Visitas"
+             BackgroundColor="{StaticResource FrameBackground}">
+    <ContentPage.BindingContext>
+        <viewModel:ReporteVisitasViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Fila para el Frame superior -->
+            <RowDefinition Height="*" />
+            <!-- Fila para el Frame del medio -->
+            <RowDefinition Height="Auto" />
+            <!-- Fila para el Frame inferior -->
+        </Grid.RowDefinitions>
+
+        <Frame Grid.Row="0" 
+       BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" 
+       Margin="0,0,0,10">
+
+            <HorizontalStackLayout Spacing="10">
+                <!-- Filtro por fecha -->
+                <VerticalStackLayout>
+                    <Label Text="Filtrar por fecha"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   Margin="0,0,0,5">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowDateFilterTapped" CommandParameter="Fecha" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <DatePicker x:Name="DateFechaSelected" 
+                        DateSelected="OnDateSelected" 
+                        HorizontalOptions="FillAndExpand" IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Filtro por rango de fechas -->
+                <VerticalStackLayout>
+
+                    <Label Text="Filtrar por rango de fechas"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   Margin="0,0,0,5">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnShowDateFilterTapped" CommandParameter="Rango" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <HorizontalStackLayout x:Name="RangoFechasContainer" Spacing="10" IsVisible="False">
+                        <Label Text="Fecha Inicio" FontSize="Small" Margin="0,5,0,0" />
+                        <DatePicker x:Name="FechaInicioPicker" DateSelected="OnDateInicioSelected"/>
+
+                        <Label Text="Fecha Fin" FontSize="Small" Margin="0,5,0,0" />
+                        <DatePicker x:Name="FechaFinPicker" DateSelected="OnDateFinSelected"/>
+
+                        <Button Text="Filtrar por rango" Clicked="OnFilterByDateRangeClicked" Margin="0,10,0,0" HorizontalOptions="Fill" BackgroundColor="{StaticResource CasitaPrimaryGreen}" />
+                    </HorizontalStackLayout>
+
+                    
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+
+
+        <StackLayout Grid.Row="1">
+            <Grid IsVisible="True" BackgroundColor="{StaticResource FrameBackground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                
+                <Label Grid.Column="0" FontAttributes="Bold" Text="Hijos" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="1" FontAttributes="Bold" Text="Padres" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="2" FontAttributes="Bold" Text="Servicio" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="3" FontAttributes="Bold" Text="Productos" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="4" FontAttributes="Bold" Text="Oferta" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="5" FontAttributes="Bold" Text="Fecha y Hora de entrada" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="6" FontAttributes="Bold" Text="Fecha y Hora de salida" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="7" FontAttributes="Bold" Text="Tiempo (Min)" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="8" FontAttributes="Bold" Text="Total" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label Grid.Column="9" FontAttributes="Bold" Text="Tickets" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Grid>
+
+            <ListView ItemsSource="{Binding Visitas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10" >
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid IsVisible="False">
+                                <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                
+
+                                <Border  Grid.Column="0" >
+                                    <CollectionView ItemsSource="{Binding Hijos}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding NombreHijo, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="1" >
+                                    <CollectionView ItemsSource="{Binding Padres}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding PadreName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="2" >
+                                    <CollectionView ItemsSource="{Binding Servicios}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding ServicioName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="3" >
+                                    <CollectionView ItemsSource="{Binding Productos}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding CantidadProducto, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="4" >
+                                    <CollectionView ItemsSource="{Binding Oferta}" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding OfertaName, StringFormat=' - {0}'}"></Label>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+
+                                <Border  Grid.Column="5" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                       Text="{Binding HoraEntrada}"
+                                FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="6" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                        Text="{Binding HoraSalida}"
+                                FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="7" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                       Text="{Binding TiempoTotal, StringFormat='{0:N0}'}"
+                                FontAttributes="Italic"/>
+                                </Border>
+
+                                <Border  Grid.Column="8" >
+                                    <Label HorizontalOptions="Center" VerticalOptions="Center"
+                                       Text="{Binding Total,StringFormat='{0:C2} ' }"
+                                FontAttributes="Italic"/>
+                                </Border>
+                                <Border Grid.Column="9">
+                                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center">
+                                        <!-- StackLayout para los dos primeros botones en la misma línea -->
+                                        <Label Text="Impimir" ToolTipProperties.Text="ImprimirTicket" TextColor="DarkSeaGreen" FontAutoScalingEnabled="True" HeightRequest="20">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="ImprimirTicket_Tapped" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        
+                                        
+                                    </StackLayout>
+                                </Border>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

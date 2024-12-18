@@ -1,10 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -13,9 +8,9 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Rol"; //Adding ControllerName to Path
         private static List<EN_Rol> RolsResponse = null;
 
-        public static async Task<List<EN_Rol>> getAllRol()
+        public static async Task<EN_Response<EN_Rol>> getAllRol()
         {
-            RolsResponse = null;
+            EN_Response<EN_Rol> RolsResponse = null;
             string _enPoint = _apiPath + "/getAllRol"; //Adding endpoint to path
 
             using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
@@ -24,9 +19,24 @@ namespace Data
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Rol> RolRes = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);
+                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);
 
-                RolsResponse = RolRes.Rbody;
+            }
+            return RolsResponse;
+        }
+
+        public static async Task<EN_Response<EN_Rol>> getAllActiveRol()
+        {
+            EN_Response<EN_Rol> RolsResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveRol"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(content);
 
             }
             return RolsResponse;
@@ -58,13 +68,12 @@ namespace Data
             return RolsResponse;
         }
 
-        public static async Task<List<EN_Rol>> addNewRol(EN_Rol _Rol)
-        {
-
-            RolsResponse = null;
+        public static async Task<EN_Response<EN_Rol>> addNewRol(EN_Rol eN_Rol, List<EN_Menu> MenuList)
+        {            
+            EN_Response<EN_Rol> RolsResponse = null;
             string endpointpath = _apiPath + "/addNewRol";
 
-            EN_Rol RequestBody = new EN_Rol();
+            var RequestBody = new { RolName = eN_Rol.RolName, MenuList = MenuList };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -77,20 +86,26 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Rol> RolRest = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(result);
-                RolsResponse = RolRest.Rbody;
+                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(result);
             }
 
             return RolsResponse;
         }
 
-        public static async Task<List<EN_Rol>> updateRol(EN_Rol _Rol)
+        public static async Task<EN_Response<EN_Rol>> updateRol(EN_Rol _Rol, List<EN_Menu> MenuList)
         {
 
-            RolsResponse = null;
-            string endpointpath = _apiPath + "/editRol";
+            return null;
 
-            EN_Rol RequestBody = new EN_Rol();
+            EN_Response<EN_Rol> RolsResponse = null;
+            string endpointpath = _apiPath + "/editRol";
+            List<int> menuIdList = new List<int>();
+            foreach (EN_Menu menu in MenuList)
+            {
+                menuIdList.Add(menu.id);
+            }
+
+            var RequestBody = new {Rol = _Rol, MenuList = menuIdList };
 
             var requestData = JsonConvert.SerializeObject(RequestBody);
 
@@ -103,8 +118,7 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Rol> RolRest = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(result);
-                RolsResponse = RolRest.Rbody;
+                RolsResponse = JsonConvert.DeserializeObject<EN_Response<EN_Rol>>(result);
             }
 
             return RolsResponse;

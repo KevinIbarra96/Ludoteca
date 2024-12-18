@@ -15,7 +15,19 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <MauiXaml Update="PopUp\ErrorPopup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\FiestasPopup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\NuevaVentaPoup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="PopUp\NuevaVisitaPopUp.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\OfertaPopup.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="PopUp\ProductoList.xaml">
@@ -27,10 +39,16 @@
     <MauiXaml Update="PopUp\RegistrarPadresEHijos.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="PopUp\RolMenuPopup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="PopUp\ServicioList.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="PopUp\ServicioPopup.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="PopUp\UsuarioRolPopup.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\ConfiguracionView.xaml">
@@ -42,13 +60,25 @@
     <MauiXaml Update="View\Configuracion\UsuarioRol.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="View\FiestasView.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="View\InventarioView.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="View\OfertasView.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="View\ReporteVisitasView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\ServiciosView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\StringFormatTemplate.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="View\VentasView.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="View\VisitView.xaml">

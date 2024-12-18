@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
+             x:Class="Ludoteca.View.OfertasView"
+             Title="Ofertas"
+            BackgroundColor="{StaticResource FrameBackground }">
+
+    <ContentPage.BindingContext>
+        <viewModel:OfertaViewModel />
+    </ContentPage.BindingContext>
+
+
+    <StackLayout Margin="10,10,10,20">
+
+        <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start">
+            <Button Text="Agregar" ToolTipProperties.Text="Agrega nueva oferta" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" Clicked="Agregar_Clicked" HeightRequest="30" WidthRequest="100" />
+            <!-- Barra de búsqueda -->
+            <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
+        </HorizontalStackLayout>
+        <!-- Encabezados fijos -->
+        <Grid BackgroundColor="{StaticResource FrameBackground}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre de oferta" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Descripcion" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="2" FontAttributes="Bold" Text="Tiempo" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Total Descuento" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="4" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Lista de productos -->
+        <ListView ItemsSource="{Binding ofertas}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47">
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid IsVisible="False">
+                            <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+
+            <ListView.ItemTemplate >
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="200" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Text="{Binding OfertaName}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="{Binding Descripcion}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding Tiempo}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="3" Text="{Binding totalDescuento}" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Button Grid.Column="4" Text="Editar" ToolTipProperties.Text="Editar Oferta" Clicked="EditarOferta_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
+                            <!-- Agrega líneas de separación adicionales si es necesario -->
+
+                            <!-- Caja de la última columna -->
+                            <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="4" Margin="0,0,0,1" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout >
+
+</ContentPage>

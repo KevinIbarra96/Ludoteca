@@ -1,7 +1,6 @@
 ﻿using Entidad;
 using Ludoteca.Resources;
-using Negocio;
-using Resources.Properties;
+using System.Diagnostics;
 
 namespace Ludoteca
 {
@@ -11,51 +10,27 @@ namespace Ludoteca
         {
             InitializeComponent();
 
-            //string rutaProyecto = Configuracion.ObtenerRutaProyecto();
-            //if(string.IsNullOrEmpty(rutaProyecto))
-            //{
-                string rutaProyecto = @"C:\MiProyecto";
-            Configuracion.CreateSubKey();
-                //Configuracion.GuardarRutaProyecto(rutaProyecto);
-            //}
-
-
             //Initialize the application properties
             ApiRest_Properties apiRest_Properties = new ApiRest_Properties();
 
             InitializeAppAsync();
-            getPrecioXMinute();
         }
         private async void InitializeAppAsync()
         {
             try
             {
-                 VerificarSession();
+                VerificarSession();
             }
             catch (Exception ex)
             {
                 // Manejar la excepción (por ejemplo, mostrar un mensaje de error o registrarla)
-                Console.WriteLine($"Error al verificar sesión y navegar: {ex.Message}");
+                Debug.WriteLine($"Error al verificar sesión y navegar: {ex.Message}");
             }
-        }
-       
-        private void  VerificarSession()
-        {
-            AccionesSession.VerificarSession();
         }
 
-        private async void getPrecioXMinute()
+        private void VerificarSession()
         {
-            try
-            {
-                //Actualizar el precio
-                EN_Response<EN_Configuracion> response = await RN_Configuracion.getConfigurationById(1);
-                ApplicationProperties.precioXMinute = double.Parse(response.Rbody[0].ConfigDecimalValue.ToString());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message );
-            }
+            AccionesSession.VerificarSession();
         }
 
     }

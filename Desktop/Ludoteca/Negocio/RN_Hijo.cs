@@ -1,10 +1,5 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
@@ -17,6 +12,10 @@ namespace Negocio
         public static async Task<List<EN_Hijo>> RN_GetAllHijos()
         {
             return await DB_Hijo.getAllHijos();
+        }
+        public static async Task<List<EN_Hijo>> getAllActiveHijos()
+        {
+            return await DB_Hijo.getAllActiveHijos();
         }
         public static async Task<List<EN_Hijo>> RN_GetHijoByID(int _id)
         {

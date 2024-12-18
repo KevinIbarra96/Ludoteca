@@ -1,11 +1,77 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:Ludoteca.ViewModel"
              x:Class="Ludoteca.View.Configuracion.UsuarioRol">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI! UsuraioRols"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ContentView.BindingContext>
+        <viewModel:ConfiguracionViewModel />
+    </ContentView.BindingContext>
+
+    
+    <Grid Padding="10" BackgroundColor="{StaticResource FrameBackground}">
+            <VerticalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" >
+            <Button Text="Agregar" ToolTipProperties.Text="Agrega nuevo Producto" BackgroundColor="{StaticResource CasitaPrimaryGreen}" TextColor="white" Margin="0,0,10,10" HeightRequest="30" WidthRequest="100" Clicked="Nuevo_Clicked"/>
+            <!-- Barra de búsqueda -->
+            <SearchBar x:Name="searchBar" Placeholder="Buscar" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="30" Margin="0,0,0,10" WidthRequest="200" BackgroundColor="White" />
+        </HorizontalStackLayout>
+        <!-- Encabezados fijos -->
+        <Grid BackgroundColor="{StaticResource FrameBackground}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre de Usuario" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="1" FontAttributes="Bold" Text="Rol" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="2" FontAttributes="Bold" Text="Status" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="3" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Lista de productos -->
+            <ListView ItemsSource="{Binding Usuarios}" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" SeparatorVisibility="Default" SeparatorColor="{StaticResource FrameBackground }" RowHeight="47" VerticalOptions="FillAndExpand">
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid IsVisible="False">
+                                <!-- Aquí no necesitas poner nada, ya que los encabezados están en la parte superior -->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate >
+                    <DataTemplate>
+                        <ViewCell >
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="200" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Text="{Binding UserName}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Grid.Column="1" Text="{Binding RolName}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding statusString}" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                <Button Grid.Column="3" Text="Editar" ToolTipProperties.Text="Editar Producto" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80" Clicked="Editar_Clicked"/>
+
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="0" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="1" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="2" />
+                                <BoxView Color="{StaticResource FrameBackground }" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="End" Grid.Column="3" />
+                                <!-- Agrega líneas de separación adicionales si es necesario -->
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+        </Grid >
+    
 </ContentView>

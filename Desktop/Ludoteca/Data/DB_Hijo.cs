@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -43,6 +37,24 @@ namespace Data
         {
             HijosResponse = null;
             string _enPoint = _apiPath + "/getAllHijos"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Hijo> HijoRes = JsonConvert.DeserializeObject<EN_Response<EN_Hijo>>(content);
+
+                HijosResponse = HijoRes.Rbody;
+
+            }
+            return HijosResponse;
+        }
+        public static async Task<List<EN_Hijo>> getAllActiveHijos()
+        {
+            HijosResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveHijos"; //Adding endpoint to path
 
             using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
 

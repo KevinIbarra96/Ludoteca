@@ -9,7 +9,7 @@
         public function __construct(){
             $dataBase = new Connection();
             //Las columnas son solo para los methodos get osease los select que traen la info de la base de datos
-            parent::__construct('servicios','id, ServicioName, Descripcion, Precio, Tiempo',$dataBase->getConnection());
+            parent::__construct('servicios','id, ServicioName, Descripcion, Precio, Tiempo,IdTipoServicio',$dataBase->getConnection());
         }
 
         function newVisitaServicios($idVisita,$Servicios){
@@ -40,6 +40,14 @@
         function setNewPrecio($id,$Precio){
             $stm = $this->DbConection->prepare("update servicios set Precio = $Precio where id = $id");
             $stm->execute();
+        }
+
+        public function getallServiciosByTipoServicio($idTipoServicio){
+            $Query = "Select id, ServicioName, Descripcion, Precio, Tiempo from servicios where status = 1 and IdTipoServicio = :idTipoServicio";
+            $stm = $this->DbConection->prepare($Query);
+            $stm->bindValue(":idTipoServicio", $idTipoServicio, PDO::PARAM_INT);            
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_ASSOC);
         }
 
         function getAllServiceByEachVisit($IdVisita){

@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
-using System;
-using System.Xml.Serialization;
-using Windows.System;
-using System.Xml;
-using System.Xml.Linq;
-
-namespace Ludoteca.Resources
+﻿namespace Ludoteca.Resources
 {
     public class Session
     {
@@ -22,7 +10,7 @@ namespace Ludoteca.Resources
 
         public static bool SessionActiva { get; set; }
 
-        public static DateTime HoraInicioSession { get;set; }
+        public static DateTime HoraInicioSession { get; set; }
 
 
 
@@ -30,5 +18,5 @@ namespace Ludoteca.Resources
 
     }
 
-    
+
 }

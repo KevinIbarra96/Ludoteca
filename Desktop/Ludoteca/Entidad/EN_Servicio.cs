@@ -12,9 +12,11 @@ namespace Entidad
         private string _Descripcion;
         private double _Precio;
         private int _Tiempo; // Time in minutesw
+        private int _idTipoServicio;
+        private string _tipoServicio;
         private int _status;
 
-        public string ServicioName 
+        public string ServicioName
         {
             get { return _ServicioName; }
             set { if (_ServicioName != value) { _ServicioName = value; OnPropertyChanged(nameof(ServicioName)); } }
@@ -34,6 +36,17 @@ namespace Entidad
             get { return _Tiempo; }
             set { if (_Tiempo != value) { _Tiempo = value; OnPropertyChanged(nameof(Tiempo)); } }
         }
+        public int IdTipoServicio
+        {
+            get { return _idTipoServicio; }
+            set { _idTipoServicio = value; OnPropertyChanged(nameof(IdTipoServicio)); }
+        }
+        public string TipoServicio
+        {
+            get { return _tipoServicio; }
+            set { _tipoServicio = value; OnPropertyChanged(nameof(TipoServicio)); }
+        }
+
         public int status
         {
             get { return _status; }

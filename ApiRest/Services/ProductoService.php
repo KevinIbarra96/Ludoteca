@@ -10,6 +10,17 @@
 
     }
 
+    function modificarProductoVisita($dataBody){        
+        $stm = $this->DbConection->prepare("update visita_producto set precioProductoVisita = :precioProductoVisita, CantidadProductoVisita = :CantidadProductoVisita, id_Producto =:id_Producto where id_Visita=:id_Visita");
+        
+        $stm->bindValue(':precioProductoVisita', $dataBody["precioProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':CantidadProductoVisita', $dataBody["cantidadProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':id_Producto', $dataBody["idProducto"], PDO::PARAM_INT);
+        $stm->bindValue(':id_Visita', $dataBody["idVisita"], PDO::PARAM_INT);
+        
+        $stm->execute();
+    }
+
     function newVisitaProducto($idVisita,$Productos){
         $x = 0;
         $query = "";
@@ -39,9 +50,55 @@
         $stm->execute();
     }
 
-    function increaseCantidadProduct($id,$cantidad){
-        $stm = $this->DbConection->prepare("update productos set Cantidad = $cantidad+Cantidad where id = $id");
+    function newVentaProducto($idVenta,$Productos){
+        $x = 0;
+        $query = "";
+        
+        foreach($Productos as $_produc){
+            $query .= "insert into ventas_productos (id_Venta, 
+                                                    id_Producto)
+                                                    values (:id_Venta{$x}, 
+                                                            :id_Producto{$x});
+                    ";
+            $x +=1;
+        }
+
+        $x = 0;
+        $stm =  $this-> DbConection->prepare($query);
+        foreach($Productos as $_produc){
+            $stm->bindValue(":id_Venta{$x}", $idVenta, PDO::PARAM_INT);
+            $stm->bindValue(":id_Producto{$x}", $_produc["id"], PDO::PARAM_INT);
+            $x +=1;
+        }
+
         $stm->execute();
+        $stm->closeCursor();
+
+        $this->DecreaseCantidadProductVenta($Productos);
+    }
+
+    function increaseCantidadProduct($id,$cantidad){
+        $stm = $this->DbConection->prepare("update productos set Cantidad = Cantidad + $cantidad where id = $id");
+        $stm->execute();
+    }
+
+    function DecreaseCantidadProductCobrado($Productos){
+        foreach($Productos as $_produc){
+            $stm = $this->DbConection->prepare("update productos set Cantidad = Cantidad - ". $_produc["CantidadProductoVisita"] ." where id = ". $_produc["id_Producto"] ." ");
+            $stm->execute();
+        }
+    }
+
+    function DecreaseCantidadProductVenta($Productos){
+
+        $sql = "";
+        foreach($Productos as $_produc){
+            $sql .= "update productos set Cantidad = Cantidad - ". $_produc["CantidadVisita"] ." where id = ". $_produc["id"] ."; ";
+        }
+
+        $stm = $this->DbConection->prepare($sql);
+        $stm->execute();
+
     }
 
     function getAllProductsforEachVisit($idVisita){
@@ -62,7 +119,25 @@
             return $stm->fetchAll(PDO::FETCH_ASSOC);
 
     }
+    function getAllProductsforEachVenta($idVenta){
+        
+        $stm = $this->DbConection->prepare("select a.id_Producto, 
+                                                          b.ProductoName
+                                             from  ventas_productos as a
+                                        inner join productos as b on b.id = a.id_Producto
+                                             where a.id_Venta = :idVenta;");
 
+        $stm->bindValue(':idVenta', $idVenta, PDO::PARAM_INT);            
+        $stm->execute();
+
+        $errorInfo = $stm->errorInfo();
+        if ($errorInfo[0] !== '00000') {
+            throw new Exception("Ah ocurrido un error: ".$errorInfo[2]);
+        }
+
+        return $stm->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 
 }
 ?>

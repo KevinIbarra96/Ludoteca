@@ -1,6 +1,6 @@
 ﻿
-using Entidad;
 using Data;
+using Entidad;
 
 namespace Negocio
 {
@@ -10,10 +10,18 @@ namespace Negocio
         {
             return await DB_Gafete.getGafeteNoAsignado();
         }
-        
+
         public static async Task<EN_Response<EN_Gafete>> getAllGafete()
         {
             return await DB_Gafete.getAllGafete();
+        }
+        public static async Task<EN_Response<EN_Gafete>> getAllActiveGafete()
+        {
+            return await DB_Gafete.getAllActiveGafete();
+        }
+        public static async Task<EN_Response<EN_Gafete>> Delete(int _id)
+        {
+            return await DB_Gafete.Delete(_id);
         }
     }
 }

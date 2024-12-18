@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using Negocio;
-using Entidad;
+﻿using Entidad;
 using Ludoteca.Resources;
+using Negocio;
+using Resources.Properties;
+using System.Collections.ObjectModel;
 
 namespace Ludoteca.ViewModel
 {
@@ -24,20 +25,20 @@ namespace Ludoteca.ViewModel
         {
             Productos = new ObservableCollection<EN_Producto>();
             ProductInmutable = new ObservableCollection<EN_Producto>();
-            
+
             //Asignacin de delegados
             _loadInventarioData = loadInventarioData;
             _UpdateInventarioData = UpdateInventarioData;
 
-            loadInventarioData();
+            //loadInventarioData();
         }
 
         //Metodo destinada para agregar o editar una iteracion de la coleccion
-        private void UpdateInventarioData(GlobalEnum.Action Action,EN_Producto product)
+        private void UpdateInventarioData(GlobalEnum.Action Action, EN_Producto product)
         {
-            if(Action == GlobalEnum.Action.CREAR_NUEVO)
+            if (Action == GlobalEnum.Action.CREAR_NUEVO)
                 addProductToCollection(product);
-            if(Action == GlobalEnum.Action.ACTUALIZAR)
+            if (Action == GlobalEnum.Action.ACTUALIZAR)
                 updateProductToColection(product);
         }
 
@@ -46,8 +47,10 @@ namespace Ludoteca.ViewModel
         {
             ProductInmutable.Clear();
             Productos.Clear();
-            foreach(var producto in await RN_Producto.RN_GetAllProductos())
+            foreach (var producto in await RN_Producto.RN_GetAllActiveProductos())
             {
+                if (Session.RolId != ApplicationProperties.IdAdministratorRol)
+                    producto.Visble = false;
                 addProductToCollection(producto);
             }
         }
@@ -62,7 +65,7 @@ namespace Ludoteca.ViewModel
         {
             EN_Producto Encontrado = Productos.FirstOrDefault(p => p.id == producto.id);
 
-            if(Encontrado != null)
+            if (Encontrado != null)
             {
                 Encontrado.ProductoName = producto.ProductoName;
                 Encontrado.Precio = producto.Precio;

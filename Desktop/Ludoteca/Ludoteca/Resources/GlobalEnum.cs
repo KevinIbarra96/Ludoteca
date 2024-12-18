@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ludoteca.Resources
+﻿namespace Ludoteca.Resources
 {
     public class GlobalEnum
     {
@@ -13,6 +7,12 @@ namespace Ludoteca.Resources
             CREAR_NUEVO,
             ACTUALIZAR,
             REMOVER
+        }
+
+        public enum ActionFrom
+        {
+            AsyncFunction,
+            UserInterface
         }
 
         public enum ErrorCode

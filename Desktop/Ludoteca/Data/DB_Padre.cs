@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -14,11 +8,11 @@ namespace Data
         private static string _apiPath = ApiRest_Properties.cliente.BaseAddress + "/Padres"; //Adding ControllerName to Path
         private static List<EN_Padre> PadresResponse = null;
 
-        public static async Task<EN_Padre> getPadreByPhone(string _phone)
+        public static async Task<EN_Response<EN_Padre>> getPadreByPhone(string _phone)
         {
-            EN_Padre padreResult=null;
             string _endPoint = _apiPath + "/getPadreByPhone"; //Adding endpoint to path
 
+            EN_Response<EN_Padre> PadreRes = null;
 
             var requestBody = new { phone = _phone };
 
@@ -33,17 +27,35 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Padre> PadreRest = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
-                padreResult = PadreRest.Rbody[0];
+                PadreRes = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(result);
             }
 
-            return padreResult;
+            return PadreRes;
         }
 
         public static async Task<List<EN_Padre>> getAllPadres()
         {
             PadresResponse = null;
             string _endPoint = _apiPath + "/getAllPadres"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_endPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                EN_Response<EN_Padre> PadreRes = JsonConvert.DeserializeObject<EN_Response<EN_Padre>>(content);
+
+                PadresResponse = PadreRes.Rbody;
+
+            }
+            return PadresResponse;
+        }
+
+        public static async Task<List<EN_Padre>> getAllActivePadres()
+        {
+            PadresResponse = null;
+            string _endPoint = _apiPath + "/getAllActivePadres"; //Adding endpoint to path
 
             using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_endPoint);
 

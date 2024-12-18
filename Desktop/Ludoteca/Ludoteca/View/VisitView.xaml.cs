@@ -1,13 +1,11 @@
 namespace Ludoteca.View;
 
 using Entidad;
+using global::Resources.Properties;
 using Ludoteca.Resources;
 using Ludoteca.ViewModel;
 using Mopups.Services;
 using Negocio;
-using PdfSharpCore;
-using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf;
 using System.Diagnostics;
 
 public partial class VisitView : ContentPage
@@ -20,9 +18,13 @@ public partial class VisitView : ContentPage
     AddProductoToVisita _addProductoToVisita;
     AddServicioToVisita _addServicioToVisita;
 
+    InitVisitas _initVisitas;
+
+    TicketPrinter ticket;
+
     public VisitView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         viewModel = new VisitViewModel();
         BindingContext = viewModel;
@@ -31,37 +33,44 @@ public partial class VisitView : ContentPage
         _calcularTotalVisita = viewModel._CalcularTotalVisita;
         _addProductoToVisita = viewModel._AddProductoToVisita;
         _addServicioToVisita = viewModel._addServicioToVIsita;
+        _initVisitas = viewModel._InitVisitas;
 
         searchBar.TextChanged += SearchBar_TextChanged;
 
     }
 
-    private void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
+    private async void SearchBar_TextChanged(object? sender, TextChangedEventArgs e)
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         string searchText = searchBar.Text;
         int count = 0;
+
         viewModel.Visitas.Clear();
 
-        foreach (var product in viewModel.VisitasInmutable.Where(visita =>
-                                visita.Hijos != null && visita.Hijos.Any(hijo =>
-                                hijo.NombreHijo.Contains(searchText, StringComparison.OrdinalIgnoreCase))))
+        var VisitaByGafete = viewModel.VisitasInmutable.Where(V => V.NumeroGafete.ToString().Contains(searchText) );
+
+        if (VisitaByGafete != null)
         {
-            count += 1;
-            viewModel.Visitas.Add(product); // Agregar los productos filtrados de nuevo
+            foreach (var vis in VisitaByGafete)
+            {
+                viewModel.Visitas.Add(vis);
+            }
         }
-        Console.WriteLine(count);
-    }    
+
+        sw.Stop();
+
+         Debug.WriteLine("Search event Time"+sw.ElapsedMilliseconds);
+
+        GC.Collect();
+        GC.SuppressFinalize(this);
+        GC.WaitForPendingFinalizers();
+
+    }
     private async void NuevaVisita_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable,_calcularTotalVisita));
-    }
-
-    private async void AddProducto_Clicked(object sender, EventArgs e)
-    {
-        var btn = sender as Label;
-        var visitaSelected = btn.BindingContext as EN_Visita;
-
-        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id) );
+        await MopupService.Instance.PushAsync(new PopUp.NuevaVisitaPopUp(_updateVisitasTable, _calcularTotalVisita));
     }
 
     private async void AddServicio_Clicked(object sender, EventArgs e)
@@ -70,156 +79,159 @@ public partial class VisitView : ContentPage
         var btn = sender as Label;
         var visitaSelected = btn.BindingContext as EN_Visita;
 
-        await MopupService.Instance.PushAsync(new PopUp.ServicioList(_addServicioToVisita,visitaSelected.id) );
+        await MopupService.Instance.PushAsync(new PopUp.ServicioList(_addServicioToVisita, visitaSelected.id));
     }
 
     private async void RegistrarPadreEHijo_Clicked(object sender, EventArgs e)
     {
-        await MopupService.Instance.PushAsync(new PopUp.RegistrarPadresEHijos() );
+        await MopupService.Instance.PushAsync(new PopUp.RegistrarPadresEHijos());
     }
 
     private async void Cobrar_Clicked(object sender, EventArgs e)
     {
-        //TODO fañta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
+        //TODO faÃ±ta agregarle los diferentes casos relacionados a cuando es la primera visita del hijo(Ya se agrego un registro simple, falta agregar mas de 1 hijo por padres,agregarle un nuevo hijo a padres ya registrados)
         //TODO falta agregarle las actualizaciones para cuando se agrega un nuevo producto o un nuevo servicio a la visita esa misma actualizacion debe realizarce a la base de datos
 
-        try
+        if (await DisplayAlert("Advertencia", "Â¿Continuar con el proceso de cobro?", "Si", "No"))
         {
-            
-            if (await DisplayAlert("Advertencia", "¿Continuar con el proceso de cobro?", "Si", "No"))
+            try
             {
-                try
+
+                var btn = sender as Label;
+                var visitaSelected = btn.BindingContext as EN_Visita;
+
+                if (!await DisplayAlert("InformaciÃ³n", "Â¿EntregÃ³ Gafete?", "Si", "No"))
                 {
-                    var btn = sender as Label;
-                    var visitaSelected = btn.BindingContext as EN_Visita;
+                    visitaSelected.Total += 50.00;
+                    visitaSelected.GafeteEntregado = false;
 
-                    //await RN_Visita.RN_DeleteVisita(visitaSelected.id);
-                    await RN_Visita.cobrarVisitas(visitaSelected);
+                    await RN_Gafete.Delete(visitaSelected.GafeteId);
+                }
 
-                    GenerateTicketPdf(@"C:\PDF\PDFPrueba.pdf", visitaSelected, CalcularAlturaDelTicket(visitaSelected.Productos.Count));
-                    _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+                visitaSelected.HoraSalida = DateTime.Now;
+                visitaSelected.TiempoTotal = visitaSelected.TiempoTranscurrido;
 
-                    await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos[0].NombreHijo, "OK");
-                }catch(Exception ex)
+                //await CrearTicketPDF(visitaSelected, action);
+
+                await RN_Visita.cobrarVisitas(visitaSelected);
+
+                _updateVisitasTable(GlobalEnum.Action.REMOVER, visitaSelected);
+
+                await ImprimirTicket(visitaSelected);
+
+                await DisplayAlert("Felicidades", "Se ah cobrado la visitaa de " + visitaSelected.Hijos.First().NombreHijo, "OK");
+
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Ah ocurrido un error\nDetalle:" + ex.Message, "OK");
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+    }
+
+    private async Task ImprimirTicket(EN_Visita visitaSelected)
+    {
+        ticket = new TicketPrinter(visitaSelected);
+        string action = await DisplayActionSheet("Selecciona una impresora ", "No Imprimir", null, ticket.ListPrinters());
+
+        if (action == "No Imprimir")
+        {
+            //await DisplayAlert("Atencion", "No se seleccionÃ³ ninguna impresora, se cancelarÃ¡ el proceso de cobro", "OK");
+            bool answer = await DisplayAlert("Atencion", "Â¿Seguro que no quieres imprimir?", "Si", "No");
+            if (!answer)
+            {
+                string action2 = await DisplayActionSheet("Selecciona una impresora ", "Cancelar", null, ticket.ListPrinters());
+                if (action2 != "Cancelar")
                 {
-                    await DisplayAlert("Error","Ah ocurrido un erro\nDetalle:"+ ex.Message,"OK");
+                    await ticket.PrintTicket(action2);
+                    bool answer1 = await DisplayAlert("Atencion", "Â¿Quieres imprimir otro ticket?", "Si", "No");
+                    if (answer1)
+                        await ticket.PrintTicket(action2);
                 }
             }
-
         }
-        catch(Exception ex)
+        else
         {
-            await DisplayAlert("Error", "ah ocurrido un error \nDetalles: " + ex.Message, "OK");
+            await ticket.PrintTicket(action);
+
+            bool answer = await DisplayAlert("Atencion", "Â¿Quieres imprimir otro ticket?", "Si", "No");
+            if (answer)
+                await ticket.PrintTicket(action);
         }
     }
-
-
-    public static void GenerateTicketPdf(string fileName,EN_Visita visita , double height)
+    private async Task CrearTicketPDF(EN_Visita visitaSelected, string PrintName)
     {
-        // Ancho del ticket en milímetros
-        double width = 70;
-        double initialHeight = 200; // Altura inicial, se ajustará dinámicamente según el contenido
 
-        PdfDocument document = new PdfDocument();
-        document.Info.Title = "Ticket de Compra";
+        // Obtener la fecha actual
+        DateTime fechaActual = DateTime.Today;
+        int year = fechaActual.Year;
+        int day = fechaActual.Day;
+        var nameMonth = fechaActual.ToString("MMMM");
 
-        PdfPage page = document.AddPage();
-        page.Width = XUnit.FromMillimeter(width);
-        page.Height = XUnit.FromMillimeter(initialHeight);
+        // Obtener nuevo folio desde la base de datos
+        var folioResponse = await RN_Tickets.RN_GetNewFolio();
+        var nuevoFolio = folioResponse.Rbody.First().id;
 
-        XGraphics gfx = XGraphics.FromPdfPage(page);
-        XFont titleFont = new XFont("Arial", 8, XFontStyle.Bold);
-        XFont regularFont = new XFont("Arial", 8, XFontStyle.Regular);
+        string nombreTicket = $"Ticket_{nuevoFolio}_{visitaSelected.Hijos[0].NombreHijo}{fechaActual:yyyyMMdd}.pdf";
 
-        double x = 10, y = 10;
-        double lineHeight = regularFont.GetHeight();
-
-        // Encabezado centrado
-        string titulo = "La Casita de Molly";
-        double tituloWidth = gfx.MeasureString(titulo, titleFont).Width;
-        double tituloX = x;
-        gfx.DrawString(titulo, titleFont, XBrushes.Black, new XRect(tituloX, y, width, height), XStringFormats.TopCenter);
-        y += lineHeight * 2;
-
-        foreach (var hijo in visita.Hijos)
+        // Verificar los valores de la fecha
+        if (year < 1900 || year > DateTime.Now.Year || fechaActual.Month < 1 || fechaActual.Month > 12 || day < 1 || day > 31)
         {
-            gfx.DrawString("Nombre: " + hijo.NombreHijo, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-            y += lineHeight;
+            throw new Exception("Fecha invÃ¡lida.");
+        }
+        // Obtener la ruta base desde la configuraciÃ³n de la BD
+        string rutaBase = ApplicationProperties.rutaTickets.ConfigStringValue;
+
+        // Definir la ruta del directorio (aÃ±o, mes, dÃ­a)
+        string rutaDirectorio = Path.Combine(rutaBase, year.ToString(), nameMonth, day.ToString());
+
+        // Verificar si el directorio existe y crear si no existe
+        if (!Directory.Exists(rutaDirectorio))
+        {
+            Directory.CreateDirectory(rutaDirectorio);
         }
 
-        gfx.DrawString("Hora de entrada: " + visita.HoraEntrada, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-        y += lineHeight;
-        gfx.DrawString("Hora de salida: " + DateTime.Now, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-        y += lineHeight;
-        gfx.DrawString("Gafete: " + visita.NumeroGafete, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-        y += lineHeight;
-        gfx.DrawString("Minutos extendidos: " + visita.TiempoExcedido, regularFont, XBrushes.Black, new XRect(x, y, width, height), XStringFormats.TopLeft);
-        y += lineHeight;
+        // Definir la ruta del archivo PDF
+        string rutaPDF = Path.Combine(rutaDirectorio, nombreTicket);
 
-        y += 5;
-        gfx.DrawLine(XPens.Black, x, y, width - 20, y); // Línea horizontal ajustada
-        y += 5;
-
-        // Dibujar encabezado de productos y servicios
-        gfx.DrawString("Productos y Servicios", titleFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft);
-
-        // Ajuste de las posiciones de las columnas
-        double precioX = x + 100; // Posición ajustada más cerca y un poco a la izquierda
-        gfx.DrawString("Precio", titleFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
-
-        double totalX = precioX + 30; // Posición ajustada para que "Total" esté cerca de "Precio"
-        gfx.DrawString("Total", titleFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
-        y += lineHeight;
-
-        foreach (var servicio in visita.Servicios)
+        await RN_Tickets.RN_AddNewTicket(new EN_Tickets
         {
-            gfx.DrawString(servicio.ServicioName, regularFont, XBrushes.Black, new XRect(x, y, 100, height), XStringFormats.TopLeft); // Ajuste ancho de la primera columna
-            gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
-            gfx.DrawString(servicio.Servicio_Precio.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
-            y += lineHeight;
+            nombre = nombreTicket,
+            idvisita = visitaSelected.id,
+            fecha_creacion = fechaActual.Date,
+            ruta = rutaPDF,
 
-            // Ajuste dinámico de la altura de la página
-            if (y > page.Height.Point - 20)
-            {
-                page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
-            }
-        }
+        });
 
-        foreach (var producto in visita.Productos)
-        {
-            gfx.DrawString(producto.CantidadProducto, regularFont, XBrushes.Black, new XRect(x, y, 110, height), XStringFormats.TopLeft); // Ajuste ancho de la primera columna
-            gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(precioX, y, 30, height), XStringFormats.TopRight);
-            gfx.DrawString(producto.precioProductoVisita.ToString("0.00"), regularFont, XBrushes.Black, new XRect(totalX, y, 30, height), XStringFormats.TopRight);
-            y += lineHeight;
-
-            // Ajuste dinámico de la altura de la página
-            if (y > page.Height.Point - 20)
-            {
-                page.Height = new XUnit(y + 20, XGraphicsUnit.Point);
-            }
-        }
-
-        y += 5;
-        gfx.DrawLine(XPens.Black, x, y, width - 20, y);
-        y += 5;
-
-        gfx.DrawString("Total: $" + visita.Total.ToString("0.00"), regularFont, XBrushes.Black, new XRect(x, y, width - 20, height), XStringFormats.TopLeft); ;
-
-        document.Save(fileName);
     }
-
-    public static double CalcularAlturaDelTicket(int numServicios)
+    private async void AddProductos_Tapped(object sender, TappedEventArgs e)
     {
-        // Calcular la altura del ticket en función del número de servicios y otros elementos
-        double titleHeight = 20; // Altura del título
-        double footerHeight = 20; // Altura del pie de página
-        double lineHeight = 12; // Altura de línea de texto
+        var btn = sender as Border;
+        var visitaSelected = btn.BindingContext as EN_Visita;
 
-        // Calcular la altura total en función del número de servicios
-        double serviciosHeight = lineHeight * numServicios; // Altura de los servicios
-        double totalHeight = titleHeight + footerHeight + serviciosHeight;
-
-        return totalHeight;
+        await MopupService.Instance.PushAsync(new PopUp.ProductoList(_addProductoToVisita, visitaSelected.id, visitaSelected.Productos));
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        _initVisitas();
+        VisitasListView.ItemsSource = viewModel.Visitas;
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        VisitasListView.ItemsSource = null;
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+        //Application.Current.MainPage.Navigation.RemovePage(this);
+        //Shell.Current.Navigation.RemovePage(Shell.Current.CurrentPage);        
+    }
 }

@@ -1,8 +1,10 @@
 <?php
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/VisitaService.php');
@@ -23,16 +25,76 @@
                 $dataBody = [
                     'id' =>$BodyRequest['id'],
                     'GafeteId' => $BodyRequest['GafeteId'],
-                    'Total' => $BodyRequest['Total']
+                    'HoraSalida' => $BodyRequest['HoraSalida'],
+                    'Productos' => $BodyRequest['Productos'],
+                    'Total' => $BodyRequest['Total'],
+                    'TiempoTotal' => $BodyRequest['TiempoTotal'],
+                    'TiempoExcedido' => $BodyRequest['TiempoExcedido']
                 ];
-
+                
                 $database = new Connection();
                 $visitaSvc = new VisitaService();                
-                $visitaSvc->cobrarVisitas($dataBody["id"],$dataBody["Total"],$dataBody["GafeteId"]);
+                $visitaSvc->cobrarVisitas($dataBody["id"],$dataBody["Total"],$dataBody["GafeteId"],$BodyRequest['Productos'],$BodyRequest['TiempoExcedido'],$dataBody["HoraSalida"],$dataBody["TiempoTotal"]);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
                 $Response->Rmessage = "Visita Updated";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
+        function addServicioToVisita(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'id' =>$BodyRequest['id'],
+                    'Servicios' => $BodyRequest['Servicios'],                    
+                ];
+
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $visitaSvc->addServicioToVisita($dataBody["id"],$dataBody["Servicios"]);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Servicio Agregado";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+
+        function addProductosToVisita(){
+            $Response = new ResponseModel();
+
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+
+                $dataBody = [
+                    'id' =>$BodyRequest['id'],
+                    'Productos' => $BodyRequest['productos'],                    
+                ];
+
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $visitaSvc->addProductoToVisita($dataBody["id"],$dataBody["Productos"]);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "producto Agregado";
                 
             }catch(Exception $ex){
                 $Response->Rcode = 402;
@@ -109,6 +171,29 @@
                 $database = new Connection();
                 $visitaSvc = new VisitaService();
                 $Response->Rbody = $visitaSvc->getAll();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All visitas listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            
+        }
+
+        function getAllActiveVisitas(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $Response->Rbody = $visitaSvc->getAllActive();
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -229,6 +314,72 @@
             }finally{
                 echo json_encode($Response);
             }
+        }
+        function getAllCompletedVisitas(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $Response->Rbody = $visitaSvc-> getVisitasCompleted();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All visitas completed listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            
+        }
+        function getVisitaCompleteByDate(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $fecha = date('Y-m-d', strtotime($BodyRequest['HoraEntrada']));
+                $Response->Rbody = $visitaSvc->getVisitasCompletedByDate($fecha);
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Visitas completadas listadas por fecha";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+        }
+        function getVisitaCompleteByDateRange(){
+            $Response = new ResponseModel();
+            try{
+                $BodyRequest = json_decode(file_get_contents('php://input'),true);
+                $database = new Connection();
+                $visitaSvc = new VisitaService();
+                $fecha1 = date('Y-m-d', strtotime($BodyRequest['HoraEntrada']));
+                $fecha2 = date('Y-m-d', strtotime($BodyRequest['HoraSalida']));
+                $Response->Rbody = $visitaSvc->getVisitasCompletedByDateRange($fecha1,$fecha2);
+                //$Response->Rbody = $visitaSvc->getVisitasCompletedByDateRange($BodyRequest['HoraEntrada'], $BodyRequest['HoraSalida']);
+                $database-> closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "Visitas completadas listadas por rango de fechas";
+            } catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            } finally{
+                echo json_encode($Response);
+            }
+
         }
     }
 ?>

@@ -1,9 +1,13 @@
 <?php
 
     $pt = explode('\\', __DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
 
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/HijoService.php');
@@ -53,8 +57,29 @@
             } finally{
                 echo json_encode($Response);
             }
+        }
+
+        function getAllActiveHijos(){
+            $Response = new ResponseModel();
+
+            try {
+                $database = new Connection();
+                $hijoSvc = new HijoService();
+                $Response->Rbody = $hijoSvc->getAllActive();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All User listed";
+            }catch(Exception $ex){
+                $Response -> Rcode = 402;
+                $Response -> Rmessage = $ex->getMessage();
+                $Response -> RerrorCode = $ex->getCode();
+            } finally{
+                echo json_encode($Response);
+            }
 
         }
+
         function getHijoById(){
             $Response =  new ResponseModel();
 

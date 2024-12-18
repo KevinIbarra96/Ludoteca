@@ -1,11 +1,6 @@
 ﻿using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace Ludoteca.Resources
 {
@@ -27,7 +22,8 @@ namespace Ludoteca.Resources
                 Session.RolId = int.Parse(doc.Element("Session").Element("RolId").Value);
                 Session.SessionActiva = bool.Parse(doc.Element("Session").Element("SessionActiva").Value);
                 Session.HoraInicioSession = DateTime.Parse(doc.Element("Session").Element("HoraInicioSession").Value);
-            } else App.Current.MainPage = new Login();
+            }
+            else App.Current.MainPage = new Login();
         }
 
         public static void LLenarValoresSession(EN_User userData)
@@ -66,29 +62,30 @@ namespace Ludoteca.Resources
             catch (Exception ex)
             {
                 Console.WriteLine("Error al guardar la sesión: " + ex.Message);
+
             }
         }
 
         public static bool VerificarSession()
         {
-            
+
             try
             {
-                    CargarSessionDesdeArchivo();
-                    if (Session.SessionActiva)
-                        {
-                            // La sesión está activa, se redirige a la página principal
-                            App.Current.MainPage = new AppShell();
-                            return true;
-                        }
-                    else
-                        {
-                            // La sesión no está activa, se redirige a la página de inicio de sesión
-                            App.Current.MainPage = new Login();
-                            return false;
-                    }
-                    
-                
+                CargarSessionDesdeArchivo();
+                if (Session.SessionActiva)
+                {
+                    // La sesión está activa, se redirige a la página principal
+                    App.Current.MainPage = new AppShell();
+                    return true;
+                }
+                else
+                {
+                    // La sesión no está activa, se redirige a la página de inicio de sesión
+                    App.Current.MainPage = new Login();
+                    return false;
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -109,14 +106,14 @@ namespace Ludoteca.Resources
 
                 SaveSession();
 
-                Console.WriteLine("¡La sesión se ha cerrado correctamente!");
+                Debug.WriteLine("¡La sesión se ha cerrado correctamente!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al cerrar la sesión: " + ex.Message);
+                Debug.WriteLine("Error al cerrar la sesión: " + ex.Message);
             }
         }
-        
+
 
     }
 }

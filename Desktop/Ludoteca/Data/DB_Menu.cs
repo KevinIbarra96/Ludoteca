@@ -1,11 +1,5 @@
 ﻿using Entidad;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data
 {
@@ -28,6 +22,23 @@ namespace Data
                 EN_Response<EN_Menu> MenuRes = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(content);
 
                 MenusResponse = MenuRes.Rbody;
+
+            }
+            return MenusResponse;
+        }
+
+        public static async Task<EN_Response<EN_Menu>> getAllActiveMenu()
+        {
+            EN_Response<EN_Menu> MenusResponse = null;
+            string _enPoint = _apiPath + "/getAllActiveMenu"; //Adding endpoint to path
+
+            using HttpResponseMessage response = await ApiRest_Properties.cliente.GetAsync(_enPoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                MenusResponse = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(content);
 
             }
             return MenusResponse;
@@ -137,10 +148,10 @@ namespace Data
             return MenusResponse;
         }
 
-        public static async Task< List<EN_Menu> > getMenuByRol(int idRol)
+        public static async Task<EN_Response<EN_Menu>> getMenuByRol(int idRol)
         {
             string _endPoint = _apiPath + "/getMenuByRol";
-            MenusResponse = null;
+            EN_Response<EN_Menu> MenuRest = null;
 
             var requestBody = new { idRol = idRol };
 
@@ -155,11 +166,10 @@ namespace Data
             {
                 var result = await httpResponse.Content.ReadAsStringAsync();
 
-                EN_Response<EN_Menu> MenuRest = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(result);
-                MenusResponse = MenuRest.Rbody;
+                MenuRest = JsonConvert.DeserializeObject<EN_Response<EN_Menu>>(result);
             }
 
-            return MenusResponse;
+            return MenuRest;
         }
 
     }

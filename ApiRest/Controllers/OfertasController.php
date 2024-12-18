@@ -1,8 +1,13 @@
 <?php
 
     $pt = explode('\\',__DIR__);
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
+    $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
+    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
+
     //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
@@ -16,6 +21,31 @@
         }
 
         function getAllOfertas(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $OfertasSvc = new OfertasService();
+                $Response->Rbody = $OfertasSvc->getAll();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All Ofertas listed";
+                                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;-
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                $database->closeConection();
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Ofertas);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveOfertas(){
 
             $Response = new ResponseModel();
 
@@ -71,12 +101,12 @@
                     'OfertaName' =>$BodyRequest['OfertaName'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'totalDescuento' =>$BodyRequest['totalDescuento'],
                 ];
 
                 $database = new Connection();
                 $OfertasSvc = new OfertasService();
-                $OfertasSvc->new($dataBody);
+                $Response->Rbody =$OfertasSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -101,7 +131,7 @@
                     'OfertaName' =>$BodyRequest['OfertaName'],
                     'Descripcion' =>$BodyRequest['Descripcion'],
                     'Tiempo' =>$BodyRequest['Tiempo'],
-                    'status' =>$BodyRequest['status']
+                    'totalDescuento' =>$BodyRequest['totalDescuento'],
                 ];
 
                 $database = new Connection();

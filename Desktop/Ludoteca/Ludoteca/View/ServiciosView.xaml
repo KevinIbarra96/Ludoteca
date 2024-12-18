@@ -25,13 +25,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontAttributes="Bold" Text="Nombre del servicio" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Label Grid.Column="1" FontAttributes="Bold" Text="Descripcion" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Label Grid.Column="2" FontAttributes="Bold" Text="Tiempo" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Label Grid.Column="3" FontAttributes="Bold" Text="Precio" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Label Grid.Column="4" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="4" FontAttributes="Bold" Text="TIpo de Servicio" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label Grid.Column="5" FontAttributes="Bold" Text="Acciones" HorizontalOptions="Center" VerticalOptions="Center"/>
         </Grid>
 
         <!-- Lista de productos -->
@@ -56,6 +58,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="200" />
                             </Grid.ColumnDefinitions>
 
@@ -63,8 +66,9 @@
                             <Label Grid.Column="1" Text="{Binding Descripcion}" HorizontalOptions="Center" VerticalOptions="Center" />
                             <Label Grid.Column="2" Text="{Binding Tiempo}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             <Label Grid.Column="3" Text="{Binding Precio}" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="4" Text="{Binding TipoServicio}" HorizontalOptions="Center" VerticalOptions="Center"/>
                             
-                            <Button Grid.Column="4" Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
+                            <Button Grid.Column="5" Text="Editar" ToolTipProperties.Text="Editar Producto" Clicked="EditarServicios_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>
                             <!-- <StackLayout Grid.Column="4" Grid.Column="4" Orientation="Horizontal" VerticalOptions="Center">
                                 <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
                                    <Button Text="Precio" ToolTipProperties.Text="Actualizar Tiempo" Clicked="ActualizarTiempo_Clicked" CommandParameter="{Binding .}" TextColor="DarkSeaGreen" BackgroundColor="Transparent" FontAutoScalingEnabled="True" HeightRequest="40" WidthRequest="80"/>

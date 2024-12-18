@@ -25,10 +25,61 @@
         </Grid.ColumnDefinitions>
 
         <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{StaticResource LayoutBackGroundPrimaryColor}" Margin="0,0,0,10">
-            <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Background="White">
-                <Label Text="Precio por minuto:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
-                <Entry Placeholder="Precio" x:Name="EntryPrecioxMinuto" WidthRequest="100" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"  />
-            </HorizontalStackLayout>
+            <Grid>
+                <!-- Definir dos columnas: una para las edades y otra para el precio -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0">
+                    <Label Text="Edad mínima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Edad" x:Name="EntryEdadMinima" WidthRequest="50" VerticalOptions="Center" Margin="0,0,10,0" TextChanged="EntryEdadMinima_TextChanged"/>
+                    
+                    <Label Text="Edad máxima:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Edad" x:Name="EntryEdadMaxima" WidthRequest="50" VerticalOptions="Center" Margin="0,0,10,0" TextChanged="EntryEdadMaxima_TextChanged"/>
+                    
+                    <Label Text="Precio por 30 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoTreintaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioxMinuto_TextChanged"/>
+
+                    <Label Text="Precio por 60 minutos:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoSesentaMin" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioMinutoSesentaMin_TextChanged"/>
+
+                    <Label Text="Precio por minuto despues de un servicio:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioMinutoDespuesServicio" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioMinutoDespuesServicio_TextChanged" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                    <Label Text="Precio por cada niño adicional:" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center" Margin="10"/>
+                    <Entry Placeholder="Precio" x:Name="EntryPrecioNiñoAdicional" WidthRequest="50" VerticalOptions="Center" TextChanged="EntryPrecioNiñoAdicional_TextChanged"/>
+                </HorizontalStackLayout>
+                
+                <!--<HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                    <Label Text="{x:Static models:Icons.FolderIcon}" 
+                           Style="{x:StaticResource MaterialIcon}" 
+                           ToolTipProperties.Text="Actualizar Ruta Tickets"
+                           VerticalOptions="Center" 
+                           TextColor="#008000" 
+                           FontSize="Large"
+                           Margin="0,0,10,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="AbrirRutaArchivo_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label ToolTipProperties.Text="Ruta" 
+                            x:Name="labelRutaTickets" 
+                            Padding="4" 
+                            TextColor="Black"  
+                            FontAttributes="Bold" 
+                            FontSize="Caption" 
+                            HeightRequest="20" 
+                            VerticalOptions="Center"
+                            BackgroundColor="#EFEFEF"
+                            Margin="0,0,10,0" />
+                </HorizontalStackLayout>-->
+
+            </Grid>
         </Frame>
 
         <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="White">

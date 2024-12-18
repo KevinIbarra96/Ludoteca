@@ -1,11 +1,11 @@
 <?php
 
     $pt = explode('\\',__DIR__);
+
+    //Esta configuracion es la requerida para el servicio
+    //$pt = explode('/',__DIR__);
+
     $ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3].'/'.$pt[4];
-
-    //$ProjectPath = $pt[0].'/'.$pt[1].'/'.$pt[2].'/'.$pt[3];
-
-    //echo $ProjectPath;
 
     require_once($ProjectPath.'/Database/conexion.php');
     require_once($ProjectPath.'/Services/UserService.php');
@@ -36,7 +36,28 @@
                 $Response->RerrorCode = $ex->getCode();
             }finally{
                 echo json_encode($Response);
-            }            
+            }
+        }
+
+        function getUsersAndRol(){
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $userSvc = new UserService();
+                $Response->Rbody = $userSvc->getUsersAndRol();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All User listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
         }
 
         function getAllUsers(){
@@ -47,6 +68,31 @@
                 $database = new Connection();
                 $userSvc = new UserService();
                 $Response->Rbody = $userSvc->getAll();
+                $database->closeConection();
+
+                $Response->Rcode = 200;
+                $Response->Rmessage = "All User listed";
+                
+            }catch(Exception $ex){
+                $Response->Rcode = 402;
+                $Response->Rmessage = $ex->getMessage();
+                $Response->RerrorCode = $ex->getCode();
+            }finally{
+                echo json_encode($Response);
+            }
+            /*echo '<prev>';
+                var_dump($Users);
+            echo '</prev>';*/
+        }
+
+        function getAllActiveUsers(){
+
+            $Response = new ResponseModel();
+
+            try{            
+                $database = new Connection();
+                $userSvc = new UserService();
+                $Response->Rbody = $userSvc->getAllActive();
                 $database->closeConection();
 
                 $Response->Rcode = 200;
@@ -98,8 +144,8 @@
                 ];
 
                 $database = new Connection();
-                $userSvc = new UserService();                
-                $userSvc->new($dataBody);
+                $userSvc = new UserService();
+                $Response->Rbody =$userSvc->new($dataBody);
                 $database->closeConection();
 
                 $Response->Rcode = 200;

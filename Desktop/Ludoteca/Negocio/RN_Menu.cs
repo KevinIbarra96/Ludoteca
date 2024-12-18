@@ -1,16 +1,11 @@
 ﻿using Data;
 using Entidad;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
     public class RN_Menu
     {
-        public static async Task<List<EN_Menu>> RN_GetMenuByRol(int _idRol)
+        public static async Task<EN_Response<EN_Menu>> RN_GetMenuByRol(int _idRol)
         {
             return await DB_Menu.getMenuByRol(_idRol);
         }
@@ -18,6 +13,10 @@ namespace Negocio
         public static async Task<List<EN_Menu>> RN_GetAllMenus()
         {
             return await DB_Menu.getAllMenu();
+        }
+        public static async Task<EN_Response<EN_Menu>> getAllActiveMenu()
+        {
+            return await DB_Menu.getAllActiveMenu();
         }
         public static async Task<List<EN_Menu>> RN_GetMenuByID(int _id)
         {
