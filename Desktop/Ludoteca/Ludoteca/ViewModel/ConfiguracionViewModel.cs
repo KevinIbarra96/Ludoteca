@@ -8,7 +8,7 @@ namespace Ludoteca.ViewModel
 
     public delegate void UpdateUsuarioConfig(GlobalEnum.Action Action, EN_User usuario);
     public delegate void UpdateRolConfig(GlobalEnum.Action Action, EN_Rol rol);
-    public delegate void GetAllRolConfig();
+    public delegate Task GetAllRolConfig();
 
     internal class ConfiguracionViewModel
     {
