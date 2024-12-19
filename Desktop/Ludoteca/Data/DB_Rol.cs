@@ -95,8 +95,6 @@ namespace Data
         public static async Task<EN_Response<EN_Rol>> updateRol(EN_Rol _Rol, List<EN_Menu> MenuList)
         {
 
-            return null;
-
             EN_Response<EN_Rol> RolsResponse = null;
             string endpointpath = _apiPath + "/editRol";
             List<int> menuIdList = new List<int>();

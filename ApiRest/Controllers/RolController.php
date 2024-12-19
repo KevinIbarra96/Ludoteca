@@ -129,8 +129,7 @@
                 $MenuSvc = new MenuService();
                 // Verificar si se debe actualizar el nombre del rol
                 if (isset($BodyRequest['Rol']) && !empty($BodyRequest['Rol'])) {
-
-                    $RolSvc->updateRol($BodyRequest['Rol']);
+                   $RolSvc->updateRol($BodyRequest['Rol']);
                 }else{
                     throw new Exception("Rol no puede estar vacio", 405);
                 }
